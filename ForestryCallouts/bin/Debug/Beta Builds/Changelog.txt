@@ -1,0 +1,96 @@
+Forestry Callouts Beta 2: Released | Released: 4/7/2021
+*Ini
+	- Added option to disable callout suspicious vehicle
+*Wrecked Vehicle
+	- Added pursuit scenario for if suspect find first for some reason.
+	- Changed dialogue a tad
+	- Changed search area, cuz other one was shit
+*Reckless Driver
+	- Lowered the speed for the suspects vehicle |Should lower chances of suspects flying off cliffs|
+	- Changed some other minor stuff
+	- Added a regular pullover scenario, where the suspect wont shoot or anything just normal pullover.
+*Animal Attack
+	-New Callout
+	-Pretty basic ITS REALLY HARD TO CONTROL ANIMALS WITH CODEEEE
+	-Probably will have the most bugs
+	
+	I think thats it if you have any suggestions, lmk, thanks Thota and Pawpi.
+-----------------------------------------------------------------------------------------------------------------------------------	
+Forestry Callouts Beta 3 | Released: 5/28/2021
+
+*Ini
+	- Added options to disable 2 new callouts
+*Wrecked Vehicle
+	- Added 2 more possible callout positions
+*Animal Attack
+	- Fixed bug where lion would spawn underneath playable area
+	- Change some stuff for the callout positions possible
+	- Added 13 diffent callout spawns that make sense, and arent are where animals wouldnt attack
+*Intoxicated Hiker
+	- Made it so callout will only end if player eventually presses END key
+*Suspicious Vehicle
+	- New Callout
+	- 3 diffent scenarios with each one having more scenarios inside them
+	- May add more scenarios.
+*Reckless Driver
+ - Added some scanner audio for when pursuits start.
+*Pursuit Of Logger Truck
+	- New Callout
+	- Might have alot of bugs
+-----------------------------------------------------------------------------------------------------------------------------------
+Forestry Callouts Beta 3.1 | Released: 5/29/2021
+
+*Pursuit Of Logger Truck
+	- Fixed Bugs
+	- Added 20 Different Spawnpoints
+	- Added more options for the diff trucks to be used
+*Wrecked Vehicle
+	- Fixed a bug duh bug
+*Reckless Driver
+	- Fixed a bug duh bug
+	
+	Added ManATee as a tester!!!!
+	
+	Please dm me with any issues or recomendations.
+	
+-----------------------------------------------------------------------------------------------------------------------------------
+Forestry Callouts Beta v3.2 | Released: 6/2/21
+
+*HighSpeedPursuit
+	- New Callout
+	- Pursuit of either dune buggy or atv
+*VehicleOnFire
+	- New Callout
+*LoggerPursuit
+	- Fixed a spwaning bug where the callout would spawn in vinewood hills.
+*All Callouts
+	- Changed the Code 4 Notfication Messeage!
+
+	Please dm me with any issues or recomendations.
+	
+	This will be the last beta build. I wont add any more callouts now Ill just work on fixing bugs!
+	
+	Thanks! Thota, Pawpi, and ManATee!
+	
+	Forestry Callouts Beta v3.2 | Released: 6/2/21
+
+-----------------------------------------------------------------------------------------------------------------------------------
+Forestry Callouts BETA v3.2.1 | Released: 6/4/21
+
+*VehicleOnFire
+	- Fixed a bug where the suspect would walk out of the searcharea and pretty much be unfindable.
+*WreckedVehicle
+	- Fixed a bug where the suspect would walk out of the searcharea and pretty much be unfindable.
+*IntoxicatedHiker
+	- Fixed some spelling mistakes
+	- Made dialogue make more sense
+	- Fixed bug where suspect would wait for player to press Y one last time to do whatever the scenario is.
+*HighSpeedPursuit
+	- Added 6 new vehicles as a chance to being choosen for the suspect vehicle.
+*LoggerPursuit
+	- Bug should be fixed where the driver just gets out of the truck and starts foot pursuit, if you still see it happening lmk.
+
+	Lmk what you guys think of the new timer system with the search areas where the suspects are constantly moveing,
+	the search areas are smaller now and will update every so often.
+	
+	Thanks!

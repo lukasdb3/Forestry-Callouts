@@ -1,0 +1,108 @@
+Foretry Callouts v1.1
+	*Misc
+		- Added Screenshots
+			@ Thanks to Pawpi and xXManATeeXx
+		- Changed the cover pic!
+	*VehicleOnFire
+		- Added feature where the searcharea for the suspect wont spawn unitll later into extinguishing the car fire.
+		- Fixed a bug where only one callout position was working and being used, there is a total of 10 spawnpoints.
+		- Fixed a issue with some of the spawnpoints where the suspect would walk off cliffs and stuff he shouldnt.
+		- Rewrote some stuff so the suspect spawns later in the callout, hopefully preventing the suspect from doing
+			dumb things.
+	*Added Callout: Miising Hiker
+		- 7 Spawnpoints currently, will add more.
+		
+Foretry Callouts v1.2
+	*Ini
+		- Changed the callout options to make more sense (To disable set to false to enable set to true)
+		- Added option to disable the message in the top left after every callout that says "Press 'END' at anytime to 
+		end the callout". !!-YOU WILL STILL HAVE TO PRESS END TO FULLY RELEASE VEHICLES, PEDS, ETC FROM THE CALLOUTS-!!
+		I added this option cause it seemed quite annoying watching youtube vids and seeing that constantly in the top left
+	*Logger Pursuit
+		- Fixed some spawn issues where the suspect would just get stuck and leave the vehicle right away or just be stupid.
+		- Added chance for a passenger
+		- Made it so the LoggerTruck will delete when callout ends there's really no other way to get rid of it as you cant
+		tow it. Ive made this optional in the ini if you dont want it to delete on end callout set option to false. If option
+		is set to false the truck will be dismissed instead of deleted and eventually despawned by gta5 it self.
+	*VehicleOnFire
+		- Improved the second part of the callout (finding the suspect)
+	*InjuredHiker
+		- Added new dialogue
+	*HighSpeedPursuit
+		- Added chance for a passenger
+	*WreckedVehilce
+		- Fixed bug where only one scenario was working
+	*AnimalAttack
+		- Added Spawnpoints, there is 25 total spawnponts for the callout.
+	*Missing Hiker
+		- Added Spawnpoints, there is 25 total spawnponts for the callout.
+		
+Foretry Callouts v1.2.1
+	*Misc
+		- Added version checker, big thanks to @SuperPyroManic for sending me the way he does his own!
+		- Changed some notfication things when plugin is sucsessfully loaded.
+		- Changed all callout display notfications to look quite better.
+	*New Callouts
+		- Illegal Camping
+			20 Spawnpoints
+		- Ranger Requesting Backup
+			Only one Scenario, as of now. Will add more later.
+	*SuspiciousVehicle
+		- Fixed a couple bugs I found
+	*AnimalAttack
+		- The Lion should actually try to actack the player instead of running away
+	
+Foretry Callouts v1.2.2
+	*Misc
+		- Added the DisableAllCallouts option back to the ini file, nice for when you dont want to patorl as park ranger.
+	*RangerRequestingBackup
+		- Added a Shots Fired Scenario.
+	*VehicleOnFire / Arson
+		- Made it so the fires disapeer on end callout.
+	*New Callout
+		- Dead Animal Blocking Roadway
+			Very simple added it as it was requested, 15 Spawnpoints.
+			
+Forestry Callouts v1.2.3
+	*New Callouts
+		- Dangerous Person
+			13 Spawnpoints.
+		- Illegal Hunting
+			- 11 Spawnpoints
+			- Extremly basic, thinking about adding stuff for sure, this callout is a WIP.
+	*Spelling Fixes
+	*Changed callouts for better user expierence
+	*Added key options to the ini. EndKey, DialogueKey, and InteratctionKey.
+		- Made the ini more user friendly.
+		
+Forestry Callouts v1.2.4
+	*New Callout
+		- IllegalFishing
+			- 17 Spawnpoints
+	*Animal Attack
+		- Added in a option to call animal control to pick up the dead animal.
+		- Changed some things to make the callout perform better.
+		- Fixed bug with not being able to call animal control.
+	*Illegal Hunting
+		- Added Dialogue.
+		- Added a key to be pressed to check for the peds hunting license.
+	*Animal Control
+		- Changed some things to make the AnimalControl behave better and not act stupid.
+		- Animal Control now will actually be deleted if the player ends the callout before the animal control is done with
+			its job.
+	*Ini
+		- Added an option to change the model used in the RangerRequestingBackup callout, you can have a max of four.
+		- Fixed a bug with the "EnableEndCalloutHelpMessages" not working.
+		- Added an option to change the Animal Control model, you can have max of one.
+	*Misc
+		- Changed all callouts blip colors and some notfications to look better.
+		- Made one big log messeage that tells pretty much everything I need to solve issues.
+		- Many many more spelling fixes :)
+		- Fixed bug with Animal Control getting stuck when leaving the truck.
+	*New Features
+		- Added a Hunting License, I would be able to use Bejoljos STP Hunting License but I need API that it doenst have.
+		- Added a Fishing License, same reason.
+		
+Forestry Callouts v1.2.5
+	*Ini
+		- Fixed the "DisableAllCallouts" option, it wasnt reading the given value and automatically setting it to default.
