@@ -53,8 +53,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>A:\SteamLibrary\steamapps\common\Grand Theft Auto V\Plugins\LSPD First Response.dll</HintPath>
     </Reference>
-    <Reference Include="RAGENativeUI">
-      <HintPath>..\..\..\Coding Refrences For GTA5\RAGENativeUI.dll</HintPath>
+    <Reference Include="RAGENativeUI, Version=1.8.1.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\RAGENativeUI.1.8.1\lib\net472\RAGENativeUI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RagePluginHook, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\RagePluginHook.1.86.1\lib\net472\RagePluginHook.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RagePluginHookSDK">
       <HintPath>..\..\..\Coding Refrences For GTA5\RagePluginHookSDK.dll</HintPath>
@@ -103,6 +108,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Ini\ForestryCallouts.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

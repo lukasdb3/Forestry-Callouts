@@ -35,8 +35,14 @@
     <Reference Include="LSPD First Response, Version=0.4.7874.38392, Culture=neutral, PublicKeyToken=null">
       <HintPath>A:\SteamLibrary\steamapps\common\Grand Theft Auto V\Plugins\LSPD First Response.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="RAGENativeUI, Version=1.8.1.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\RAGENativeUI.1.8.1\lib\net472\RAGENativeUI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RagePluginHook, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\Documents\GTA Mod Development\Coding\Coding Refrences For GTA5\RagePluginHookSDK.dll</HintPath>
+      <HintPath>..\packages\RagePluginHook.1.86.1\lib\net472\RagePluginHook.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RagePluginHookSDK, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
@@ -45,6 +51,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -57,6 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Ini\SAHighwayCallouts.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
