@@ -7,7 +7,7 @@
     <ProjectGuid>{0A2662F5-7AEF-4182-9FE2-7143AC00DFA1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HighwayCallouts</RootNamespace>
+    <RootNamespace>SAHighwayCallouts</RootNamespace>
     <AssemblyName>SAHighwayCallouts</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -56,7 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Functions\SpawnChunks.cs" />
+    <Compile Include="Callouts\LuxuryVehiclePursuit.cs" />
+    <Compile Include="Functions\SpawnStuff\CalloutSpawnpoints\VehiclePursuitSpawnpoints.cs" />
+    <Compile Include="Functions\SpawnStuff\SpawnChunks.cs" />
     <Compile Include="Ini\Settings.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

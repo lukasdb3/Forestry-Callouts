@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
 using Rage;
-using HighwayCallouts.Ini;
+using SAHighwayCallouts.Ini;
 
-namespace HighwayCallouts.Functions
+namespace SAHighwayCallouts.Functions
 {
     internal class VersionChecker
     {
@@ -29,7 +29,7 @@ namespace HighwayCallouts.Functions
             catch (WebException)
             {
                 Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~h~SAHighwayCallouts Warning",
-                    "~g~Failed to check for an update",
+                    "~b~Failed to check for an update",
                     "Please check if you are ~o~online~w~, or try to reload the plugin.");
                 updateCheckFailed = true;
                 // server or connection is having issues
@@ -39,7 +39,7 @@ namespace HighwayCallouts.Functions
             {
                 updateAvailable = true;
                 Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~h~SAHighwayCallouts Warning",
-                    "~g~A new Update is available!",
+                    "~b~A new Update is available!",
                     "Current Version: ~r~" + curVersion + "~w~<br>New Version: ~g~" + receivedData);
                 return true;
             }

@@ -2,10 +2,10 @@
 using Rage;
 using LSPD_First_Response.Mod.API;
 using System.Reflection;
-using HighwayCallouts.Ini;
-using HighwayCallouts.Functions;
+using SAHighwayCallouts.Ini;
+using SAHighwayCallouts.Functions;
 
-namespace HighwayCallouts
+namespace SAHighwayCallouts
 {
     internal class Main : Plugin
     {
@@ -31,9 +31,36 @@ namespace HighwayCallouts
                Game.Console.Print("SAHighwayCallouts v"+System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()+" loading...");
                Game.Console.Print("SAHighwayCallouts: loading settings!");
                Settings.LoadSettings();
-               Game.Console.Print("SAHighwayCallouts: settings loaded!");
-               Game.Console.Print("SAHighwayCallouts: checking for update!");
-               VersionChecker.IsUpdateAvailable();
+                if (!Settings.invalidKeys)
+                {
+                    //SAHighwayCallouts.ini main settings
+                    Game.Console.Print("-!!- ==================== SAHighwayCallouts Settings ==================== -!!-");
+                    Game.Console.Print("-!!- DialogueKey = " + Settings.DialogueKey + "");
+                    Game.Console.Print("-!!- EndCalloutKey = " + Settings.EndCalloutKey + "");
+                    Game.Console.Print("-!!- EndCalloutKey = " + Settings.InteractionKey + "");
+                    Game.Console.Print("-!!- Other settings loaded!");
+                    Game.Console.Print("-!!- ==================== SAHighwayCallouts Settings ==================== -!!-");
+                    Game.Console.Print();
+                }
+
+               if (Settings.invalidKeys)
+               {
+                   //SAHighwayCallouts.ini showing that main settings were set back to default due to invalid key
+                   Game.Console.Print("-!!- ==================== SAHighwayCallouts Settings ==================== -!!-");
+                   Game.Console.Print("-!!- All keys set to default settings due to Invalid Key Error.");
+                   Game.Console.Print("-!!- Other settings loaded!");
+                   Game.Console.Print("============= SAHighwayCallouts WARNING ==================");
+                   Game.Console.Print("Invalid Key detected in SAHighwayCallouts.ini");
+                   Game.Console.Print("Please make sure that all Key Inputs are valid keys.");
+                   Game.Console.Print(
+                       "If your not sure please send your log to me via ticket option in ULSS or message me.");
+                   Game.Console.Print("============= SAHighwayCallouts WARNING ==================");
+                   Game.Console.Print("-!!- ==================== SAHighwayCallouts Settings ==================== -!!-");
+                   Game.Console.Print();
+                   Game.Console.Print("SAHighwayCallouts: checking for update!");
+                   VersionChecker.IsUpdateAvailable();
+               }
+
                if (VersionChecker.updateCheckFailed)
                {
                    //SAHighwayCallouts version checker showing that its failed to check for an update
@@ -76,7 +103,7 @@ namespace HighwayCallouts
 
          private static void RegisterCallouts()
          {
-             
+             LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.LuxuryVehiclePursuit));
          }
          
          public static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)

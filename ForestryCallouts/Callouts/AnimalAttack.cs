@@ -29,7 +29,7 @@ namespace ForestryCallouts.Callouts
         private bool SearchForAnimal;
         private bool AnimalFound;
         private bool animalKilled;
-        
+
         //Timer
         private int timer;
         private bool timerPaused;
@@ -43,7 +43,6 @@ namespace ForestryCallouts.Callouts
             CalloutAdvisory = ("~b~Dispatch:~w~ Animal violently attacking a civilian reported, Respond ~r~Code 3~w~");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("WE_HAVE ASSISTANCE_REQUIRED_02 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_02", Spawnpoint);
             CalloutPosition = Spawnpoint;
-
             Game.LogTrivial("-!!- Forestry Callouts - |Animal Attack| Callout displayed -!!-");
             return base.OnBeforeCalloutDisplayed();
         }
