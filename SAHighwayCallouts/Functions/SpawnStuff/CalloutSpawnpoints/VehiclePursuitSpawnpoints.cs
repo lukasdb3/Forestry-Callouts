@@ -3,20 +3,20 @@ using Rage;
 
 namespace SAHighwayCallouts.Functions.SpawnStuff.CalloutSpawnpoints
 {
-    internal class VehiclePursuitSpawns
+    internal class VehiclePursuitSpawnpoints
     {
-        internal static void PbCountySpawns(out Vector3 _spawnpoint, out float _heading)
+        internal static void PbCountySpawns(out Vector3 spawnpoint, out float heading)
         {
-            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - choosing spawnpoint in paleto bay chunk");
-            _spawnpoint = default;
-            _heading = default;
+            spawnpoint = default;
+            heading = default;
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Spawnpoint in Paleto Bay Chunk!");
             var chose = new Random().Next(1, 2);
-            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosed Case: "+chose+", pog");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Case: "+chose+"");
             switch (chose)
             {
                 case 1:
-                    _spawnpoint = new Vector3(-852.982f, 5454.836f, 34.233f);
-                    _heading = 117.303f;
+                    spawnpoint = new Vector3(-852.982f, 5454.836f, 34.233f);
+                    heading = 117.303f;
                     break;
             }
         }
@@ -24,7 +24,7 @@ namespace SAHighwayCallouts.Functions.SpawnStuff.CalloutSpawnpoints
         //Blaine County spawn chunk
         internal static void BCountySpawns(out Vector3 _spawnpoint, out float _heading)
         {
-            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - choosing spawnpoint in blaine county chunk");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Spawnpoint in Blaine County Chunk!");
             _spawnpoint = default;
             _heading = default;
             var chose = new Random().Next(1, 2);
@@ -41,7 +41,7 @@ namespace SAHighwayCallouts.Functions.SpawnStuff.CalloutSpawnpoints
         //Los Santos county spawn chunk
         internal static void LsCountySpawns(out Vector3 _spawnpoint, out float _heading)
         {
-            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - choosing spawnpoint in los santos chunk");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Spawnpoint in LosSantos County Chunk!");
             _spawnpoint = default;
             _heading = default;
             var chose = new Random().Next(1, 2);
@@ -57,7 +57,7 @@ namespace SAHighwayCallouts.Functions.SpawnStuff.CalloutSpawnpoints
 
         internal static void PrisonSpawns(out Vector3 _spawnpoint, out float _heading)
         {
-            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - choosing spawnpoint in prison chunk");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Spawnpoint in Prison Chunk!");
             _spawnpoint = default;
             _heading = default;
             var chose = new Random().Next(1, 2);
@@ -73,7 +73,7 @@ namespace SAHighwayCallouts.Functions.SpawnStuff.CalloutSpawnpoints
 
         internal static void ZancudoSpawns(out Vector3 _spawnpoint, out float _heading)
         {
-            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - choosing spawnpoint in zancudo chunk");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Spawnpoint in Zancudo Chunk!");
             _spawnpoint = default;
             _heading = default;
             var chose = new Random().Next(1, 2);

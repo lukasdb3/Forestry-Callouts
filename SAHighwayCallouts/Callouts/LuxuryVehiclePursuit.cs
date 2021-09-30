@@ -8,6 +8,7 @@ using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using SAHighwayCallouts.Functions.SpawnStuff;
+using SAHighwayCallouts.Functions.SpawnStuff.CalloutSpawnpoints;
 
 
 namespace SAHighwayCallouts.Callouts
@@ -27,7 +28,10 @@ namespace SAHighwayCallouts.Callouts
 
         public override bool OnBeforeCalloutDisplayed()
         {
-            SpawnChunks.ChunkGetter(in callout, out _spawnpoint, out _heading); 
+            SpawnChunks.ChunkGetter(in callout);
+            _spawnpoint = SpawnChunks.finalSpawnpoint;
+            _heading = SpawnChunks.finalHeading;
+
             ShowCalloutAreaBlipBeforeAccepting(_spawnpoint, 30f);
             AddMinimumDistanceCheck(30f, _spawnpoint);
 
