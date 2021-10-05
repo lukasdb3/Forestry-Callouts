@@ -63,6 +63,7 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
         private static void PbCounty(in string cCallout)
         {
             if (cCallout == "LuxuryVehiclePursuit") VehiclePursuitSpawnpoints.PbCountySpawns(out finalSpawnpoint, out finalHeading);
+            
             Game.LogTrivial("-!!- SAHighwayCallouts - |" + cCallout + "| - Success!");
         }
 

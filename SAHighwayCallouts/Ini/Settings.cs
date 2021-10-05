@@ -1,4 +1,6 @@
-﻿using Rage;
+﻿using System;
+using System.Linq;
+using Rage;
 using System.Windows.Forms;
 
 namespace SAHighwayCallouts.Ini
@@ -11,7 +13,12 @@ namespace SAHighwayCallouts.Ini
         
         //main
         internal static string calloutVersion;
+        internal static bool EnableEndCalloutHelpMessages;
         
+        //Vehicles
+        internal static string LuxuryVehicles;
+        internal static String[] luxuryVehiclesArray;
+
         //Keys
         internal static string DialogueKey;
         internal static Keys InputDialogueKey;
@@ -28,6 +35,7 @@ namespace SAHighwayCallouts.Ini
             ini.Create();
             
             calloutVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            EnableEndCalloutHelpMessages = ini.ReadBoolean("Main", "EnableEndCalloutHelpMessages", true);
             
             //Key stuff
             DialogueKey = ini.ReadString("Keys", "DialogueKey", "Y");
@@ -54,6 +62,11 @@ namespace SAHighwayCallouts.Ini
                     "~r~Invalid Key Error",
                     "~b~Please check your ~y~SAHighwayCallouts.ini~w~ for ~y~Invalid Key Input~w~, see log for more details.");
             }
+            //Main shit
+            
+            //Vehicle shit
+            LuxuryVehicles = ini.ReadString("Vehicles", "LuxuryVehicles", defaultValue: null);
+            luxuryVehiclesArray = LuxuryVehicles.Split(':');
         }
     }
 }

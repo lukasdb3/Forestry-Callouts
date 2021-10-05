@@ -38,6 +38,7 @@ namespace SAHighwayCallouts
                     Game.Console.Print("-!!- DialogueKey = " + Settings.DialogueKey + "");
                     Game.Console.Print("-!!- EndCalloutKey = " + Settings.EndCalloutKey + "");
                     Game.Console.Print("-!!- EndCalloutKey = " + Settings.InteractionKey + "");
+                    Game.Console.Print("-!!- LuxuryVehiclesNumber = null");
                     Game.Console.Print("-!!- Other settings loaded!");
                     Game.Console.Print("-!!- ==================== SAHighwayCallouts Settings ==================== -!!-");
                     Game.Console.Print();
