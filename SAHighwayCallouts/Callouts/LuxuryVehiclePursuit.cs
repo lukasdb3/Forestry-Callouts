@@ -54,7 +54,8 @@ namespace SAHighwayCallouts.Callouts
         {
             Game.LogTrivial("-!!- SAHighwayCallouts - |LuxuryVehiclePursuit| - Callout accepted!");
             SAHC_Functions.LuxVehicleSpawn(out _susV, _spawnpoint, _heading);
-            SAHC_Functions.SpawnCountryPed(out _suspect, _spawnpoint, _heading);
+            SAHC_Functions.SpawnNormalPed(out _suspect, _spawnpoint, _heading);
+            SAHC_Functions.PedPersonaChooser(in _suspect);
             _suspect.WarpIntoVehicle(_susV, -1);
             _susBlip = _suspect.AttachBlip();
             _susBlip.Color = Color.Red;
@@ -65,7 +66,7 @@ namespace SAHighwayCallouts.Callouts
 
         public override void Process()
         {
-            if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 30f && !_onScene)
+            if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 55f && !_onScene)
             {
                 _onScene = true;
                 _susBlip.IsRouteEnabled = false;

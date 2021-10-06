@@ -29,7 +29,6 @@ namespace SAHighwayCallouts
                 Game.Console.Print(
                    "================================================ SAHighwayCallouts =====================================================");
                Game.Console.Print("SAHighwayCallouts v"+System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()+" loading...");
-               Game.Console.Print("SAHighwayCallouts: loading settings!");
                Settings.LoadSettings();
                 if (!Settings.invalidKeys)
                 {
@@ -38,8 +37,9 @@ namespace SAHighwayCallouts
                     Game.Console.Print("-!!- DialogueKey = " + Settings.DialogueKey + "");
                     Game.Console.Print("-!!- EndCalloutKey = " + Settings.EndCalloutKey + "");
                     Game.Console.Print("-!!- EndCalloutKey = " + Settings.InteractionKey + "");
-                    Game.Console.Print("-!!- LuxuryVehiclesNumber = null");
-                    Game.Console.Print("-!!- Other settings loaded!");
+                    Game.Console.Print("-!!- LuxuryVehiclesNumber = " + Settings.luxuryVehiclesArray.Length + "");
+                    Game.Console.Print("-!!- Loading commands!");
+                    Game.AddConsoleCommands(new[]{typeof(Functions.Commands)});
                     Game.Console.Print("-!!- ==================== SAHighwayCallouts Settings ==================== -!!-");
                     Game.Console.Print();
                 }
@@ -104,7 +104,11 @@ namespace SAHighwayCallouts
 
          private static void RegisterCallouts()
          {
-             LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.LuxuryVehiclePursuit));
+             if (Settings.DisableAllCallouts) Game.Console.Print("-!!- SAHighwayCallouts - |Settings| - All callouts disabled.");
+             if (!Settings.DisableAllCallouts)
+             {
+                 if (Settings.LuxuryVehiclePursuit) LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.LuxuryVehiclePursuit));
+             }
          }
          
          public static Assembly LSPDFRResolveEventHandler(object sender, ResolveEventArgs args)
