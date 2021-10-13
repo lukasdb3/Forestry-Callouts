@@ -37,10 +37,10 @@ namespace SAHighwayCallouts
                     Game.Console.Print("-!!- DialogueKey = " + Settings.DialogueKey + "");
                     Game.Console.Print("-!!- EndCalloutKey = " + Settings.EndCalloutKey + "");
                     Game.Console.Print("-!!- EndCalloutKey = " + Settings.InteractionKey + "");
-                    Game.Console.Print("-!!- LuxuryVehiclesNumber = " + Settings.luxuryVehiclesArray.Length + "");
+                    Game.Console.Print("-!!- LuxuryVehiclesNumber = " + Settings.luxuryVehiclesArray.Length + " | AddedCars = "+Settings.LuxuryVehicleAddons+""); //WOW POG
+                    Game.Console.Print("-!!- ==================== SAHighwayCallouts Settings ==================== -!!-");
                     Game.Console.Print("-!!- Loading commands!");
                     Game.AddConsoleCommands(new[]{typeof(Functions.Commands)});
-                    Game.Console.Print("-!!- ==================== SAHighwayCallouts Settings ==================== -!!-");
                     Game.Console.Print();
                 }
 

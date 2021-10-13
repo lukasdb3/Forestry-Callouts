@@ -30,6 +30,7 @@ namespace SAHighwayCallouts.Ini
         //Vehicles
         internal static string LuxuryVehicles;
         internal static String[] luxuryVehiclesArray;
+        internal static int LuxuryVehicleAddons;
         
         //Callouts
         internal static bool DisableAllCallouts;
@@ -80,11 +81,20 @@ namespace SAHighwayCallouts.Ini
             //Vehicle shit
             LuxuryVehicles = ini.ReadString("Vehicles", "LuxuryVehicles", defaultValue: null);
             luxuryVehiclesArray = LuxuryVehicles.Split(':');
-            Game.Console.Print("-!!- settings loaded!");
-            
+            if (luxuryVehiclesArray.Length > 45)
+            {
+                //Player added addon vehicles, why do we care, we don't I just added this cuz its pointless but cool ig idk.
+                LuxuryVehicleAddons = luxuryVehiclesArray.Length - 45; //amount of addon cars :)
+            }
+            else
+            {
+                LuxuryVehicleAddons = 0; //No addons homie
+            }
+
             //Callout shit
             DisableAllCallouts = ini.ReadBoolean("Callouts", "DisableAllCallouts", false);
             LuxuryVehiclePursuit = ini.ReadBoolean("Callouts", "LuxuryVehiclePursuit", true);
+            Game.Console.Print("-!!- settings loaded!");
         }
     }
 }

@@ -33,6 +33,8 @@ namespace SAHighwayCallouts.Functions
             string[] vehicleModels = Settings.luxuryVehiclesArray;
             vehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
             vehicle.IsPersistent = true;
+            
+            Game.Console.Print("-!!- SAHighwayCallouts - |LuxVehicleSpawn| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
         }
         
         internal static void SpawnNormalCar(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) //Spawn normal random car..
