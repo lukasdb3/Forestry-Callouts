@@ -49,9 +49,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LSPD First Response, Version=0.4.7575.29892, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>A:\SteamLibrary\steamapps\common\Grand Theft Auto V\Plugins\LSPD First Response.dll</HintPath>
+    <Reference Include="LSPD First Response, Version=0.4.7874.38392, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\Documents\Refrences\LSPD First Response.dll</HintPath>
     </Reference>
     <Reference Include="RAGENativeUI, Version=1.8.1.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\RAGENativeUI.1.8.1\lib\net472\RAGENativeUI.dll</HintPath>
@@ -61,12 +60,8 @@
       <HintPath>..\packages\RagePluginHook.1.86.1\lib\net472\RagePluginHook.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RagePluginHookSDK">
-      <HintPath>..\..\..\Coding Refrences For GTA5\RagePluginHookSDK.dll</HintPath>
-    </Reference>
-    <Reference Include="StopThePed, Version=4.9.4.2, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>A:\SteamLibrary\steamapps\common\Grand Theft Auto V\Plugins\lspdfr\StopThePed.dll</HintPath>
+    <Reference Include="StopThePed, Version=4.9.5.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\Documents\Refrences\StopThePed.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

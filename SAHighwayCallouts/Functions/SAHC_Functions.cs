@@ -36,12 +36,73 @@ namespace SAHighwayCallouts.Functions
             
             Game.Console.Print("-!!- SAHighwayCallouts - |LuxVehicleSpawn| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
         }
-        
-        internal static void SpawnNormalCar(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) //Spawn normal random car..
+
+        internal static void SpawnPolicePed(in string closetCounty, out Ped ped, Vector3 spawnpoint, float heading)
         {
-            Model[] vehicleModels = { "DUKES", "BALLER", "BALLER2", "BISON", "BISON2", "BJXL", "CAVALCADE", "CHEETAH", "COGCABRIO", "ASEA", "ADDER", "FELON", "FELON2", "ZENTORNO", "WARRENER", "RAPIDGT", "INTRUDER", "FELTZER2", "FQ2", "RANCHERXL", "REBEL", "SCHWARZER", "COQUETTE", "CARBONIZZARE", "EMPEROR", "SULTAN", "EXEMPLAR", "MASSACRO", "DOMINATOR", "ASTEROPE", "PRAIRIE", "NINEF", "WASHINGTON", "CHINO", "CASCO", "INFERNUS", "ZTYPE", "DILETTANTE", "VIRGO", "F620", "PRIMO", "SULTAN", "EXEMPLAR", "F620", "FELON2", "FELON", "SENTINEL", "WINDSOR", "DOMINATOR", "DUKES", "GAUNTLET", "VIRGO", "ADDER", "BUFFALO", "ZENTORNO", "MASSACRO" };
-            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
-            cVehicle.IsPersistent = true;
+            ped = null;
+            Game.Console.Print("-!!- SAHighwayCallouts - |PolicePedSpawner| - Spawning new police ped!");
+            if (closetCounty == "PaletoBay") ped = new Ped("s_f_y_sheriff_01", spawnpoint, heading);
+            if (closetCounty == "BlaineCounty") ped = new Ped("s_m_y_sheriff_01", spawnpoint, heading);
+            if (closetCounty == "LosSantosCounty") ped = new Ped("s_m_y_sheriff_01", spawnpoint, heading);
+            if (closetCounty == "LosSantosCity") ped = new Ped("s_m_y_cop_01", spawnpoint, heading);
+            Game.Console.Print("-!!- SAHighwayCallouts - |PolicePedSpawner| - police ped spawned!");
+        }
+
+        internal static void SpawnPoliceCar(in string closetCounty, out Vehicle vehicle, Vector3 spawnpoint, float heading)
+        {
+            Game.Console.Print("-!!- SAHighwayCallouts - |PoliceCarSpawner| - Picking AI police cruiser!");
+            string[] vehicleModels = null;
+            vehicle = null;
+            if (closetCounty == "PaletoCounty") vehicleModels = Settings.PaletoBayCountyVehiclesArray;
+            if (closetCounty == "BlaineCounty") vehicleModels = Settings.BlaineCountyVehiclesArray;
+            if (closetCounty == "LosSantosCounty") vehicleModels = Settings.LosSantosCountyVehiclesArray;
+            if (closetCounty == "LosSantosCity") vehicleModels = Settings.LosSantosCityVehiclesArray;
+
+            if (vehicleModels == null)
+            {
+                Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~h~SAHighwayCallouts Warning",
+                    "~b~Null Vehicle Models",
+                    "There was an issue with choosing a vehicle model. Please see the log for further information");
+                
+                Game.Console.Print();
+                Game.Console.Print("-!!- =============== SAHIGHWAYCALLOUTS WARNING =============== -!!-");
+                Game.Console.Print("-!!- There was an issue with spawning a vehicle. Please send -!!-");
+                Game.Console.Print("-!!- your log to Blondee or look for null vehicle models. -!!-");
+                Game.Console.Print("-!!- The model was set to POLICE                         -!!-");
+                Game.Console.Print("-!!- =============== SAHIGHWAYCALLOUTS WARNING =============== -!!-");
+            }
+            if (vehicleModels != null) vehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
+            if (vehicleModels == null) vehicle = new Vehicle("POLICE", spawnpoint, heading); 
+            vehicle.IsPersistent = true;
+            
+            Game.Console.Print("-!!- SAHighwayCallouts - |PoliceCarSpawner| - Vehicle Model Chosen: "+vehicle.Model.Name.ToUpper()+"-!!-");
+        }
+        
+        internal static void SpawnNormalCar(out Vehicle vehicle, Vector3 spawnpoint, float heading) //Spawn normal random car..
+        {
+            Game.Console.Print("-!!- SAHighwayCallouts - |NormalVehicleSpawner| - Choosing Vehicle!");
+            string[] vehicleModels = Settings.NormalVehiclesArray;
+            vehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
+            vehicle.IsPersistent = true;
+            
+            Game.Console.Print("-!!- SAHighwayCallouts - |NormalVehicleSpawner| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
+        }
+        
+        internal static void SpawnSemiTruckAndTrailer(out Vehicle truck, out Vehicle trailer, Vector3 spawnpoint, float heading) //Spawn normal random car..
+        {
+            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Choosing Vehicle!");
+            string[] vehicleModels = Settings.NormalVehiclesArray;
+            truck = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
+            truck.IsPersistent = true;
+            
+            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Vehicle Model Choosed: "+truck.Model.Name.ToUpper()+"-!!-");
+            
+            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Choosing Trailer!");
+            string[] vehicleModelsT = Settings.NormalVehiclesArray;
+            trailer = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
+            trailer.IsPersistent = true;
+            
+            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Trailer Model Choosed: "+trailer.Model.Name.ToUpper()+"-!!-");
         }
 
         internal static void SpawnNormalPed(out Ped cPed, Vector3 Spawnpoint, float heading) //Spawns normal ped

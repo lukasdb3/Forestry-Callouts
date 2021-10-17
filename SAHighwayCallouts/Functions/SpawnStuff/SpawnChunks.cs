@@ -12,10 +12,12 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
 {
     internal class SpawnChunks
     {
-       internal static Vector3 finalSpawnpoint; //Final spawnpoint that will be used in callout
-       internal static float finalHeading; //Final heading that will be used in callout
-        internal static void ChunkGetter(in string cCallout)
-        { 
+        internal static Vector3 finalSpawnpoint; //Final spawnpoint that will be used in callout
+        internal static float finalHeading; //Final heading that will be used in callout
+
+        internal static void ChunkGetter(in string cCallout, out string cCounty)
+        {
+            cCounty = null;
             //Main
             Vector3 playerPos = Game.LocalPlayer.Character.Position;
             List<Vector3> policeStations = new List<Vector3>(); //All stations
@@ -36,7 +38,7 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
             {
                 gettingClosetChunk = true;
                 Game.LogTrivial("-!!- SAHighwayCallouts - |" + cCallout + "| - Getting Closest Chunk!");
-                
+
                 policeStations.Add(pbPoliceStation); //Paleto Bay station
                 policeStations.Add(bCountyPoliceStation); //Blaine County station
                 policeStations.Add(prisonPoliceStation); //Prison
@@ -51,18 +53,43 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
             {
                 gettingClosetSpawnpoint = true;
                 Game.LogTrivial("-!!- SAHighwayCallouts - |" + cCallout + "| - Sending to Closest Chunk!");
-                
-                if(pbPoliceStation == closestStation) PbCounty(in cCallout);
-                if (bCountyPoliceStation == closestStation) BCounty(in cCallout); 
-                if (lsCountyPoliceStation == closestStation) LsCounty(in cCallout);
-                if (prisonPoliceStation == closestStation) Prison(in cCallout);
-                if (zancudoPoliceStation == closestStation) Zancudo(in cCallout);
+
+                if (pbPoliceStation == closestStation)
+                {
+                    cCounty = "PaletoCounty";
+                    PbCounty(in cCallout);
+                }
+
+                if (bCountyPoliceStation == closestStation)
+                {
+                    cCounty = "BlaineCounty";
+                    BCounty(in cCallout);
+                }
+
+                if (lsCountyPoliceStation == closestStation)
+                {
+                    cCounty = "LosSantosCounty";
+                    LsCounty(in cCallout);
+                }
+
+                if (prisonPoliceStation == closestStation)
+                {
+                    cCounty = "BlaineCounty";
+                    Prison(in cCallout);
+                }
+
+                if (zancudoPoliceStation == closestStation)
+                {
+                    cCounty = "PaletoCounty";
+                    Zancudo(in cCallout);
+                }
             }
         }
+
         //Paleto bay spawn chunk
         private static void PbCounty(in string cCallout)
         {
-            if (cCallout == "LuxuryVehiclePursuit") VehiclePursuitSpawnpoints.PbCountySpawns(out finalSpawnpoint, out finalHeading);
+            if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.PbCountySpawns(out finalSpawnpoint, out finalHeading);
             
             Game.LogTrivial("-!!- SAHighwayCallouts - |" + cCallout + "| - Success!");
         }
@@ -72,7 +99,7 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
         {
             finalSpawnpoint = default;
             finalHeading = default;
-            if (cCallout == "LuxuryVehiclePursuit") VehiclePursuitSpawnpoints.BCountySpawns(out finalSpawnpoint, out finalHeading);
+            if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.BCountySpawns(out finalSpawnpoint, out finalHeading);
         }
         
         //Los Santos county spawn chunk
@@ -80,21 +107,21 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
         {
             finalSpawnpoint = default;
             finalHeading = default;
-            if (cCallout == "LuxuryVehiclePursuit") VehiclePursuitSpawnpoints.LsCountySpawns(out finalSpawnpoint, out finalHeading);
+            if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.LsCountySpawns(out finalSpawnpoint, out finalHeading);
         }
 
         private static void Prison(in string cCallout)
         {
             finalSpawnpoint = default;
             finalHeading = default;
-            if (cCallout == "LuxuryVehiclePursuit") VehiclePursuitSpawnpoints.PrisonSpawns(out finalSpawnpoint, out finalHeading);
+            if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.PrisonSpawns(out finalSpawnpoint, out finalHeading);
         }
 
         private static void Zancudo(in string cCallout)
         {
             finalSpawnpoint = default;
             finalHeading = default;
-            if (cCallout == "LuxuryVehiclePursuit") VehiclePursuitSpawnpoints.ZancudoSpawns(out finalSpawnpoint, out finalHeading);
+            if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.ZancudoSpawns(out finalSpawnpoint, out finalHeading);
         }
     }
 }

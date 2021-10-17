@@ -56,7 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Callouts\LuxuryVehiclePursuit.cs" />
+    <Compile Include="Callouts\PursuitCallouts\VehiclePursuit.cs" />
     <Compile Include="Functions\Commands.cs" />
     <Compile Include="Functions\SAHC_Functions.cs" />
     <Compile Include="Functions\SpawnStuff\CalloutSpawnpoints\VehiclePursuitSpawnpoints.cs" />

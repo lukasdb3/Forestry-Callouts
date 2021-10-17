@@ -38,6 +38,7 @@ namespace SAHighwayCallouts
                     Game.Console.Print("-!!- EndCalloutKey = " + Settings.EndCalloutKey + "");
                     Game.Console.Print("-!!- EndCalloutKey = " + Settings.InteractionKey + "");
                     Game.Console.Print("-!!- LuxuryVehiclesNumber = " + Settings.luxuryVehiclesArray.Length + " | AddedCars = "+Settings.LuxuryVehicleAddons+""); //WOW POG
+                    Game.Console.Print("-!!- NormalVehiclesNumber = " + Settings.NormalVehiclesArray.Length + " | AddedCars = "+Settings.NormalVehiclesAddons+"");
                     Game.Console.Print("-!!- ==================== SAHighwayCallouts Settings ==================== -!!-");
                     Game.Console.Print("-!!- Loading commands!");
                     Game.AddConsoleCommands(new[]{typeof(Functions.Commands)});
@@ -49,7 +50,8 @@ namespace SAHighwayCallouts
                    //SAHighwayCallouts.ini showing that main settings were set back to default due to invalid key
                    Game.Console.Print("-!!- ==================== SAHighwayCallouts Settings ==================== -!!-");
                    Game.Console.Print("-!!- All keys set to default settings due to Invalid Key Error.");
-                   Game.Console.Print("-!!- Other settings loaded!");
+                   Game.Console.Print("-!!- LuxuryVehiclesNumber = " + Settings.luxuryVehiclesArray.Length + " | AddedCars = "+Settings.LuxuryVehicleAddons+""); //WOW POG
+                   Game.Console.Print("-!!- NormalVehiclesNumber = " + Settings.NormalVehiclesArray.Length + " | AddedCars = "+Settings.NormalVehiclesAddons+"");
                    Game.Console.Print("============= SAHighwayCallouts WARNING ==================");
                    Game.Console.Print("Invalid Key detected in SAHighwayCallouts.ini");
                    Game.Console.Print("Please make sure that all Key Inputs are valid keys.");
@@ -107,7 +109,7 @@ namespace SAHighwayCallouts
              if (Settings.DisableAllCallouts) Game.Console.Print("-!!- SAHighwayCallouts - |Settings| - All callouts disabled.");
              if (!Settings.DisableAllCallouts)
              {
-                 if (Settings.LuxuryVehiclePursuit) LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.LuxuryVehiclePursuit));
+                 if (Settings.LuxuryVehiclePursuit) LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.PursuitCallouts.VehiclePursuit));
              }
          }
          
