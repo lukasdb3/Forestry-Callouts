@@ -11,9 +11,10 @@ using SAHighwayCallouts.Functions.SpawnStuff;
 using SAHighwayCallouts.Functions.SpawnStuff.CalloutSpawnpoints;
 using SAHighwayCallouts.Functions;
 using SAHighwayCallouts.Ini;
+using UltimateBackup.API;
 
 
-namespace SAHighwayCallouts.Callouts.PursuitCallouts
+namespace SAHighwayCallouts.Callouts
 {
     [CalloutInfo("VehiclePursuit", CalloutProbability.Medium)]
     internal class VehiclePursuit : Callout
@@ -23,18 +24,14 @@ namespace SAHighwayCallouts.Callouts.PursuitCallouts
         private string callout = "VehiclePursuit";
         private string currentCounty = null;
         private Ped _suspect;
-        private Ped _cop;
         private Ped _passenger;
         private Vehicle _susV;
-        private Vehicle _copV;
         private Vehicle _susVTrailer;
         private Blip _susBlip;
         private float _heading;
         private Vector3 _spawnpoint;
-        private Vector3 _copSpawmpoint;
-        private Vector3 _finalCopSpawnpoint;
         private LHandle _pursuit;
-        private int PursuitChooser = new Random().Next(1, 3);
+        private int PursuitChooser = new Random().Next(1, 4);
 
         private bool _onScene;
         private bool _beforeOnScene;
@@ -46,11 +43,13 @@ namespace SAHighwayCallouts.Callouts.PursuitCallouts
 
         public override bool OnBeforeCalloutDisplayed()
         {
+            Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Callout displayed!");
             if (PursuitChooser == 1)
             {
                 //Luxury Vehicle Pursuit
                 CalloutMessage = "~o~Luxury Vehicle Pursuit";
                 CalloutAdvisory = "~b~Dispatch:~w~ Luxury stolen vehicle spotted, Respond ~r~Code 3~w~";
+                Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuit| - Pursuit chooser has chosen luxury vehicle pursuit!");
             }
 
             if (PursuitChooser == 2)
@@ -58,6 +57,7 @@ namespace SAHighwayCallouts.Callouts.PursuitCallouts
                 //Normal pursuit
                 CalloutMessage = "~o~Pursuit In Progress";
                 CalloutAdvisory = "~b~Dispatch:~w~ Vehicle pursuit in progress, Respond ~r~Code 3~w~";
+                Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuit| - Pursuit chooser has chosen normal pursuit!");
             }
 
             if (PursuitChooser == 3)
@@ -65,8 +65,8 @@ namespace SAHighwayCallouts.Callouts.PursuitCallouts
                 //Semi truck pursuit
                 CalloutMessage = "~o~Semi Truck Pursuit";
                 CalloutAdvisory = "~b~Dispatch:~w~ Semi truck fleeing from Police, Respond ~r~Code 3~w~";
+                Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuit| - Pursuit chooser has chosen semi pursuit!");
             }
-            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuit| - Pursuit chooser has chosen "+callout+"!");
             SpawnChunks.ChunkGetter(in callout, out currentCounty);
             _spawnpoint = SpawnChunks.finalSpawnpoint;
             _heading = SpawnChunks.finalHeading;
@@ -104,68 +104,36 @@ namespace SAHighwayCallouts.Callouts.PursuitCallouts
             _susBlip = _suspect.AttachBlip();
             _susBlip.Color = Color.Red;
             _susBlip.EnableRoute(Color.Yellow);
-
-            if (Settings.PursuitBackup)
-            {
-                _copSpawmpoint = _spawnpoint.Around2D(5f, 10f);
-                _finalCopSpawnpoint = World.GetNextPositionOnStreet(_copSpawmpoint);
-                
-                SAHC_Functions.SpawnPolicePed(in currentCounty, out _cop, _finalCopSpawnpoint, _heading);
-                SAHC_Functions.SpawnPoliceCar(in currentCounty, out _copV, _finalCopSpawnpoint, _heading);
-                _cop.WarpIntoVehicle(_copV, -1);
-            }
             return base.OnCalloutAccepted();
         }
 
         public override void Process()
         {
-            Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Main process started");
-            if (!Settings.PursuitBackup)
+            if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 240f && !_beforeOnScene)
             {
-                Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Running callout without AI backup");
-                if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 120f && !_beforeOnScene)
-                {
-                    _beforeOnScene = true;
-                    _suspect.Tasks.CruiseWithVehicle(70, VehicleDrivingFlags.Emergency);
-                }
-                if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 55f && !_onScene)
-                {
-                    _onScene = true;
-                    if (_susBlip) _susBlip.Delete();
-
-                    _pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
-                    LSPD_First_Response.Mod.API.Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
-                    LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(_pursuit, _suspect);
-                    if (_passengerChooser == 1) LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(_pursuit, _passenger);
-                    LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
-                    _pursuitStarted = true;
-                }   
+                Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Main process started");
+                _suspect.Tasks.CruiseWithVehicle(_susV, 70, VehicleDrivingFlags.Emergency);
+                _beforeOnScene = true;
             }
-
-            if (Settings.PursuitBackup)
+            if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 180f && !_onScene)
             {
-                Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Running callout with AI backup");
-                if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 175f && !_beforeOnScene)
-                {
-                    _suspect.Tasks.CruiseWithVehicle(65, VehicleDrivingFlags.Emergency);
-                    _cop.Tasks.CruiseWithVehicle(70, VehicleDrivingFlags.Emergency);
-                    _beforeOnScene = true;
-                    
-                    _pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
-                    LSPD_First_Response.Mod.API.Functions.AddCopToPursuit(_pursuit, _cop);
-                    LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(_pursuit, _suspect);
-                    if (_passengerChooser == 1) LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(_pursuit, _passenger);
-                    LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
-                    _pursuitStarted = true;
-                }
+                _onScene = true;
+                if (_susBlip) _susBlip.Delete();
 
-                if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 70f && !_onScene)
+                _pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
+                LSPD_First_Response.Mod.API.Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
+                LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(_pursuit, _suspect);
+                if (_passengerChooser == 1) LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(_pursuit, _passenger);
+                LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
+                _pursuitStarted = true;
+
+                if (Settings.PursuitBackup)
                 {
-                    _susBlip.Delete();
-                    _onScene = true;
-                    LSPD_First_Response.Mod.API.Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
+                    UltimateBackup.API.Functions.callPursuitBackup();
+                    UltimateBackup.API.Functions.callPursuitBackup();
                 }
-            }
+            }   
+            
 
             //End Script stufs
             if (Game.LocalPlayer.Character.IsDead)
@@ -195,7 +163,7 @@ namespace SAHighwayCallouts.Callouts.PursuitCallouts
             {
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition(
                     "OFFICERS_REPORT_03 OP_CODE OP_4", _spawnpoint);
-                Game.DisplayNotification("~g~Dispatch:~w~ All Units, "+CalloutMessage+" Code 4");
+                Game.DisplayNotification("~b~Dispatch:~w~ All Units, Vehicle Pursuit Code 4");
                 
                 Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Callout was force ended by player -!!-");
                 End();
@@ -207,14 +175,12 @@ namespace SAHighwayCallouts.Callouts.PursuitCallouts
         public override void End()
         {
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _spawnpoint);
-            Game.DisplayNotification("~g~Dispatch:~w~ All Units, "+CalloutMessage+" Code 4");
+            Game.DisplayNotification("~b~Dispatch:~w~ All Units, Vehicle Pursuit Code 4");
             if (_suspect) _suspect.Dismiss();
             if (_susV) _susV.Dismiss();
             if (_susBlip) _susBlip.Delete();
             if (_pursuitStarted) LSPD_First_Response.Mod.API.Functions.ForceEndPursuit(_pursuit);
             if (_passenger) _passenger.Dismiss();
-            if (_cop) _cop.Dismiss();
-            if (_copV) _copV.Dismiss();
             if (_susVTrailer) _susVTrailer.Dismiss();
 
                 Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Cleaned up!");

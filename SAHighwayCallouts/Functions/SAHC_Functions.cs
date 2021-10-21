@@ -9,6 +9,7 @@ using LSPD_First_Response.Engine;
 using Rage.Native;
 using LSPD_First_Response.Engine.Scripting.Entities;
 using SAHighwayCallouts.Ini;
+using StopThePed.API;
 
 namespace SAHighwayCallouts.Functions
 {
@@ -24,6 +25,8 @@ namespace SAHighwayCallouts.Functions
                 drunkAnimset.LoadAndWait();
                 Bad.MovementAnimationSet = drunkAnimset;
                 Rage.Native.NativeFunction.Natives.SET_PED_IS_DRUNK(Bad, isDrunk);
+                
+                StopThePed.API.Functions.setPedAlcoholOverLimit(Bad, true);
             });
         }
 
@@ -37,47 +40,6 @@ namespace SAHighwayCallouts.Functions
             Game.Console.Print("-!!- SAHighwayCallouts - |LuxVehicleSpawn| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
         }
 
-        internal static void SpawnPolicePed(in string closetCounty, out Ped ped, Vector3 spawnpoint, float heading)
-        {
-            ped = null;
-            Game.Console.Print("-!!- SAHighwayCallouts - |PolicePedSpawner| - Spawning new police ped!");
-            if (closetCounty == "PaletoBay") ped = new Ped("s_f_y_sheriff_01", spawnpoint, heading);
-            if (closetCounty == "BlaineCounty") ped = new Ped("s_m_y_sheriff_01", spawnpoint, heading);
-            if (closetCounty == "LosSantosCounty") ped = new Ped("s_m_y_sheriff_01", spawnpoint, heading);
-            if (closetCounty == "LosSantosCity") ped = new Ped("s_m_y_cop_01", spawnpoint, heading);
-            Game.Console.Print("-!!- SAHighwayCallouts - |PolicePedSpawner| - police ped spawned!");
-        }
-
-        internal static void SpawnPoliceCar(in string closetCounty, out Vehicle vehicle, Vector3 spawnpoint, float heading)
-        {
-            Game.Console.Print("-!!- SAHighwayCallouts - |PoliceCarSpawner| - Picking AI police cruiser!");
-            string[] vehicleModels = null;
-            vehicle = null;
-            if (closetCounty == "PaletoCounty") vehicleModels = Settings.PaletoBayCountyVehiclesArray;
-            if (closetCounty == "BlaineCounty") vehicleModels = Settings.BlaineCountyVehiclesArray;
-            if (closetCounty == "LosSantosCounty") vehicleModels = Settings.LosSantosCountyVehiclesArray;
-            if (closetCounty == "LosSantosCity") vehicleModels = Settings.LosSantosCityVehiclesArray;
-
-            if (vehicleModels == null)
-            {
-                Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~h~SAHighwayCallouts Warning",
-                    "~b~Null Vehicle Models",
-                    "There was an issue with choosing a vehicle model. Please see the log for further information");
-                
-                Game.Console.Print();
-                Game.Console.Print("-!!- =============== SAHIGHWAYCALLOUTS WARNING =============== -!!-");
-                Game.Console.Print("-!!- There was an issue with spawning a vehicle. Please send -!!-");
-                Game.Console.Print("-!!- your log to Blondee or look for null vehicle models. -!!-");
-                Game.Console.Print("-!!- The model was set to POLICE                         -!!-");
-                Game.Console.Print("-!!- =============== SAHIGHWAYCALLOUTS WARNING =============== -!!-");
-            }
-            if (vehicleModels != null) vehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
-            if (vehicleModels == null) vehicle = new Vehicle("POLICE", spawnpoint, heading); 
-            vehicle.IsPersistent = true;
-            
-            Game.Console.Print("-!!- SAHighwayCallouts - |PoliceCarSpawner| - Vehicle Model Chosen: "+vehicle.Model.Name.ToUpper()+"-!!-");
-        }
-        
         internal static void SpawnNormalCar(out Vehicle vehicle, Vector3 spawnpoint, float heading) //Spawn normal random car..
         {
             Game.Console.Print("-!!- SAHighwayCallouts - |NormalVehicleSpawner| - Choosing Vehicle!");
@@ -91,15 +53,15 @@ namespace SAHighwayCallouts.Functions
         internal static void SpawnSemiTruckAndTrailer(out Vehicle truck, out Vehicle trailer, Vector3 spawnpoint, float heading) //Spawn normal random car..
         {
             Game.Console.Print("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Choosing Vehicle!");
-            string[] vehicleModels = Settings.NormalVehiclesArray;
+            string[] vehicleModels = Settings.SemiTruckVehiclesArray;
             truck = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
             truck.IsPersistent = true;
             
             Game.Console.Print("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Vehicle Model Choosed: "+truck.Model.Name.ToUpper()+"-!!-");
             
             Game.Console.Print("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Choosing Trailer!");
-            string[] vehicleModelsT = Settings.NormalVehiclesArray;
-            trailer = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
+            string[] vehicleModelsT = Settings.SemiTrailerModelsArray;
+            trailer = new Vehicle(vehicleModelsT[new Random().Next(vehicleModelsT.Length)], spawnpoint, heading);
             trailer.IsPersistent = true;
             
             Game.Console.Print("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Trailer Model Choosed: "+trailer.Model.Name.ToUpper()+"-!!-");
@@ -167,14 +129,32 @@ namespace SAHighwayCallouts.Functions
 
         internal static void PedPersonaChooser(in Ped ped) //Chooses basic stuff for ped depending on settings in the ini
         {
-            int wanted = new Random().Next(1, Settings.WantedPedChooserMaxInt);
-            int drunk = new Random().Next(1, Settings.DrunkPedChooserMaxInt);
-            int gun = new Random().Next(1, Settings.GunPedChooserMaxInt);
+            int cWanted;
+            RunWanted(out cWanted);
+            int cDrunk;
+            RunDrunk(out cDrunk);
+            int cGun;
+            RunGun(out cGun);
 
-            if (wanted == 1) SetWanted(ped, true);
-            if (drunk == 1) SetDrunk(ped, true);
-            if (gun == 1) NormalWeaponChooser(ped, -1, true);
-            Game.LogTrivial("-!!- SAHighwayCallouts - |PedPersonaChooser| - Ped is.. Wanted = "+wanted+", Drunk = "+drunk+", Gun = "+gun+"");
+            if (cWanted == 1) SetWanted(ped, true);
+            if (cDrunk == 1) SetDrunk(ped, true);
+            if (cGun == 1) NormalWeaponChooser(ped, -1, true);
+            Game.LogTrivial("-!!- SAHighwayCallouts - |PedPersonaChooser| - Ped is.. Wanted = "+cWanted+", Drunk = "+cDrunk+", Gun = "+cGun+"");
         }
+
+        private static void RunWanted(out int wanted)
+        { 
+            wanted = new Random().Next(1, Settings.WantedPedChooserMaxInt);   
+        }
+        private static void RunDrunk(out int drunk)
+        { 
+            drunk = new Random().Next(1, Settings.DrunkPedChooserMaxInt);
+        }
+        private static void RunGun(out int gun)
+        { 
+            gun = new Random().Next(1, Settings.GunPedChooserMaxInt);
+        }
+        
+        
     }
 }

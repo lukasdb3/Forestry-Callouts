@@ -12,8 +12,13 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
 {
     internal class SpawnChunks
     {
+        //Used by all callouts
         internal static Vector3 finalSpawnpoint; //Final spawnpoint that will be used in callout
         internal static float finalHeading; //Final heading that will be used in callout
+        
+        //Used by: GrandTheftAuto
+        internal static Vector3 finalVicSpawnpoint; //Final victim spawnpoint that will be used in callout
+        internal static float finalVicHeading; //Final heading for victim that will be used in the callout
 
         internal static void ChunkGetter(in string cCallout, out string cCounty)
         {
@@ -90,38 +95,33 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
         private static void PbCounty(in string cCallout)
         {
             if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.PbCountySpawns(out finalSpawnpoint, out finalHeading);
-            
-            Game.LogTrivial("-!!- SAHighwayCallouts - |" + cCallout + "| - Success!");
+            if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.PbCountySpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
         }
 
         //Blaine County spawn chunk
         private static void BCounty(in string cCallout)
         {
-            finalSpawnpoint = default;
-            finalHeading = default;
             if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.BCountySpawns(out finalSpawnpoint, out finalHeading);
+            if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.BCountySpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
         }
         
         //Los Santos county spawn chunk
         private static void LsCounty(in string cCallout)
         {
-            finalSpawnpoint = default;
-            finalHeading = default;
             if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.LsCountySpawns(out finalSpawnpoint, out finalHeading);
+            if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.LsCountySpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
         }
 
         private static void Prison(in string cCallout)
         {
-            finalSpawnpoint = default;
-            finalHeading = default;
             if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.PrisonSpawns(out finalSpawnpoint, out finalHeading);
+            if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.PrisonSpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
         }
 
         private static void Zancudo(in string cCallout)
         {
-            finalSpawnpoint = default;
-            finalHeading = default;
             if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.ZancudoSpawns(out finalSpawnpoint, out finalHeading);
+            if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.ZancudoSpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
         }
     }
 }

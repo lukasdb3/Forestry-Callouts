@@ -29,19 +29,7 @@ namespace SAHighwayCallouts.Ini
         internal static Keys InputInteractionKey;
         
         //Vehicles
-        //police vehicles
-        internal static string PaletoBayCountyPoliceVehicles;
-        internal static String[] PaletoBayCountyVehiclesArray;
-        
-        internal static string BlaineCountyPoliceVehicles;
-        internal static String[] BlaineCountyVehiclesArray;
-        
-        internal static string LosSantosCountyPoliceVehicles;
-        internal static String[] LosSantosCountyVehiclesArray;
-        
-        internal static string LosSantosCityPoliceVehicles;
-        internal static String[] LosSantosCityVehiclesArray;
-        
+
         //pursuit vehicles
         internal static string LuxuryVehicles;
         internal static String[] luxuryVehiclesArray;
@@ -60,6 +48,7 @@ namespace SAHighwayCallouts.Ini
         //Callouts
         internal static bool DisableAllCallouts;
         internal static bool LuxuryVehiclePursuit;
+        internal static bool GrandTheftAuto;
         #endregion iniVariables
 
         internal static void LoadSettings()
@@ -104,19 +93,6 @@ namespace SAHighwayCallouts.Ini
                     "~b~Please check your ~y~SAHighwayCallouts.ini~w~ for ~y~Invalid Key Input~w~, see log for more details.");
             }
 
-            //Police Vehicle shit
-            PaletoBayCountyPoliceVehicles = ini.ReadString("PoliceVehicles", "PaletoBayCounty", null);
-            PaletoBayCountyVehiclesArray = PaletoBayCountyPoliceVehicles.Split(':');
-            
-            BlaineCountyPoliceVehicles = ini.ReadString("PoliceVehicles", "BlaineCounty", null);
-            BlaineCountyVehiclesArray = PaletoBayCountyPoliceVehicles.Split(':');
-            
-            LosSantosCountyPoliceVehicles = ini.ReadString("PoliceVehicles", "LosSantosCounty", null);
-            LosSantosCountyVehiclesArray = PaletoBayCountyPoliceVehicles.Split(':');
-
-            LosSantosCityPoliceVehicles = ini.ReadString("PoliceVehicles", "LosSantosCity", null);
-            LosSantosCityVehiclesArray = LosSantosCityPoliceVehicles.Split(':');
-            
             //Pursuit Vehicle shit
             NormalVehicles = ini.ReadString("Vehicles", "NormalVehicles", null);
             NormalVehiclesArray = NormalVehicles.Split(':');
@@ -152,6 +128,7 @@ namespace SAHighwayCallouts.Ini
             //Callout shit
             DisableAllCallouts = ini.ReadBoolean("Callouts", "DisableAllCallouts", false);
             LuxuryVehiclePursuit = ini.ReadBoolean("Callouts", "VehiclePursuit", true);
+            GrandTheftAuto = ini.ReadBoolean("Callouts", "GrandTheftAuto", true);
             Game.Console.Print("-!!- settings loaded!");
         }
     }
