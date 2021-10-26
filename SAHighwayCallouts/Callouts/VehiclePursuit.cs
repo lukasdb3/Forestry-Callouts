@@ -109,7 +109,7 @@ namespace SAHighwayCallouts.Callouts
 
         public override void Process()
         {
-            if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 240f && !_beforeOnScene)
+            if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 300f && !_beforeOnScene)
             {
                 Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Main process started");
                 _suspect.Tasks.CruiseWithVehicle(_susV, 70, VehicleDrivingFlags.Emergency);

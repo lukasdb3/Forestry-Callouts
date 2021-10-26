@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace SAHighwayCallouts.Functions
 {
     internal class SAHC_Functions
     {
+        internal static int choseHighwayStatePolice = new Random().Next(1, 3);
+        
         internal static void SetDrunk(Ped Bad, bool isDrunk)
         {
             GameFiber.StartNew(delegate
@@ -49,6 +52,44 @@ namespace SAHighwayCallouts.Functions
             
             Game.Console.Print("-!!- SAHighwayCallouts - |NormalVehicleSpawner| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
         }
+
+        internal static void SpawnPoliceVehicle(out Vehicle vehicle, Vector3 spawnpoint, float heading, string cCounty)
+        {
+            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnPoliceVehicle| - Choosing Vehicle Based On "+cCounty+"!");
+            string[] vehicleModels = default;
+            if (Settings.AlwaysChooseStateAIPolice) choseHighwayStatePolice = 1;
+            if (choseHighwayStatePolice == 1)
+            {
+                Game.Console.Print("-!!- SAHighwayCallouts - |SpawnPoliceVehicle| - Choosing State Police Vehicle!");
+                vehicleModels = Settings.HighwayStatePoliceVehiclesArray;
+            }
+            if (choseHighwayStatePolice != 1 && cCounty == "PaletoCounty") vehicleModels = Settings.PaletoBayVehiclesArray;
+            if (choseHighwayStatePolice != 1 && cCounty == "BlaineCounty") vehicleModels = Settings.BlaineCountyVehiclesArray;
+            if (choseHighwayStatePolice != 1 && cCounty == "LosSantosCounty") vehicleModels = Settings.LosSantosCountyVehiclesArray;
+            if (choseHighwayStatePolice != 1 && cCounty == "LosSantosCityCounty") vehicleModels = Settings.LosSantosVehiclesArray;
+            vehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
+            vehicle.IsPersistent = true;
+            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnPoliceVehicle| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
+        }
+
+        internal static void SpawnPolcePed(out Ped cPed, Vector3 spawnpoint, float heading, string cCounty)
+        {
+            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnPolcePed| - Choosing Ped Based On "+cCounty+"!");
+            string[] pedModels = default;
+            if (choseHighwayStatePolice == 1)
+            {
+                Game.Console.Print("-!!- SAHighwayCallouts - |SpawnPolcePed| - Choosing State Police Ped!");
+                pedModels = Settings.HighwayStatePolicePedsArray;
+            }
+            if (choseHighwayStatePolice != 1 && cCounty == "PaletoCounty") pedModels = Settings.PaletoBayPedsArray;
+            if (choseHighwayStatePolice != 1 && cCounty == "BlaineCounty") pedModels = Settings.BlaineCountyPedsArray;
+            if (choseHighwayStatePolice != 1 && cCounty == "LosSantosCounty") pedModels = Settings.LosSantosCountyPedsArray;
+            if (choseHighwayStatePolice != 1 && cCounty == "LosSantosCityCounty") pedModels = Settings.LosSantosPedsArray;
+            cPed = new Ped(pedModels[new Random().Next(pedModels.Length)], spawnpoint, heading);
+            cPed.IsPersistent = true;
+            cPed.BlockPermanentEvents = true;
+            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnPolcePed| - Ped Model Choosed: "+cPed.Model.Name.ToUpper()+"-!!-");
+        }
         
         internal static void SpawnSemiTruckAndTrailer(out Vehicle truck, out Vehicle trailer, Vector3 spawnpoint, float heading) //Spawn normal random car..
         {
@@ -73,6 +114,8 @@ namespace SAHighwayCallouts.Functions
             cPed = new Ped(pedModels[new Random().Next(pedModels.Length)], Spawnpoint, heading);
             cPed.IsPersistent = true;
             cPed.BlockPermanentEvents = true;
+            
+            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnNornalPed| - Ped Model Choosed: "+cPed.Model.Name.ToUpper()+"-!!-");
         }
         
         internal static Ped SetWanted(Ped wPed, bool isWanted) //Used to set a ped as wanted.
@@ -129,32 +172,225 @@ namespace SAHighwayCallouts.Functions
 
         internal static void PedPersonaChooser(in Ped ped) //Chooses basic stuff for ped depending on settings in the ini
         {
-            int cWanted;
-            RunWanted(out cWanted);
-            int cDrunk;
-            RunDrunk(out cDrunk);
-            int cGun;
-            RunGun(out cGun);
+            int wanted = new Random().Next(1, Settings.WantedPedChooserMaxInt);
+            int drunk = new Random().Next(1, Settings.DrunkPedChooserMaxInt);
+            int gun = new Random().Next(1, Settings.GunPedChooserMaxInt);
 
-            if (cWanted == 1) SetWanted(ped, true);
-            if (cDrunk == 1) SetDrunk(ped, true);
-            if (cGun == 1) NormalWeaponChooser(ped, -1, true);
-            Game.LogTrivial("-!!- SAHighwayCallouts - |PedPersonaChooser| - Ped is.. Wanted = "+cWanted+", Drunk = "+cDrunk+", Gun = "+cGun+"");
+            if (wanted == 1) SetWanted(ped, true);
+            if (wanted == 1) SetDrunk(ped, true);
+            if (wanted == 1) NormalWeaponChooser(ped, -1, true);
+            Game.LogTrivial("-!!- SAHighwayCallouts - |PedPersonaChooser| - Finished!");
         }
 
-        private static void RunWanted(out int wanted)
-        { 
-            wanted = new Random().Next(1, Settings.WantedPedChooserMaxInt);   
+        internal static void ColorPicker(out Color c, out string color)
+        {
+            color = default;
+            c = default;
+            int cp = new Random().Next(1, 51);
+            switch (cp)
+            {
+                case 1:
+                    c = Color.Aqua;
+                    color = "Aqua";
+                    break;
+                case 2:
+                    c = Color.Azure;
+                    color = "Azure";
+                    break;
+                case 3:
+                    c = Color.Beige;
+                    color = "Beige";
+                    break;
+                case 4:
+                    c = Color.Bisque;
+                    color = "Bisque";
+                    break;
+                case 5:
+                    c = Color.Black;
+                    color = "Black";
+                    break;
+                case 6:
+                    c = Color.Blue;
+                    color = "Blue";
+                    break;
+                case 7:
+                    c = Color.Brown;
+                    color = "Brown";
+                    break;
+                case 8:
+                    c = Color.Chartreuse;
+                    color = "Light Green";
+                    break;
+                case 9:
+                    c = Color.Chocolate;
+                    color = "Light Brown";
+                    break;
+                case 10:
+                    c = Color.Coral;
+                    color = "Coral";
+                    break;
+                case 11:
+                    c = Color.Crimson;
+                    color = "Crimson";
+                    break;
+                case 12:
+                    c = Color.Cyan;
+                    color = "Cyan";
+                    break;
+                case 13:
+                    c = Color.Fuchsia;
+                    color = "Bright Purple";
+                    break;
+                case 14:
+                    c = Color.Gold;
+                    color = "Light Gold";
+                    break;
+                case 15:
+                    c = Color.Goldenrod;
+                    color = "Gold";
+                    break;
+                case 16:
+                    c = Color.Gray;
+                    color = "Gray";
+                    break;
+                case 17:
+                    c = Color.Green;
+                    color = "Green";
+                    break;
+                case 18:
+                    c = Color.Indigo;
+                    color = "Indigo";
+                    break;
+                case 19:
+                    c = Color.Ivory;
+                    color = "Ivory";
+                    break;
+                case 20:
+                    c = Color.Lavender;
+                    color = "Lavender";
+                    break;
+                case 21:
+                    c = Color.Lime;
+                    color = "Lime";
+                    break;
+                case 22:
+                    c = Color.Magenta;
+                    color = "Magenta";
+                    break;
+                case 23:
+                    c = Color.Maroon;
+                    color = "Maroon";
+                    break;
+                case 24:
+                    c = Color.Moccasin;
+                    color = "Cream White";
+                    break;
+                case 25:
+                    c = Color.Navy;
+                    color = "Navy";
+                    break;
+                case 26:
+                    c = Color.Olive;
+                    color = "Olive";
+                    break;
+                case 27:
+                    c = Color.Orange;
+                    color = "Orange";
+                    break;
+                case 28:
+                    c = Color.Pink;
+                    color = "Pink";
+                    break;
+                case 29:
+                    c = Color.Purple;
+                    color = "Purple";
+                    break;
+                case 30:
+                    c = Color.Red;
+                    color = "Red";
+                    break;
+                case 31:
+                    c = Color.Salmon;
+                    color = "Salmon";
+                    break;
+                case 32:
+                    c = Color.Sienna;
+                    color = "Sienna";
+                    break;
+                case 33:
+                    c = Color.Silver;
+                    color = "Silver";
+                    break;
+                case 34:
+                    c = Color.Snow;
+                    color = "White";
+                    break;
+                case 35:
+                    c = Color.White;
+                    color = "White";
+                    break;
+                case 36:
+                    c = Color.Tan;
+                    color = "Tan";
+                    break;
+                case 37:
+                    c = Color.Teal;
+                    color = "Teal";
+                    break;
+                case 38:
+                    c = Color.Tomato;
+                    color = "Tomato";
+                    break;
+                case 39:
+                    c = Color.SlateGray;
+                    color = "Slate Gray";
+                    break;
+                case 40:
+                    c = Color.SlateBlue;
+                    color = "Slate Blue";
+                    break;
+                case 41:
+                    c = Color.CadetBlue;
+                    color = "Light Blue";
+                    break;
+                case 42:
+                    c = Color.DarkCyan;
+                    color = "Dark Cyan";
+                    break;
+                case 43:
+                    c = Color.FloralWhite;
+                    color = "Floral White";
+                    break;
+                case 44:
+                    c = Color.PeachPuff;
+                    color = "Peach";
+                    break;
+                case 45:
+                    c = Color.RosyBrown;
+                    color = "Rose Brown";
+                    break;
+                case 46:
+                    c = Color.PaleVioletRed;
+                    color = "Violet Red";
+                    break;
+                case 47:
+                    c = Color.DarkGray;
+                    color = "Dark Gray";
+                    break;
+                case 48:
+                    c = Color.SeaGreen;
+                    color = "Sea Green";
+                    break;
+                case 49:
+                    c = Color.HotPink;
+                    color = "Hot Pink";
+                    break;
+                case 50:
+                    c = Color.Turquoise;
+                    color = "Turquoise";
+                    break;
+            }
+            Game.LogTrivial("-!!- SAHighwayCallouts - |ColorPicker| - Picked Color "+c.ToString()+"!");
         }
-        private static void RunDrunk(out int drunk)
-        { 
-            drunk = new Random().Next(1, Settings.DrunkPedChooserMaxInt);
-        }
-        private static void RunGun(out int gun)
-        { 
-            gun = new Random().Next(1, Settings.GunPedChooserMaxInt);
-        }
-        
-        
     }
 }

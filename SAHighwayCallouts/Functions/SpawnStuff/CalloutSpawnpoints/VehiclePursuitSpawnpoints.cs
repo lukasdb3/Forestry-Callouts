@@ -301,13 +301,149 @@ namespace SAHighwayCallouts.Functions.SpawnStuff.CalloutSpawnpoints
             Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Spawnpoint in Prison Chunk!");
             _spawnpoint = default;
             _heading = default;
-            var chose = new Random().Next(1, 2);
-            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Case: "+chose+" Out of 1 possible spawns!");
+            var chose = new Random().Next(1, 36);
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Case: "+chose+" Out of 35 possible spawns!");
             switch (chose)
             {
                 case 1:
-                    _spawnpoint = new Vector3(-852.982f, 5454.836f, 34.233f);
-                    _heading = 117.303f;
+                    _spawnpoint = new Vector3(2140.261f, 2724.761f, 48.173f);
+                    _heading = 129.277f;
+                    break;
+                case 2:
+                    _spawnpoint = new Vector3(2046.584f, 2648.217f, 52.424f);
+                    _heading = 132.198f;
+                    break;
+                case 3:
+                    _spawnpoint = new Vector3(1820.803f, 2360.754f, 55.374f);
+                    _heading = 157.070f;
+                    break;
+                case 4:
+                    _spawnpoint = new Vector3(1777.384f, 2195.639f, 61.771f);
+                    _heading = 172.429f;
+                    break;
+                case 5:
+                    _spawnpoint = new Vector3(1757.654f, 2024.822f, 68.330f);
+                    _heading = 173.278f;
+                    break;
+                case 6:
+                    _spawnpoint = new Vector3(1741.128f, 1877.259f, 74.142f);
+                    _heading = 174.557f;
+                    break;
+                case 7:
+                    _spawnpoint = new Vector3(1709.989f, 1624.240f, 82.934f);
+                    _heading = 169.272f;
+                    break;
+                case 8:
+                    _spawnpoint = new Vector3(1701.797f, 1573.474f, 84.094f);
+                    _heading = 170.408f;
+                    break;
+                case 9:
+                    _spawnpoint = new Vector3(1670.751f, 1390.753f, 86.376f);
+                    _heading = 170.718f;
+                    break;
+                case 10:
+                    _spawnpoint = new Vector3(1629.485f, 1201.408f, 84.559f);
+                    _heading = 163.889f;
+                    break;
+                case 11:
+                    _spawnpoint = new Vector3(1667.323f, 1224.693f, 84.860f);
+                    _heading = 348.322f;
+                    break;
+                case 12:
+                    _spawnpoint = new Vector3(1712.474f, 1448.443f, 85.066f);
+                    _heading = 349.828f;
+                    break;
+                case 13:
+                    _spawnpoint = new Vector3(1933.025f, 2471.386f, 54.363f);
+                    _heading = 332.443f;
+                    break;
+                case 14:
+                    _spawnpoint = new Vector3(2102.604f, 2621.981f, 51.781f);
+                    _heading = 311.210f;
+                    break;
+                case 15:
+                    _spawnpoint = new Vector3(2352.078f, 2834.317f, 40.481f);
+                    _heading = 310.630f;
+                    break;
+                case 16:
+                    _spawnpoint = new Vector3(1836.700f, 2289.634f, 53.384f);
+                    _heading = 165.947f;
+                    break;
+                case 17:
+                    _spawnpoint = new Vector3(1820.643f, 2129.015f, 54.322f);
+                    _heading = 191.561f;
+                    break;
+                case 18:
+                    _spawnpoint = new Vector3(1834.846f, 1963.383f, 57.229f);
+                    _heading = 195.637f;
+                    break;
+                case 19:
+                    _spawnpoint = new Vector3(1868.413f, 1862.439f, 60.609f);
+                    _heading = 200.740f;
+                    break;
+                case 20:
+                    _spawnpoint = new Vector3(1953.348f, 1662.599f, 71.812f);
+                    _heading = 202.449f;
+                    break;
+                case 21:
+                    _spawnpoint = new Vector3(2204.691f, 1222.518f, 76.220f);
+                    _heading = 219.017f;
+                    break;
+                case 22:
+                    _spawnpoint = new Vector3(2301.297f, 1110.367f, 78.712f);
+                    _heading = 218.612f;
+                    break;
+                case 23:
+                    _spawnpoint = new Vector3(2395.165f, 1003.126f, 84.845f);
+                    _heading = 215.260f;
+                    break;
+                case 24:
+                    _spawnpoint = new Vector3(2475.148f, 828.826f, 93.288f);
+                    _heading = 190.430f;
+                    break;
+                case 25:
+                    _spawnpoint = new Vector3(2505.198f, 681.714f, 103.452f);
+                    _heading = 188.614f;
+                    break;
+                case 26:
+                    _spawnpoint = new Vector3(2525.276f, 528.407f, 112.323f);
+                    _heading = 182.357f;
+                    break;
+                case 27:
+                    _spawnpoint = new Vector3(2639.755f, 510.407f, 95.479f);
+                    _heading = 4.127f;
+                    break;
+                case 28:
+                    _spawnpoint = new Vector3(2595.399f, 717.574f, 92.246f);
+                    _heading = 17.681f;
+                    break;
+                case 29:
+                    _spawnpoint = new Vector3(2412.888f, 1029.646f, 84.359f);
+                    _heading = 29.058f;
+                    break;
+                case 30:
+                    _spawnpoint = new Vector3(2245.765f, 1219.199f, 76.678f);
+                    _heading = 41.047f;
+                    break;
+                case 31:
+                    _spawnpoint = new Vector3(2095.811f, 1429.840f, 75.201f);
+                    _heading = 29.481f;
+                    break;
+                case 32:
+                    _spawnpoint = new Vector3(2026.589f, 1576.519f, 74.894f);
+                    _heading = 21.107f;
+                    break;
+                case 33:
+                    _spawnpoint = new Vector3(1941.266f, 1847.058f, 61.127f);
+                    _heading = 15.535f;
+                    break;
+                case 34:
+                    _spawnpoint = new Vector3(1885.471f, 2175.691f, 54.424f);
+                    _heading = 2.249f;
+                    break;
+                case 35:
+                    _spawnpoint = new Vector3(1964.941f, 2466.309f, 54.376f);
+                    _heading = 327.224f;
                     break;
             }
         }
@@ -432,6 +568,22 @@ namespace SAHighwayCallouts.Functions.SpawnStuff.CalloutSpawnpoints
                 case 28:
                     _spawnpoint = new Vector3(-2176.532f, 4394.190f, 56.773f);
                     _heading = 337.798f;
+                    break;
+            }
+        }
+        
+        internal static void Vespucci(out Vector3 _spawnpoint, out float _heading)
+        {
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Spawnpoint in Vespucci County Chunk!");
+            _spawnpoint = default;
+            _heading = default;
+            var chose = new Random().Next(1, 2);
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Case: "+chose+" Out of 1 possible spawns!");
+            switch (chose)
+            {
+                case 1:
+                    _spawnpoint = new Vector3(-852.982f, 5454.836f, 34.233f);
+                    _heading = 117.303f;
                     break;
             }
         }

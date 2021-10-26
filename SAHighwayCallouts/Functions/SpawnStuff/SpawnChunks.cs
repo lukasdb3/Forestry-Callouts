@@ -38,26 +38,28 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
             Vector3 prisonPoliceStation = new Vector3(1846.577f, 2585.808f, 45.672f); //Prison station
             Vector3 zancudoPoliceStation = new Vector3(-2283.109f, 3372.162f, 31.683f); //Zancudo airforce base
             Vector3 lsCountyPoliceStation = new Vector3(387.063f, 789.904f, 187.693f); //Los santos county station
+            Vector3 vPoliceStation = new Vector3(-1108.180f, -845.180f, 19.317f); //Vespucci police station
 
             if (!gettingClosetChunk)
             {
                 gettingClosetChunk = true;
-                Game.LogTrivial("-!!- SAHighwayCallouts - |" + cCallout + "| - Getting Closest Chunk!");
+                Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnChunkSystem| - Getting Closest Chunk!");
 
                 policeStations.Add(pbPoliceStation); //Paleto Bay station
                 policeStations.Add(bCountyPoliceStation); //Blaine County station
                 policeStations.Add(prisonPoliceStation); //Prison
                 policeStations.Add(zancudoPoliceStation); //Zancudo
                 policeStations.Add(lsCountyPoliceStation); //Los Santos County station
+                policeStations.Add(vPoliceStation); //Vespucci police station
 
                 closestStation = policeStations.OrderBy(x => x.DistanceTo(playerPos)).FirstOrDefault();
-                Game.LogTrivial("-!!- SAHighwayCallouts - |" + cCallout + "| - Closest Chunk Found!");
+                Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnChunkSystem| - Closest Chunk Found!");
             }
 
             if (!gettingClosetSpawnpoint)
             {
                 gettingClosetSpawnpoint = true;
-                Game.LogTrivial("-!!- SAHighwayCallouts - |" + cCallout + "| - Sending to Closest Chunk!");
+                Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnChunkSystem| - Sending to Closest Chunk!");
 
                 if (pbPoliceStation == closestStation)
                 {
@@ -87,6 +89,12 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
                 {
                     cCounty = "PaletoCounty";
                     Zancudo(in cCallout);
+                }
+
+                if (vPoliceStation == closestStation)
+                {
+                    cCounty = "LosSantosCityCounty";
+                    Vespucci(in cCallout);
                 }
             }
         }
@@ -119,6 +127,12 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
         }
 
         private static void Zancudo(in string cCallout)
+        {
+            if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.ZancudoSpawns(out finalSpawnpoint, out finalHeading);
+            if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.ZancudoSpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
+        }
+
+        private static void Vespucci(in string cCallout)
         {
             if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.ZancudoSpawns(out finalSpawnpoint, out finalHeading);
             if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.ZancudoSpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);

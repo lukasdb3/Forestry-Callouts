@@ -15,6 +15,7 @@ namespace SAHighwayCallouts.Ini
         internal static string calloutVersion;
         internal static bool EnableEndCalloutHelpMessages;
         internal static bool PursuitBackup;
+        internal static bool AlwaysChooseStateAIPolice;
 
         internal static int WantedPedChooserMaxInt;
         internal static int DrunkPedChooserMaxInt;
@@ -28,7 +29,39 @@ namespace SAHighwayCallouts.Ini
         internal static string InteractionKey;
         internal static Keys InputInteractionKey;
         
+        //Peds
+        //Police Peds
+        internal static string PaletoBayPeds;
+        internal static String[] PaletoBayPedsArray;
+        
+        internal static string BlaineCountyPeds;
+        internal static String[] BlaineCountyPedsArray;
+        
+        internal static string LosSantosCountyPeds;
+        internal static String[] LosSantosCountyPedsArray;
+        
+        internal static string LosSantosPeds;
+        internal static String[] LosSantosPedsArray;
+        
+        internal static string HighwayStatePolicePeds;
+        internal static String[] HighwayStatePolicePedsArray;
+        
         //Vehicles
+        //Cop vehicles
+        internal static string PaletoBayVehicles;
+        internal static String[] PaletoBayVehiclesArray;
+        
+        internal static string BlaineCountyVehicles;
+        internal static String[] BlaineCountyVehiclesArray;
+        
+        internal static string LosSantosCountyVehicles;
+        internal static String[] LosSantosCountyVehiclesArray;
+        
+        internal static string LosSantosVehicles;
+        internal static String[] LosSantosVehiclesArray;
+        
+        internal static string HighwayStatePoliceVehicles;
+        internal static String[] HighwayStatePoliceVehiclesArray;
 
         //pursuit vehicles
         internal static string LuxuryVehicles;
@@ -62,6 +95,7 @@ namespace SAHighwayCallouts.Ini
             calloutVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             EnableEndCalloutHelpMessages = ini.ReadBoolean("Main", "EnableEndCalloutHelpMessages", true);
             PursuitBackup = ini.ReadBoolean("Main", "PursuitBackup", true);
+            AlwaysChooseStateAIPolice = ini.ReadBoolean("Main", "AlwaysChooseStateAIPoliceBackup");
 
             WantedPedChooserMaxInt = ini.ReadInt32("Main", "MaxValueForWantedPed", 4);
             DrunkPedChooserMaxInt = ini.ReadInt32("Main", "MaxValueForDrunkPed", 4);
@@ -92,6 +126,38 @@ namespace SAHighwayCallouts.Ini
                     "~r~Invalid Key Error",
                     "~b~Please check your ~y~SAHighwayCallouts.ini~w~ for ~y~Invalid Key Input~w~, see log for more details.");
             }
+            //Peds
+            //Police Peds
+            PaletoBayPeds = ini.ReadString("PolicePeds", "PaletoBayPeds", null);
+            PaletoBayPedsArray = PaletoBayPeds.Split(':');
+            
+            BlaineCountyPeds = ini.ReadString("PolicePeds", "BlaineCountyPeds", null);
+            BlaineCountyPedsArray = BlaineCountyPeds.Split(':');
+            
+            LosSantosCountyPeds = ini.ReadString("PolicePeds", "LosSantosCountyPeds", null);
+            LosSantosCountyPedsArray = LosSantosCountyPeds.Split(':');
+            
+            LosSantosPeds = ini.ReadString("PolicePeds", "LosSantosPeds", null);
+            LosSantosPedsArray = LosSantosPeds.Split(':');
+            
+            HighwayStatePolicePeds = ini.ReadString("PolicePeds", "HighwayStatePolicePeds", null);
+            HighwayStatePolicePedsArray = HighwayStatePolicePeds.Split(':');
+            
+            //Cop Vehicles
+            PaletoBayVehicles = ini.ReadString("PoliceVehicles", "PaletoBayVehicles", null);
+            PaletoBayVehiclesArray = PaletoBayVehicles.Split(':');
+            
+            BlaineCountyVehicles = ini.ReadString("PoliceVehicles", "BlaineCountyVehicles", null);
+            BlaineCountyVehiclesArray = BlaineCountyVehicles.Split(':');
+            
+            LosSantosCountyVehicles = ini.ReadString("PoliceVehicles", "LosSantosCountyVehicles", null);
+            LosSantosCountyVehiclesArray = LosSantosCountyVehicles.Split(':');
+            
+            LosSantosVehicles = ini.ReadString("PoliceVehicles", "LosSantosVehicles", null);
+            LosSantosVehiclesArray = LosSantosVehicles.Split(':');
+
+            HighwayStatePoliceVehicles = ini.ReadString("PoliceVehicles", "HighwayStatePoliceVehicles");
+            HighwayStatePoliceVehiclesArray = HighwayStatePoliceVehicles.Split(':');
 
             //Pursuit Vehicle shit
             NormalVehicles = ini.ReadString("Vehicles", "NormalVehicles", null);
