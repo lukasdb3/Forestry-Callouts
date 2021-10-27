@@ -27,8 +27,6 @@ namespace SAHighwayCallouts.Callouts
         private float _heading;
         private Vector3 _vicSpawnpoint;
         private float _vicHeading;
-        private int _scenario = new Random().Next(1, 3);
-        private int _scenario2Options = new Random().Next(1, 4);
 
         private Color _vicCarC;
         private string _vicCarColor;
@@ -37,15 +35,8 @@ namespace SAHighwayCallouts.Callouts
         private string _suspectsCurrentStreet;
         private float _suspectsCurrentSpeed;
         private double _suspectsDisplaySpeed;
-
-        //AI Cop shit
-        private Vector3 _copSpawnpoint;
-        private Vector3 _finalCopSpawnpoint;
-        private Ped _cop;
-        private Vehicle _copCar;
-        private Blip _copBlip;
-        private Vector3 _driveToPosition;
-        private Vector3 _finalDriveToPosition;
+        private int doesVictimKnowLicensePlate = new Random().Next(1, 6);
+        private int _scenarioChoosed;
 
         //Victim and Suspect shit
         private Ped _victim;
@@ -68,16 +59,19 @@ namespace SAHighwayCallouts.Callouts
         private bool _notfiRanMax;
         private bool _firstNotfiOut;
         private bool _shootoutStarted;
+        private bool _victimKnowsLicensePlate;
+        private bool _victimWantsTransport;
+        private bool _regularTrafficStop;
+        private bool _wrongVehicle;
+        private bool _victimWantsTaxi;
+        private bool _victimWantsOfficer;
+        private bool _sceario2OptionChoosed;
 
         //Dialogue stuuf
         private bool _dialogueReady;
         private bool _dialgueOver;
-        private int dPick = new Random().Next(1, 2);
         private int _counter;
         private string _maleFemale;
-        private int doesVictimKnowLicensePlate = new Random().Next(1, 3);
-        private int victimWantsTransport = new Random().Next(1, 3);
-
 
         //Scenario Crap
         private int _notfiRan;
@@ -136,11 +130,11 @@ namespace SAHighwayCallouts.Callouts
 
         public override void Process()
         {
-            if (!_suspectLeft && Game.LocalPlayer.Character.DistanceTo(_victim) <= 350f)
+            if (!_suspectLeft && Game.LocalPlayer.Character.DistanceTo(_victim) <= 500f)
             {
                 Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Main process started!");
                 _suspectLeft = true;
-                _suspect.Tasks.CruiseWithVehicle(_victimCar, 30f, VehicleDrivingFlags.Normal);
+                _suspect.Tasks.CruiseWithVehicle(_victimCar, 25f, VehicleDrivingFlags.Normal);
             }
 
             if (!_beforeOnScene && Game.LocalPlayer.Character.DistanceTo(_victim) <= 30f)
@@ -160,75 +154,68 @@ namespace SAHighwayCallouts.Callouts
                 _victim.Heading = Game.LocalPlayer.Character.Heading + 180f;
                 _victim.Tasks.StandStill(-1);
                 _dialogueReady = true;
+                int victimWantsTaxiOrOfficer = new Random().Next(1, 3);
+                if (victimWantsTaxiOrOfficer == 1)
+                {
+                    //Victim wants officer
+                    _victimWantsTransport = true;
+                    _victimWantsOfficer = true;
+                }
+
+                if (victimWantsTaxiOrOfficer != 1)
+                {
+                    //Victim wants taxi
+                    _victimWantsTransport = true;
+                    _victimWantsTaxi = true;
+                }
+                
+                if (doesVictimKnowLicensePlate == 1)
+                {
+                    _vicCarPlateNum = "~r~NOT KNOWN";
+                    _victimKnowsLicensePlate = false;
+                }
+                if (doesVictimKnowLicensePlate != 1)
+                {
+                    _vicCarPlateNum = _victimCar.LicensePlate;
+                    //Sets vehicle as stolen and lets ALPR plugins work on the vehicle.
+                    _victimCar.IsStolen = true;
+                    _victimKnowsLicensePlate = true;
+                }
             }
 
             if (!_dialgueOver && _dialogueReady && Game.IsKeyDown(Settings.InputDialogueKey)) Dialogue();
 
-            if (_dialgueOver && !_victimWaitingTransport && victimWantsTransport == 1)
+            if (_dialgueOver && !_victimWaitingTransport && _victimWantsTransport)
             {
                 _suspect.Tasks.ParkVehicle(_victimCar, _suspect.Position, _suspect.Heading);
-                Game.DisplayNotification("Press ~y~'" + Settings.InteractionKey +
-                                         "'~w~ to call for transport for the ~o~Victim~w~.");
+                Game.DisplayNotification("Press ~y~'" + Settings.InteractionKey + "'~w~ to call for transport for the ~o~Victim~w~.");
                 _victimWaitingTransport = true;
             }
 
-            if (_dialgueOver && victimWantsTransport != 1)
-            {
-                if (_vicBlip) _vicBlip.Delete();
-                if (_victim) _victim.Dismiss();
-            }
-
-            if (victimWantsTransport == 1 && !_victimTakenCareOf && Game.IsKeyDown(Settings.InputInteractionKey))
+            if (_victimWantsTransport && !_victimTakenCareOf && Game.IsKeyDown(Settings.InputInteractionKey))
             {
                 Game.DisplayHelp("Wait until ~y~transportation~w~ arrives for the ~o~Victim");
-                _copSpawnpoint = _spawnpoint.Around2D(75f, 100f);
-                _finalCopSpawnpoint = World.GetNextPositionOnStreet(_copSpawnpoint);
-
-                SAHC_Functions.SpawnPoliceVehicle(out _copCar, _finalCopSpawnpoint, _heading, CurrentCounty);
-                SAHC_Functions.SpawnPolcePed(out _cop, _finalCopSpawnpoint, _heading, CurrentCounty);
-                _cop.WarpIntoVehicle(_copCar, -1);
-
-                _copBlip = _cop.AttachBlip();
-                _copBlip.IsRouteEnabled = false;
-                _copBlip.Color = Color.MediumBlue;
-                _copBlip.Scale = 0.7f;
-
-                _driveToPosition = _spawnpoint.Around2D(5f, 7f);
-                _finalDriveToPosition = World.GetNextPositionOnStreet(_driveToPosition);
-
-                _cop.Tasks.DriveToPosition(_finalDriveToPosition, 10f, VehicleDrivingFlags.Normal).WaitForCompletion();
-                _victim.Tasks
-                    .GoStraightToPosition(_copCar.Position.Around2D(2f, 4f), 10f, _copCar.Heading + 180f, 0f, -1)
-                    .WaitForCompletion();
-                _suspect.Tasks.CruiseWithVehicle(_victimCar, 30f, VehicleDrivingFlags.Normal);
-                _victim.Tasks.EnterVehicle(_copCar, 2).WaitForCompletion();
-
-                _cop.Tasks.CruiseWithVehicle(_copCar, 10f, VehicleDrivingFlags.Normal);
+                if (_victimWantsOfficer) Transport.CallTransport(in _victim, in _spawnpoint, in CurrentCounty, 1);
+                if (_victimWantsTaxi) Transport.CallTransport(in _victim, in _spawnpoint, in CurrentCounty, 2);
                 _victimTakenCareOf = true;
+                _suspect.Tasks.CruiseWithVehicle(_victimCar, 25f, VehicleDrivingFlags.Normal);
             }
 
             if (_victimTakenCareOf && Game.LocalPlayer.Character.DistanceTo(_suspect) > 50f)
             {
-                if (_victim) _victim.Delete();
-                if (_cop) _cop.Dismiss();
-                if (_copBlip) _copBlip.Delete();
+                Transport.destroyTransport();
             }
 
-            if (_victimTakenCareOf && !_infoModelNotiSent ||
-                !_infoModelNotiSent && victimWantsTransport != 1 && _dialgueOver)
+            if (_victimTakenCareOf && !_infoModelNotiSent)
             {
                 Game.DisplayHelp("Look for the ~o~Victims~w~ vehicle");
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition(
                     "ATTENTION_ALL_UNITS_01 SUSPECT_LAST_SEEN_01 IN_OR_ON_POSITION", _suspect.Position);
-                if (doesVictimKnowLicensePlate == 1)
-                {
-                    _vicCarPlateNum = _victimCar.LicensePlate;
-                }
-                else _vicCarPlateNum = "~r~NOT KNOWN";
+                _vicBlip.Delete();
 
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "~b~VEHICLE DESCRIPTION",
                     "~p~MODEL:~w~ " + _vicCarModel + "",
-                    "~b~PRIMARY COLOR:~w~ " + _vicCarColor.ToUpper() + "~n~ ~g~LICENSEPLATE:~w~ " + _vicCarPlateNum +
+                    "~b~PRIMARY COLOR:~w~ " + _vicCarColor.ToUpper() + "~n~ ~g~LICENSE PLATE:~w~ " + _vicCarPlateNum +
                     "");
                 _infoModelNotiSent = true;
             }
@@ -239,11 +226,14 @@ namespace SAHighwayCallouts.Callouts
                 {
                     _timer++;
                 }
-
+                
                 if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 35f)
                 {
                     _suspectFound = true;
-                    Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Suspect has been found, running scenario " + _scenario + "!");
+                    int _scenario = new Random().Next(1, 3);
+                    if (_scenario == 1) _scenarioChoosed = 1;
+                    if (_scenario == 2) _scenarioChoosed = 2;
+                    Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Suspect has been found, running scenario " + _scenarioChoosed + "!");
                     if (_susBlip) _susBlip.Delete();
                 }
 
@@ -292,7 +282,7 @@ namespace SAHighwayCallouts.Callouts
             }
 
             //Scenario 1: Pursuit
-            if (_suspectFound && _scenario == 1)
+            if (_suspectFound && _scenarioChoosed == 1)
             {
                 if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 25f && !_pursuitStarted)
                 {
@@ -314,22 +304,23 @@ namespace SAHighwayCallouts.Callouts
             }
 
             //Scenario 2: Pullover
-            if (_suspectFound && _scenario == 2)
+            if (_suspectFound && _scenarioChoosed == 2)
             {
                 if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 25f && !_pulloverPrompted)
                 {
                     Game.DisplayHelp("Pullover the ~r~Vehicle~w~");
                     _pulloverPrompted = true;
-                    if (!_susBlip)
+                    LSPD_First_Response.Mod.API.Functions.SetPedCanBePulledOver(_suspect, true);
+                    _victim.Tasks.CruiseWithVehicle(_victimCar, 20f, VehicleDrivingFlags.Normal);
+                    if (!_susBlip && Settings.HelpBlips)
                     {
                         _susBlip = _suspect.AttachBlip();
                         _susBlip.IsRouteEnabled = false;
                         _susBlip.Color = Color.Red;
                         _susBlip.Scale = 0.7f;
-                        LSPD_First_Response.Mod.API.Functions.SetPedCanBePulledOver(_suspect, true);
                     }
                 }
-                LSPD_First_Response.Mod.API.Events.OnPulloverOfficerApproachDriver += EventsOnOnPulloverOfficerApproachDriver;
+                Events.OnPulloverOfficerApproachDriver += EventsOnOnPulloverOfficerApproachDriver;
             }
         
     
@@ -368,51 +359,71 @@ namespace SAHighwayCallouts.Callouts
             var rPed = LSPD_First_Response.Mod.API.Functions.GetPulloverSuspect(handle);
             if (rPed == _suspect)
             {
-                if (_scenario2Options == 1 && !_pursuitStarted)
+                if (!_sceario2OptionChoosed)
                 {
-                    LSPD_First_Response.Mod.API.Functions.ForceEndCurrentPullover();
-                    Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Running Sceario2 Approach Pursuit Option!");
-                    Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Pursuit starting!");
-                    if (_susBlip.Exists()) _susBlip.Delete();
-                    _pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
-                    LSPD_First_Response.Mod.API.Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
-                    LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(_pursuit, _suspect);
-                    LSPD_First_Response.Mod.API.Functions.PlayScannerAudio(
-                        "ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
-                    _pursuitStarted = true;
+                    int _scenario2Options = new Random().Next(1, 4);
 
-                    if (Settings.PursuitBackup)
+                    if (_scenario2Options == 1 && !_pursuitStarted)
                     {
-                        UltimateBackup.API.Functions.callPursuitBackup();
-                        UltimateBackup.API.Functions.callPursuitBackup();
+                        LSPD_First_Response.Mod.API.Functions.ForceEndCurrentPullover();
+                        Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout +
+                                        "| - Running Sceario2 Approach Pursuit Option!");
+                        Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Pursuit starting!");
+                        if (_susBlip.Exists()) _susBlip.Delete();
+                        _pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
+                        LSPD_First_Response.Mod.API.Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
+                        LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(_pursuit, _suspect);
+                        LSPD_First_Response.Mod.API.Functions.PlayScannerAudio(
+                            "ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
+                        _pursuitStarted = true;
+
+                        if (Settings.PursuitBackup)
+                        {
+                            UltimateBackup.API.Functions.callPursuitBackup();
+                            UltimateBackup.API.Functions.callPursuitBackup();
+                        }
                     }
-                }
 
-                if (_scenario2Options == 2)
-                {
-                    Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Running Sceario2 Regular Traffic Stop Option!");
-                }
-
-                if (_scenario2Options == 3)
-                {
-                    if (!_shootoutStarted)
+                    if (_scenario2Options == 2)
                     {
-                        Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Running Sceario2 Shootout Traffic Stop Option!");
-                        if (!_suspect.Inventory.HasLoadedWeapon) SAHC_Functions.NormalWeaponChooser(_suspect, -1, true);
-                        _suspect.Tasks.LeaveVehicle(_victimCar, LeaveVehicleFlags.LeaveDoorOpen).WaitForCompletion();
-                        _suspect.Tasks.AimWeaponAt(Game.LocalPlayer.Character, 1000);
-                        _suspect.Tasks.FightAgainst(Game.LocalPlayer.Character);
-                        _suspect.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
-                        _suspect.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
-                        _shootoutStarted = true;
+                        if (!_regularTrafficStop)
+                        {
+                            Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout +
+                                            "| - Running Sceario2 Regular Traffic Stop Option!");
+                            _regularTrafficStop = true;
+                        }
+
                     }
+
+                    if (_scenario2Options == 3)
+                    {
+                        if (!_shootoutStarted)
+                        {
+                            Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout +
+                                            "| - Running Sceario2 Shootout Traffic Stop Option!");
+                            if (!_suspect.Inventory.HasLoadedWeapon)
+                                SAHC_Functions.NormalWeaponChooser(_suspect, -1, true);
+                            _suspect.Tasks.LeaveVehicle(_victimCar, LeaveVehicleFlags.LeaveDoorOpen)
+                                .WaitForCompletion();
+                            _suspect.Tasks.AimWeaponAt(Game.LocalPlayer.Character, 1000);
+                            _suspect.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                            _suspect.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
+                            _suspect.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+                            _shootoutStarted = true;
+                        }
+                    }
+                    _sceario2OptionChoosed = true;
                 }
             }
 
             if (rPed != _suspect)
             {
-                Game.DisplayHelp("You pulled over the wrong ~y~Vehicle~w~!");
-                Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Wrong Vehicle pulled over try again!");
+                if (!_wrongVehicle)
+                {
+                    Game.DisplayHelp("You pulled over the wrong ~y~Vehicle~w~!");
+                    Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Wrong Vehicle pulled over try again!");
+                    _wrongVehicle = true;
+                }
             }
         }
 
@@ -423,15 +434,14 @@ namespace SAHighwayCallouts.Callouts
             if (_victim) _victim.Dismiss();
             if (_vicBlip) _vicBlip.Delete();
             if (_victimCar) _victimCar.Dismiss();
-            if (_cop) _cop.Dismiss();
-            if (_copCar) _copCar.Dismiss();
-            if (_copBlip) _copBlip.Delete();
+            Transport.destroyTransport();
             Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Cleaned up!");
             base.End();
         }
         
         private void Dialogue()
         {
+            int dPick = new Random().Next(1, 4);
             switch (dPick)
             {
                 case 1:
@@ -457,20 +467,119 @@ namespace SAHighwayCallouts.Callouts
                     }
                     if (_counter == 6)
                     {
-                        if (doesVictimKnowLicensePlate == 1) Game.DisplaySubtitle("~g~Victim:~w~ Yes I do it's ~b~"+_vicCarPlateNum+"~w~.");
-                        if (doesVictimKnowLicensePlate != 1) Game.DisplaySubtitle("~g~Victim:~w~ No, Im so sorry I dont!");
+                        if (_victimKnowsLicensePlate) Game.DisplaySubtitle("~g~Victim:~w~ Yes I do it's ~b~"+_vicCarPlateNum+"~w~.");
+                        if (!_victimKnowsLicensePlate) Game.DisplaySubtitle("~g~Victim:~w~ No, Im so sorry I dont!");
                         
                     }
                     if (_counter == 7)
                     {
-                        if (doesVictimKnowLicensePlate == 1) Game.DisplaySubtitle("~y~Player:~w~ Okay thank you, would you like a officer to transport you?");
-                        if (doesVictimKnowLicensePlate != 1) Game.DisplaySubtitle("~y~Player:~w~ That's okay. Would you like an officer to transport you somewhere?");
+                        if (_victimKnowsLicensePlate) Game.DisplaySubtitle("~y~Player:~w~ Okay thank you, would you like a officer or taxi to transport you?");
+                        if (!_victimKnowsLicensePlate) Game.DisplaySubtitle("~y~Player:~w~ That's okay. Would you like an officer or taxi to transport you somewhere?");
                     }
 
                     if (_counter == 8)
                     {
-                        if (victimWantsTransport == 1) Game.DisplaySubtitle("~o~Victim:~w~ Yes I would please.");
-                        if (victimWantsTransport != 1) Game.DisplaySubtitle("~o~Victim:~w~ No thank you I will be okay.");
+                        if (_victimWantsOfficer) Game.DisplaySubtitle("~o~Victim:~w~ Yes I would like an officer please.");
+                        if (_victimWantsTaxi) Game.DisplaySubtitle("~o~Victim:~w~ Yes I would like a taxi please");
+                    }
+
+                    if (_counter == 9)
+                    {
+                        _dialgueOver = true;
+                    }
+                    _counter++;
+                    break;
+                
+                case 2:
+                    if (_counter == 1)
+                    {
+                        Game.DisplaySubtitle("~y~Player:~w~ Hello, what happened " + _maleFemale + "?");
+                    }
+                    if (_counter == 2)
+                    {
+                        Game.DisplaySubtitle("~o~Victim:~w~ The person was asking for a ride on the side of the road then went around my car and pulled me out and drove off!");
+                    }
+                    if (_counter == 3)
+                    {
+                        Game.DisplaySubtitle("~y~Player:~w~ Okay, do you have any information I could use to locate your vehicle?");
+                    }
+                    if (_counter == 4)
+                    {
+                        Game.DisplaySubtitle("~o~Victim:~w~ Yes the color is ~b~"+_vicCarColor+"~w~ and the model is ~b~"+_vicCarModel+"~w~.");
+                    }
+                    if (_counter == 5)
+                    {
+                        Game.DisplaySubtitle("~y~Player:~w~ Okay, do you know your license plate number by chance?");
+                    }
+                    if (_counter == 6)
+                    {
+                        if (_victimKnowsLicensePlate) Game.DisplaySubtitle("~g~Victim:~w~ Yes I do it's ~b~"+_vicCarPlateNum+"~w~.");
+                        if (!_victimKnowsLicensePlate) Game.DisplaySubtitle("~g~Victim:~w~ No, I never thought I would need to know it!");
+                        
+                    }
+                    if (_counter == 7)
+                    {
+                        if (_victimKnowsLicensePlate) Game.DisplaySubtitle("~y~Player:~w~ Okay thank you, would you like a officer or taxi to transport you?");
+                        if (!_victimKnowsLicensePlate) Game.DisplaySubtitle("~y~Player:~w~ That's okay. Would you like an officer or taxi to transport you somewhere?");
+                    }
+
+                    if (_counter == 8)
+                    {
+                        if (_victimWantsOfficer) Game.DisplaySubtitle("~o~Victim:~w~ Yes please could you call an officer?");
+                        if (_victimWantsTaxi) Game.DisplaySubtitle("~o~Victim:~w~ Yes I would, could you call a taxi?");
+                        _dialgueOver = true;
+                    }
+                    
+                    if (_counter == 9)
+                    {
+                        _dialgueOver = true;
+                    }
+
+                    _counter++;
+                    break;
+                
+                case 3:
+                    if (_counter == 1)
+                    {
+                        Game.DisplaySubtitle("~y~Player:~w~ Hello, "+_maleFemale+" what happened?");
+                    }
+                    if (_counter == 2)
+                    {
+                        Game.DisplaySubtitle("~o~Victim:~w~ Someone was waving and needed help so I pulled over where they jumped in and took my car!");
+                    }
+                    if (_counter == 3)
+                    {
+                        Game.DisplaySubtitle("~y~Player:~w~ Okay, do you have information we can use to locate your vehicle?");
+                    }
+                    if (_counter == 4)
+                    {
+                        Game.DisplaySubtitle("~o~Victim:~w~ Yes my car color is ~b~"+_vicCarColor+"~w~ and the model is ~b~"+_vicCarModel+"~w~.");
+                    }
+                    if (_counter == 5)
+                    {
+                        Game.DisplaySubtitle("~y~Player:~w~ Okay, what about your license plate?");
+                    }
+                    if (_counter == 6)
+                    {
+                        if (_victimKnowsLicensePlate) Game.DisplaySubtitle("~g~Victim:~w~ My license plate number is ~b~"+_vicCarPlateNum+"~w~.");
+                        if (!_victimKnowsLicensePlate) Game.DisplaySubtitle("~g~Victim:~w~ I dont know my license plate number sorry!");
+                        
+                    }
+                    if (_counter == 7)
+                    {
+                        if (_victimKnowsLicensePlate) Game.DisplaySubtitle("~y~Player:~w~ Okay thank you, would you like a officer or taxi to transport you?");
+                        if (!_victimKnowsLicensePlate) Game.DisplaySubtitle("~y~Player:~w~ That's okay. Would you like an officer or taxi to transport you somewhere?");
+                    }
+
+                    if (_counter == 8)
+                    {
+                        if (_victimWantsOfficer) Game.DisplaySubtitle("~o~Victim:~w~ Yes please I would like to go with an officer.");
+                        if (!_victimWantsTaxi) Game.DisplaySubtitle("~o~Victim:~w~ Yes please I would like a taxi.");
+                        _dialgueOver = true;
+                    }
+                    
+                    if (_counter == 9)
+                    {
                         _dialgueOver = true;
                     }
 

@@ -16,6 +16,7 @@ namespace SAHighwayCallouts.Ini
         internal static bool EnableEndCalloutHelpMessages;
         internal static bool PursuitBackup;
         internal static bool AlwaysChooseStateAIPolice;
+        internal static bool HelpBlips;
 
         internal static int WantedPedChooserMaxInt;
         internal static int DrunkPedChooserMaxInt;
@@ -62,6 +63,11 @@ namespace SAHighwayCallouts.Ini
         
         internal static string HighwayStatePoliceVehicles;
         internal static String[] HighwayStatePoliceVehiclesArray;
+        
+        //Callout Use Vehicles
+        internal static string TaxiVehicles;
+        internal static String[] TaxiVehicleArray;
+        
 
         //pursuit vehicles
         internal static string LuxuryVehicles;
@@ -96,6 +102,7 @@ namespace SAHighwayCallouts.Ini
             EnableEndCalloutHelpMessages = ini.ReadBoolean("Main", "EnableEndCalloutHelpMessages", true);
             PursuitBackup = ini.ReadBoolean("Main", "PursuitBackup", true);
             AlwaysChooseStateAIPolice = ini.ReadBoolean("Main", "AlwaysChooseStateAIPoliceBackup");
+            HelpBlips = ini.ReadBoolean("Main", "EnableHelpBlips", false);
 
             WantedPedChooserMaxInt = ini.ReadInt32("Main", "MaxValueForWantedPed", 4);
             DrunkPedChooserMaxInt = ini.ReadInt32("Main", "MaxValueForDrunkPed", 4);
@@ -158,6 +165,10 @@ namespace SAHighwayCallouts.Ini
 
             HighwayStatePoliceVehicles = ini.ReadString("PoliceVehicles", "HighwayStatePoliceVehicles");
             HighwayStatePoliceVehiclesArray = HighwayStatePoliceVehicles.Split(':');
+            
+            //Callout Use Vehicles
+            TaxiVehicles = ini.ReadString("TransportVehicles", "Taxis");
+            TaxiVehicleArray = TaxiVehicles.Split(':');
 
             //Pursuit Vehicle shit
             NormalVehicles = ini.ReadString("Vehicles", "NormalVehicles", null);

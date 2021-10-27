@@ -91,6 +91,15 @@ namespace SAHighwayCallouts.Functions
             Game.Console.Print("-!!- SAHighwayCallouts - |SpawnPolcePed| - Ped Model Choosed: "+cPed.Model.Name.ToUpper()+"-!!-");
         }
         
+        internal static void SpawnTaxiVehicle(out Vehicle vehicle, Vector3 spawnpoint, float heading)
+        {
+            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnTaxiVehicle| - Choosing Vehicle Taxi Vehicle!");
+            string[] vehicleModels = Settings.TaxiVehicleArray;
+            vehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
+            vehicle.IsPersistent = true;
+            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnTaxiVehicle| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
+        }
+        
         internal static void SpawnSemiTruckAndTrailer(out Vehicle truck, out Vehicle trailer, Vector3 spawnpoint, float heading) //Spawn normal random car..
         {
             Game.Console.Print("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Choosing Vehicle!");

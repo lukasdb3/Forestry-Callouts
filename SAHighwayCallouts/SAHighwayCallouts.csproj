@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Callouts\GrandTheftAuto.cs" />
     <Compile Include="Callouts\VehiclePursuit.cs" />
+    <Compile Include="Functions\CallTransport.cs" />
     <Compile Include="Functions\Commands.cs" />
     <Compile Include="Functions\SAHC_Functions.cs" />
     <Compile Include="Functions\SpawnStuff\CalloutSpawnpoints\GrandTheftAutoSpawnpoints.cs" />
