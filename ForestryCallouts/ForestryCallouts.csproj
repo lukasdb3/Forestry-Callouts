@@ -50,7 +50,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LSPD First Response, Version=0.4.7874.38392, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\Documents\Refrences\LSPD First Response.dll</HintPath>
+      <HintPath>..\..\..\Coding\Refrences\LSPD First Response.dll</HintPath>
     </Reference>
     <Reference Include="RAGENativeUI, Version=1.8.1.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\RAGENativeUI.1.8.1\lib\net472\RAGENativeUI.dll</HintPath>
@@ -61,7 +61,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="StopThePed, Version=4.9.5.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\Documents\Refrences\StopThePed.dll</HintPath>
+      <HintPath>..\..\..\Coding\Refrences\StopThePed.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

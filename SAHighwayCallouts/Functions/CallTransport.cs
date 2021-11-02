@@ -56,6 +56,7 @@ namespace SAHighwayCallouts.Functions
             tPed.Tasks.CruiseWithVehicle(tVehicle, 10f, VehicleDrivingFlags.Normal);
             if (tBlip) tBlip.Delete();
             Game.LogTrivial("-!!- SAHighwayCallouts - |TransportFunction| - Transport Leaving!");
+            return;
         }
 
         internal static void destroyTransport()

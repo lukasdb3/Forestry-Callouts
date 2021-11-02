@@ -34,7 +34,6 @@ C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\Forest
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\ForestryCallouts.pdb
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\RAGENativeUI.dll
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\RagePluginHook.dll
-C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\RAGENativeUI.xml
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\RagePluginHook.xml
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\obj\Debug\ForestryCallouts.csprojAssemblyReference.cache
@@ -48,3 +47,5 @@ C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\ForestryCallouts\bin\Debug\RagePl
 C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\ForestryCallouts\bin\Debug\StopThePed.dll
 C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\ForestryCallouts\bin\Debug\RAGENativeUI.xml
 C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\ForestryCallouts\bin\Debug\RagePluginHook.xml
+C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\LSPD First Response.dll
+C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\StopThePed.dll

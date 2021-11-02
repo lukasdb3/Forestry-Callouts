@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LSPD First Response, Version=0.4.7874.38392, Culture=neutral, PublicKeyToken=null">
-      <HintPath>A:\SteamLibrary\steamapps\common\Grand Theft Auto V\Plugins\LSPD First Response.dll</HintPath>
+      <HintPath>..\..\..\Coding\Refrences\LSPD First Response.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="RAGENativeUI, Version=1.8.1.0, Culture=neutral, PublicKeyToken=null">
@@ -44,12 +44,8 @@
       <HintPath>..\packages\RagePluginHook.1.86.1\lib\net472\RagePluginHook.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RagePluginHookSDK, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ForestryCallouts\bin\Debug\RagePluginHookSDK.dll</HintPath>
-    </Reference>
     <Reference Include="StopThePed, Version=4.9.5.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>A:\SteamLibrary\steamapps\common\Grand Theft Auto V\Plugins\lspdfr\StopThePed.dll</HintPath>
+      <HintPath>..\..\..\Coding\Refrences\StopThePed.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -57,17 +53,19 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="UltimateBackup, Version=1.8.5.7, Culture=neutral, PublicKeyToken=null">
-      <HintPath>A:\SteamLibrary\steamapps\common\Grand Theft Auto V\Plugins\lspdfr\UltimateBackup.dll</HintPath>
+    <Reference Include="UltimateBackup, Version=1.8.7.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\Coding\Refrences\UltimateBackup.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Callouts\GrandTheftAuto.cs" />
+    <Compile Include="Callouts\IllegalCarMeet.cs" />
     <Compile Include="Callouts\VehiclePursuit.cs" />
     <Compile Include="Functions\CallTransport.cs" />
     <Compile Include="Functions\Commands.cs" />
     <Compile Include="Functions\SAHC_Functions.cs" />
     <Compile Include="Functions\SpawnStuff\CalloutSpawnpoints\GrandTheftAutoSpawnpoints.cs" />
+    <Compile Include="Functions\SpawnStuff\CalloutSpawnpoints\IllegalCarMeetSpawnpoints.cs" />
     <Compile Include="Functions\SpawnStuff\CalloutSpawnpoints\VehiclePursuitSpawnpoints.cs" />
     <Compile Include="Functions\SpawnStuff\SpawnChunks.cs" />
     <Compile Include="Ini\Settings.cs" />

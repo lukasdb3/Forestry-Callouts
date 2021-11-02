@@ -37,6 +37,7 @@ namespace SAHighwayCallouts.Callouts
         private double _suspectsDisplaySpeed;
         private int doesVictimKnowLicensePlate = new Random().Next(1, 6);
         private int _scenarioChoosed;
+        private string _suspectDirection;
 
         //Victim and Suspect shit
         private Ped _victim;
@@ -66,6 +67,7 @@ namespace SAHighwayCallouts.Callouts
         private bool _victimWantsTaxi;
         private bool _victimWantsOfficer;
         private bool _sceario2OptionChoosed;
+        private bool _transportDismissed;
 
         //Dialogue stuuf
         private bool _dialogueReady;
@@ -94,7 +96,7 @@ namespace SAHighwayCallouts.Callouts
             _vicSpawnpoint = SpawnChunks.finalVicSpawnpoint;
             _vicHeading = SpawnChunks.finalVicHeading;
             ShowCalloutAreaBlipBeforeAccepting(_spawnpoint, 30f);
-            AddMinimumDistanceCheck(30f, _spawnpoint);
+            AddMinimumDistanceCheck(100f, _spawnpoint);
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition(
                 "ATTENTION_ALL_UNITS_01 WE_HAVE_01 CRIME_GRAND_THEFT_AUTO_01 UNITS_RESPOND_CODE_03_01", _spawnpoint);
             CalloutPosition = _spawnpoint;
@@ -136,7 +138,7 @@ namespace SAHighwayCallouts.Callouts
                 _suspectLeft = true;
                 _suspect.Tasks.CruiseWithVehicle(_victimCar, 25f, VehicleDrivingFlags.Normal);
             }
-
+            
             if (!_beforeOnScene && Game.LocalPlayer.Character.DistanceTo(_victim) <= 30f)
             {
                 Game.DisplayNotification("Go talk to the ~o~Victim~w~ of the Grand Theft Auto");
@@ -194,16 +196,17 @@ namespace SAHighwayCallouts.Callouts
 
             if (_victimWantsTransport && !_victimTakenCareOf && Game.IsKeyDown(Settings.InputInteractionKey))
             {
-                Game.DisplayHelp("Wait until ~y~transportation~w~ arrives for the ~o~Victim");
+                Game.DisplayHelp("Wait until ~y~Transportation~w~ arrives for the ~o~Victim");
                 if (_victimWantsOfficer) Transport.CallTransport(in _victim, in _spawnpoint, in CurrentCounty, 1);
                 if (_victimWantsTaxi) Transport.CallTransport(in _victim, in _spawnpoint, in CurrentCounty, 2);
                 _victimTakenCareOf = true;
                 _suspect.Tasks.CruiseWithVehicle(_victimCar, 25f, VehicleDrivingFlags.Normal);
             }
 
-            if (_victimTakenCareOf && Game.LocalPlayer.Character.DistanceTo(_suspect) > 50f)
+            if (!_transportDismissed && _victimTakenCareOf && Game.LocalPlayer.Character.DistanceTo(_suspect) > 50f)
             {
                 Transport.destroyTransport();
+                _transportDismissed = true;
             }
 
             if (_victimTakenCareOf && !_infoModelNotiSent)
@@ -212,11 +215,6 @@ namespace SAHighwayCallouts.Callouts
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition(
                     "ATTENTION_ALL_UNITS_01 SUSPECT_LAST_SEEN_01 IN_OR_ON_POSITION", _suspect.Position);
                 _vicBlip.Delete();
-
-                Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "~b~VEHICLE DESCRIPTION",
-                    "~p~MODEL:~w~ " + _vicCarModel + "",
-                    "~b~PRIMARY COLOR:~w~ " + _vicCarColor.ToUpper() + "~n~ ~g~LICENSE PLATE:~w~ " + _vicCarPlateNum +
-                    "");
                 _infoModelNotiSent = true;
             }
 
@@ -237,15 +235,16 @@ namespace SAHighwayCallouts.Callouts
                     if (_susBlip) _susBlip.Delete();
                 }
 
-                if (_timer == 500 && !_firstNotfiOut)
+                if (_timer == 100 && !_firstNotfiOut)
                 {
                     _suspectsCurrentSpeed = _victimCar.Speed;
                     _suspectsDisplaySpeed = Math.Round(_suspectsCurrentSpeed, 0);
                     _suspectsCurrentStreet = World.GetStreetName(_suspect.Position);
+                    SAHC_Functions.GetDirection(in _suspect, out _suspectDirection);
                     Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "~b~SUSPECT LAST SEEN",
                         "~p~MODEL:~w~ " + _vicCarModel + "",
                         "~b~PRIMARY COLOR:~w~ " + _vicCarColor.ToUpper() + "~n~ ~g~LICENSE PLATE:~w~ " +
-                        _vicCarPlateNum + "~n~ ~o~STREET:~w~ " + _suspectsCurrentStreet + "~n~ ~y~CURRENT SPEED:~w~ " +
+                        _vicCarPlateNum + "~n~ ~o~STREET:~w~ " + _suspectsCurrentStreet + "~n~ ~b~DIRECTION:~w~ " + _suspectDirection + "~n~ ~y~CURRENT SPEED:~w~ " +
                         _suspectsDisplaySpeed + "MPH");
                     LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition(
                         "ATTENTION_ALL_UNITS_01 SUSPECT_LAST_SEEN_01 IN_OR_ON_POSITION", _suspect.Position);
@@ -257,18 +256,22 @@ namespace SAHighwayCallouts.Callouts
                     _suspectsCurrentSpeed = _victimCar.Speed;
                     _suspectsDisplaySpeed = Math.Round(_suspectsCurrentSpeed, 0);
                     _suspectsCurrentStreet = World.GetStreetName(_suspect.Position);
+                    SAHC_Functions.GetDirection(in _suspect, out _suspectDirection);
                     Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "~b~SUSPECT LAST SEEN",
                         "~p~MODEL:~w~ " + _vicCarModel + "",
                         "~b~PRIMARY COLOR:~w~ " + _vicCarColor.ToUpper() + "~n~ ~g~LICENSE PLATE:~w~ " +
-                        _vicCarPlateNum + "~n~ ~o~STREET:~w~ " + _suspectsCurrentStreet + "~n~ ~y~CURRENT SPEED:~w~ " +
+                        _vicCarPlateNum + "~n~ ~o~STREET:~w~ " + _suspectsCurrentStreet + "~n~ ~b~DIRECTION:~w~ " + _suspectDirection + "~n~ ~y~CURRENT SPEED:~w~ " +
                         _suspectsDisplaySpeed + "MPH");
-                    LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition(
-                        "ATTENTION_ALL_UNITS_01 SUSPECT_LAST_SEEN_01 IN_OR_ON_POSITION", _suspect.Position);
+                    if (_suspectDirection == "NORTH") LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS_01 SUSPECT_LAST_SEEN_01 IN_OR_ON_POSITION DIRECTION_HEADING_NORTH_01", _suspect.Position);
+                    if (_suspectDirection == "EAST") LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS_01 SUSPECT_LAST_SEEN_01 IN_OR_ON_POSITION DIRECTION_HEADING_EAST_01", _suspect.Position);
+                    if (_suspectDirection == "SOUTH") LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS_01 SUSPECT_LAST_SEEN_01 IN_OR_ON_POSITION DIRECTION_HEADING_SOUTH_01", _suspect.Position);
+                    if (_suspectDirection == "WEST") LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS_01 SUSPECT_LAST_SEEN_01 IN_OR_ON_POSITION DIRECTION_HEADING_WEST_01", _suspect.Position);
+                    if (_suspectDirection != "NORTH" && _suspectDirection != "EAST" && _suspectDirection != "SOUTH" && _suspectDirection != "WEST") LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS_01 SUSPECT_LAST_SEEN_01 IN_OR_ON_POSITION", _suspect.Position); 
                     _notfiRan++;
                     _timer = 0;
                 }
 
-                if (_notfiRan == 10 && !_notfiRanMax)
+                if (_notfiRan == 15 && !_notfiRanMax)
                 {
                     _timerPaused = true;
                     //Blip the vehicle
@@ -320,10 +323,11 @@ namespace SAHighwayCallouts.Callouts
                         _susBlip.Scale = 0.7f;
                     }
                 }
+
                 Events.OnPulloverOfficerApproachDriver += EventsOnOnPulloverOfficerApproachDriver;
             }
-        
-    
+
+
 
             //End Script stufs
             if (Game.LocalPlayer.Character.IsDead)
@@ -399,8 +403,7 @@ namespace SAHighwayCallouts.Callouts
                     {
                         if (!_shootoutStarted)
                         {
-                            Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout +
-                                            "| - Running Sceario2 Shootout Traffic Stop Option!");
+                            Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Running Sceario2 Shootout Traffic Stop Option!");
                             if (!_suspect.Inventory.HasLoadedWeapon)
                                 SAHC_Functions.NormalWeaponChooser(_suspect, -1, true);
                             _suspect.Tasks.LeaveVehicle(_victimCar, LeaveVehicleFlags.LeaveDoorOpen)
@@ -434,11 +437,13 @@ namespace SAHighwayCallouts.Callouts
             if (_victim) _victim.Dismiss();
             if (_vicBlip) _vicBlip.Delete();
             if (_victimCar) _victimCar.Dismiss();
+            if (LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(_pursuit))
+                LSPD_First_Response.Mod.API.Functions.ForceEndPursuit(_pursuit);
             Transport.destroyTransport();
-            Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Cleaned up!");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Cleaned up!");
             base.End();
         }
-        
+
         private void Dialogue()
         {
             int dPick = new Random().Next(1, 4);
@@ -574,7 +579,7 @@ namespace SAHighwayCallouts.Callouts
                     if (_counter == 8)
                     {
                         if (_victimWantsOfficer) Game.DisplaySubtitle("~o~Victim:~w~ Yes please I would like to go with an officer.");
-                        if (!_victimWantsTaxi) Game.DisplaySubtitle("~o~Victim:~w~ Yes please I would like a taxi.");
+                        if (_victimWantsTaxi) Game.DisplaySubtitle("~o~Victim:~w~ Yes please I would like a taxi.");
                         _dialgueOver = true;
                     }
                     

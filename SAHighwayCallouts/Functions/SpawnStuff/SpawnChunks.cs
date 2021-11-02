@@ -12,13 +12,35 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
 {
     internal class SpawnChunks
     {
-        //Used by all callouts
+        //Used by most callouts
         internal static Vector3 finalSpawnpoint; //Final spawnpoint that will be used in callout
         internal static float finalHeading; //Final heading that will be used in callout
         
         //Used by: GrandTheftAuto
         internal static Vector3 finalVicSpawnpoint; //Final victim spawnpoint that will be used in callout
         internal static float finalVicHeading; //Final heading for victim that will be used in the callout
+        
+        //Used by: IllegalCarMeet
+        internal static Vector3 badSpawn1;
+        internal static float badHeading1;
+        internal static Vector3 badSpawn2;
+        internal static float badHeading2;
+        internal static Vector3 badSpawn3;
+        internal static float badHeading3;
+        internal static Vector3 badSpawn4;
+        internal static float badHeading4;
+        internal static Vector3 badSpawn5;
+        internal static float badHeading5;
+        internal static Vector3 badSpawn6;
+        internal static float badHeading6;
+        internal static Vector3 badSpawn7;
+        internal static float badHeading7;
+        internal static Vector3 badSpawn8;
+        internal static float badHeading8;
+        internal static Vector3 badSpawn9;
+        internal static float badHeading9;
+        internal static Vector3 badSpawn10;
+        internal static float badHeading10;
 
         internal static void ChunkGetter(in string cCallout, out string cCounty)
         {
@@ -104,6 +126,11 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
         {
             if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.PbCountySpawns(out finalSpawnpoint, out finalHeading);
             if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.PbCountySpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
+            if (cCallout == "IllegalCarMeet")
+                IllegalCarMeetSpawnpoints.PbCountySpawns(out badSpawn1, out badHeading1, out badSpawn2, out badHeading2,
+                    out badSpawn3, out badHeading3, out badSpawn4, out badHeading4, out badSpawn5, out badHeading5,
+                    out badSpawn6, out badHeading6, out badSpawn7, out badHeading7, out badSpawn8, out badHeading8,
+                    out badSpawn9, out badHeading9, out badSpawn10, out badHeading10);
         }
 
         //Blaine County spawn chunk

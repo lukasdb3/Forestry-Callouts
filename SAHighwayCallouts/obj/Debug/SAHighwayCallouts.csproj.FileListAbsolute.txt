@@ -23,8 +23,6 @@ C:\Users\lukas\Documents\GitHub\BlondeePlugins\SAHighwayCallouts\bin\Debug\SAHig
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\SAHighwayCallouts\bin\Debug\LSPD First Response.dll
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\SAHighwayCallouts\bin\Debug\RAGENativeUI.dll
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\SAHighwayCallouts\bin\Debug\RagePluginHook.dll
-C:\Users\lukas\Documents\GitHub\BlondeePlugins\SAHighwayCallouts\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
-C:\Users\lukas\Documents\GitHub\BlondeePlugins\SAHighwayCallouts\bin\Debug\LSPD First Response.pdb
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\SAHighwayCallouts\bin\Debug\RAGENativeUI.xml
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\SAHighwayCallouts\bin\Debug\RagePluginHook.xml
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\SAHighwayCallouts\obj\Debug\SAHighwayCallouts.csprojAssemblyReference.cache
