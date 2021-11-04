@@ -39,7 +39,7 @@ namespace SAHighwayCallouts.Functions
             direction = "null";
             double badHeading = ped.Heading;
             double heading = Math.Round(badHeading, 1);
-            Game.Console.Print("-!!- SAHighwayCallouts - |GetDirectionFunction| - Peds Heading Is " + heading + "");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |GetDirectionFunction| - Peds Heading Is " + heading + "");
             //   LESS THAN       GREATER THAN
             if (heading < 22.5f && heading > 337.5f) direction = "NORTH"; //North
             if (heading < 67.5f && heading > 22.5f) direction = "NORTH WEST"; //North West
@@ -50,37 +50,37 @@ namespace SAHighwayCallouts.Functions
             if (heading < 292.5f && heading > 247.5f) direction = "EAST"; //East
             if (heading < 337.5f && heading > 292.5f) direction = "NORTH EAST"; //North
             if (direction == "null") direction = "~r~NOT KNOWN";
-            Game.Console.Print("-!!- SAHighwayCallouts - |GetDirectionFunction| - Peds Direction Is " + direction + "");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |GetDirectionFunction| - Peds Direction Is " + direction + "");
         }
 
         internal static void LuxVehicleSpawn(out Vehicle vehicle, Vector3 spawnpoint, float heading)
         {
-            Game.Console.Print("-!!- SAHighwayCallouts - |LuxVehicleSpawn| - Choosing Vehicle!");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |LuxVehicleSpawn| - Choosing Vehicle!");
             string[] vehicleModels = Settings.luxuryVehiclesArray;
             vehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
             vehicle.IsPersistent = true;
             
-            Game.Console.Print("-!!- SAHighwayCallouts - |LuxVehicleSpawn| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |LuxVehicleSpawn| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
         }
 
         internal static void SpawnNormalCar(out Vehicle vehicle, Vector3 spawnpoint, float heading) //Spawn normal random car..
         {
-            Game.Console.Print("-!!- SAHighwayCallouts - |NormalVehicleSpawner| - Choosing Vehicle!");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |NormalVehicleSpawner| - Choosing Vehicle!");
             string[] vehicleModels = Settings.NormalVehiclesArray;
             vehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
             vehicle.IsPersistent = true;
             
-            Game.Console.Print("-!!- SAHighwayCallouts - |NormalVehicleSpawner| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |NormalVehicleSpawner| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
         }
 
         internal static void SpawnPoliceVehicle(out Vehicle vehicle, Vector3 spawnpoint, float heading, string cCounty)
         {
-            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnPoliceVehicle| - Choosing Vehicle Based On "+cCounty+"!");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnPoliceVehicle| - Choosing Vehicle Based On "+cCounty+"!");
             string[] vehicleModels = default;
             if (Settings.AlwaysChooseStateAIPolice) choseHighwayStatePolice = 1;
             if (choseHighwayStatePolice == 1)
             {
-                Game.Console.Print("-!!- SAHighwayCallouts - |SpawnPoliceVehicle| - Choosing State Police Vehicle!");
+                Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnPoliceVehicle| - Choosing State Police Vehicle!");
                 vehicleModels = Settings.HighwayStatePoliceVehiclesArray;
             }
             if (choseHighwayStatePolice != 1 && cCounty == "PaletoCounty") vehicleModels = Settings.PaletoBayVehiclesArray;
@@ -89,16 +89,16 @@ namespace SAHighwayCallouts.Functions
             if (choseHighwayStatePolice != 1 && cCounty == "LosSantosCityCounty") vehicleModels = Settings.LosSantosVehiclesArray;
             vehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
             vehicle.IsPersistent = true;
-            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnPoliceVehicle| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnPoliceVehicle| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
         }
 
         internal static void SpawnPolcePed(out Ped cPed, Vector3 spawnpoint, float heading, string cCounty)
         {
-            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnPolcePed| - Choosing Ped Based On "+cCounty+"!");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnPolcePed| - Choosing Ped Based On "+cCounty+"!");
             string[] pedModels = default;
             if (choseHighwayStatePolice == 1)
             {
-                Game.Console.Print("-!!- SAHighwayCallouts - |SpawnPolcePed| - Choosing State Police Ped!");
+                Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnPolcePed| - Choosing State Police Ped!");
                 pedModels = Settings.HighwayStatePolicePedsArray;
             }
             if (choseHighwayStatePolice != 1 && cCounty == "PaletoCounty") pedModels = Settings.PaletoBayPedsArray;
@@ -108,33 +108,33 @@ namespace SAHighwayCallouts.Functions
             cPed = new Ped(pedModels[new Random().Next(pedModels.Length)], spawnpoint, heading);
             cPed.IsPersistent = true;
             cPed.BlockPermanentEvents = true;
-            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnPolcePed| - Ped Model Choosed: "+cPed.Model.Name.ToUpper()+"-!!-");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnPolcePed| - Ped Model Choosed: "+cPed.Model.Name.ToUpper()+"-!!-");
         }
         
         internal static void SpawnTaxiVehicle(out Vehicle vehicle, Vector3 spawnpoint, float heading)
         {
-            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnTaxiVehicle| - Choosing Vehicle Taxi Vehicle!");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnTaxiVehicle| - Choosing Vehicle Taxi Vehicle!");
             string[] vehicleModels = Settings.TaxiVehicleArray;
             vehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
             vehicle.IsPersistent = true;
-            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnTaxiVehicle| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnTaxiVehicle| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
         }
         
         internal static void SpawnSemiTruckAndTrailer(out Vehicle truck, out Vehicle trailer, Vector3 spawnpoint, float heading) //Spawn normal random car..
         {
-            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Choosing Vehicle!");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Choosing Vehicle!");
             string[] vehicleModels = Settings.SemiTruckVehiclesArray;
             truck = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
             truck.IsPersistent = true;
             
-            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Vehicle Model Choosed: "+truck.Model.Name.ToUpper()+"-!!-");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Vehicle Model Choosed: "+truck.Model.Name.ToUpper()+"-!!-");
             
-            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Choosing Trailer!");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Choosing Trailer!");
             string[] vehicleModelsT = Settings.SemiTrailerModelsArray;
             trailer = new Vehicle(vehicleModelsT[new Random().Next(vehicleModelsT.Length)], spawnpoint, heading);
             trailer.IsPersistent = true;
             
-            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Trailer Model Choosed: "+trailer.Model.Name.ToUpper()+"-!!-");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnSemiTruckAndTrailer| - Trailer Model Choosed: "+trailer.Model.Name.ToUpper()+"-!!-");
         }
 
         internal static void SpawnNormalPed(out Ped cPed, Vector3 Spawnpoint, float heading) //Spawns normal ped
@@ -144,7 +144,7 @@ namespace SAHighwayCallouts.Functions
             cPed.IsPersistent = true;
             cPed.BlockPermanentEvents = true;
             
-            Game.Console.Print("-!!- SAHighwayCallouts - |SpawnNornalPed| - Ped Model Choosed: "+cPed.Model.Name.ToUpper()+"-!!-");
+            Game.LogTrivial("-!!- SAHighwayCallouts - |SpawnNornalPed| - Ped Model Choosed: "+cPed.Model.Name.ToUpper()+"-!!-");
         }
         
         internal static Ped SetWanted(Ped wPed, bool isWanted) //Used to set a ped as wanted.

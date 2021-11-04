@@ -24,6 +24,10 @@ namespace SAHighwayCallouts.Functions
                 LSPD_First_Response.Mod.API.Functions.StopCurrentCallout();
                 Game.LogTrivial("-!!- SAHighwayCallouts - |Commmands| - The current callout was ended");
             }
+            else
+            {
+                Game.LogTrivial("-!!- SAHighwayCallouts - |Commmands| - There is no callout to end");
+            }
         }
     }
 }

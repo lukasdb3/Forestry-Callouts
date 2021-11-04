@@ -53,6 +53,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UltimateBackup, Version=1.8.5.7, Culture=neutral, PublicKeyToken=null">
+      <HintPath>A:\SteamLibrary\steamapps\common\Grand Theft Auto V\Plugins\lspdfr\UltimateBackup.dll</HintPath>
+    </Reference>
     <Reference Include="UltimateBackup, Version=1.8.7.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\..\Coding\Refrences\UltimateBackup.dll</HintPath>
     </Reference>

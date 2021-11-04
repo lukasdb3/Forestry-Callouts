@@ -30,7 +30,7 @@ namespace SAHighwayCallouts.Functions
             {
                 Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~h~SAHighwayCallouts Warning",
                     "~b~Failed to check for an update",
-                    "Please check if you are ~o~online~w~, or try to reload the plugin.");
+                    "Please check if you are online, or try reloading the plugin.");
                 updateCheckFailed = true;
                 // server or connection is having issues
             }
