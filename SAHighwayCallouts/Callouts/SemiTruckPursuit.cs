@@ -16,12 +16,12 @@ using UltimateBackup.API;
 
 namespace SAHighwayCallouts.Callouts
 {
-    [CalloutInfo("VehiclePursuit", CalloutProbability.Medium)]
-    internal class VehiclePursuit : Callout
+    [CalloutInfo("SemiTruckPursuit", CalloutProbability.Medium)]
+    internal class SemiTruckPursuit : Callout
     {
         #region Variables
 
-        private string callout = "VehiclePursuit";
+        private string callout = "SemiTruckPursuit";
         private string currentCounty = null;
         private Ped _suspect;
         private Ped _passenger;
@@ -31,7 +31,6 @@ namespace SAHighwayCallouts.Callouts
         private float _heading;
         private Vector3 _spawnpoint;
         private LHandle _pursuit;
-        private int PursuitChooser = new Random().Next(1, 4);
 
         private bool _onScene;
         private bool _beforeOnScene;
@@ -44,29 +43,8 @@ namespace SAHighwayCallouts.Callouts
         public override bool OnBeforeCalloutDisplayed()
         {
             Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Callout displayed!");
-            if (PursuitChooser == 1)
-            {
-                //Luxury Vehicle Pursuit
-                CalloutMessage = "~o~Luxury Vehicle Pursuit";
-                CalloutAdvisory = "~b~Dispatch:~w~ Luxury stolen vehicle spotted, Respond ~r~Code 3~w~";
-                Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuit| - Pursuit chooser has chosen luxury vehicle pursuit!");
-            }
-
-            if (PursuitChooser == 2)
-            {
-                //Normal pursuit
-                CalloutMessage = "~o~Pursuit In Progress";
-                CalloutAdvisory = "~b~Dispatch:~w~ Vehicle pursuit in progress, Respond ~r~Code 3~w~";
-                Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuit| - Pursuit chooser has chosen normal pursuit!");
-            }
-
-            if (PursuitChooser == 3)
-            {
-                //Semi truck pursuit
-                CalloutMessage = "~o~Semi Truck Pursuit";
-                CalloutAdvisory = "~b~Dispatch:~w~ Semi truck fleeing from Police, Respond ~r~Code 3~w~";
-                Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuit| - Pursuit chooser has chosen semi pursuit!");
-            }
+            CalloutMessage = "~o~Semi Truck Pursuit";
+            CalloutAdvisory = "~b~Dispatch:~w~ Stolen semi truck spotted, Respond ~r~Code 3~w~";
             SpawnChunks.ChunkGetter(in callout, out currentCounty);
             _spawnpoint = SpawnChunks.finalSpawnpoint;
             _heading = SpawnChunks.finalHeading;
@@ -82,13 +60,9 @@ namespace SAHighwayCallouts.Callouts
         public override bool OnCalloutAccepted()
         {
             Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Callout accepted!");
-            if (PursuitChooser == 1) SAHC_Functions.LuxVehicleSpawn(out _susV, _spawnpoint, _heading);
-            if (PursuitChooser == 2) SAHC_Functions.SpawnNormalCar(out _susV, _spawnpoint, _heading);
-            if (PursuitChooser == 3)
-            {
-                SAHC_Functions.SpawnSemiTruckAndTrailer(out _susV, out _susVTrailer, _spawnpoint, _heading);
-                _susV.Trailer = _susVTrailer;
-            }
+            SAHC_Functions.SpawnSemiTruckAndTrailer(out _susV, out _susVTrailer, _spawnpoint, _heading);
+            _susV.Trailer = _susVTrailer;
+            _susV.IsStolen = true;
             if (_susV.FreeSeatsCount == 0) _passengerChooser = 3; //Forces there to be no passenger sense no seat available
             SAHC_Functions.SpawnNormalPed(out _suspect, _spawnpoint, _heading);
             SAHC_Functions.PedPersonaChooser(in _suspect);
@@ -163,7 +137,7 @@ namespace SAHighwayCallouts.Callouts
             {
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition(
                     "OFFICERS_REPORT_03 OP_CODE OP_4", _spawnpoint);
-                Game.DisplayNotification("~b~Dispatch:~w~ All Units, Vehicle Pursuit Code 4");
+                Game.DisplayNotification("~b~Dispatch:~w~ All Units, Semi Truck Pursuit Code 4");
                 
                 Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Callout was force ended by player -!!-");
                 End();
@@ -175,7 +149,7 @@ namespace SAHighwayCallouts.Callouts
         public override void End()
         {
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _spawnpoint);
-            Game.DisplayNotification("~b~Dispatch:~w~ All Units, Vehicle Pursuit Code 4");
+            Game.DisplayNotification("~b~Dispatch:~w~ All Units, Semi Truck Pursuit Code 4");
             if (_suspect) _suspect.Dismiss();
             if (_susV) _susV.Dismiss();
             if (_susBlip) _susBlip.Delete();

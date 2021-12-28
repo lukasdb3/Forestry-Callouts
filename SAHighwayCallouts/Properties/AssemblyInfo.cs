@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SAHighwayCallouts")]
-[assembly: AssemblyDescription("Callout plugin for LSPDFR")]
+[assembly: AssemblyDescription("Made by lukasdb3")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("lukasdb3")]
 [assembly: AssemblyProduct("SAHighwayCallouts")]

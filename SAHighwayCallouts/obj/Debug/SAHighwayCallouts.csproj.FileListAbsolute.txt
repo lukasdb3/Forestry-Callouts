@@ -33,4 +33,6 @@ C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\SAHighwayCallouts\bin\Debug\RAGEN
 C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\SAHighwayCallouts\bin\Debug\RagePluginHook.dll
 C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\SAHighwayCallouts\bin\Debug\RAGENativeUI.xml
 C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\SAHighwayCallouts\bin\Debug\RagePluginHook.xml
-C:\Users\lukas\Documents\GitHub\BlondeePlugins\SAHighwayCallouts\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\lukas\Documents\GitHub\BlondeePlugins\SAHighwayCallouts\bin\Debug\LSPD First Response.dll
+C:\Users\lukas\Documents\GitHub\BlondeePlugins\SAHighwayCallouts\bin\Debug\StopThePed.dll
+C:\Users\lukas\Documents\GitHub\BlondeePlugins\SAHighwayCallouts\bin\Debug\UltimateBackup.dll

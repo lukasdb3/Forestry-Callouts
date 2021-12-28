@@ -124,18 +124,15 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
         //Paleto bay spawn chunk
         private static void PbCounty(in string cCallout)
         {
+            if (cCallout == "LuxuryVehiclePursuit") VehiclePursuitSpawnpoints.PbCountySpawns(out finalSpawnpoint, out finalHeading);
             if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.PbCountySpawns(out finalSpawnpoint, out finalHeading);
             if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.PbCountySpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
-            if (cCallout == "IllegalCarMeet")
-                IllegalCarMeetSpawnpoints.PbCountySpawns(out badSpawn1, out badHeading1, out badSpawn2, out badHeading2,
-                    out badSpawn3, out badHeading3, out badSpawn4, out badHeading4, out badSpawn5, out badHeading5,
-                    out badSpawn6, out badHeading6, out badSpawn7, out badHeading7, out badSpawn8, out badHeading8,
-                    out badSpawn9, out badHeading9, out badSpawn10, out badHeading10);
         }
 
         //Blaine County spawn chunk
         private static void BCounty(in string cCallout)
         {
+            if (cCallout == "LuxuryVehiclePursuit") VehiclePursuitSpawnpoints.BCountySpawns(out finalSpawnpoint, out finalHeading);
             if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.BCountySpawns(out finalSpawnpoint, out finalHeading);
             if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.BCountySpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
         }
@@ -143,26 +140,30 @@ namespace SAHighwayCallouts.Functions.SpawnStuff
         //Los Santos county spawn chunk
         private static void LsCounty(in string cCallout)
         {
+            if (cCallout == "LuxuryVehiclePursuit") VehiclePursuitSpawnpoints.LsCountySpawns(out finalSpawnpoint, out finalHeading);
             if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.LsCountySpawns(out finalSpawnpoint, out finalHeading);
             if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.LsCountySpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
         }
 
         private static void Prison(in string cCallout)
         {
+            if (cCallout == "LuxuryVehiclePursuit") VehiclePursuitSpawnpoints.PrisonSpawns(out finalSpawnpoint, out finalHeading);
             if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.PrisonSpawns(out finalSpawnpoint, out finalHeading);
             if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.PrisonSpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
         }
 
         private static void Zancudo(in string cCallout)
         {
+            if (cCallout == "LuxuryVehiclePursuit") VehiclePursuitSpawnpoints.ZancudoSpawns(out finalSpawnpoint, out finalHeading);
             if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.ZancudoSpawns(out finalSpawnpoint, out finalHeading);
             if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.ZancudoSpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
         }
 
         private static void Vespucci(in string cCallout)
         {
-            if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.ZancudoSpawns(out finalSpawnpoint, out finalHeading);
-            if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.ZancudoSpawns(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
+            if (cCallout == "LuxuryVehiclePursuit") VehiclePursuitSpawnpoints.Vespucci(out finalSpawnpoint, out finalHeading);
+            if (cCallout == "VehiclePursuit") VehiclePursuitSpawnpoints.Vespucci(out finalSpawnpoint, out finalHeading);
+            if (cCallout == "GrandTheftAuto") GrandTheftAutoSpawnpoints.Vespucci(out finalSpawnpoint, out finalHeading, out finalVicSpawnpoint, out finalVicHeading);
         }
     }
 }

@@ -7,7 +7,6 @@ using Rage;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
-using ForestryCallouts.Callouts;
 using ForestryCallouts.Ini;
 
 namespace ForestryCallouts.SimpleFunctions

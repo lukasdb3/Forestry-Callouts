@@ -64,11 +64,6 @@ namespace SAHighwayCallouts.Ini
         internal static string HighwayStatePoliceVehicles;
         internal static String[] HighwayStatePoliceVehiclesArray;
         
-        //Callout Use Vehicles
-        internal static string TaxiVehicles;
-        internal static String[] TaxiVehicleArray;
-        
-
         //pursuit vehicles
         internal static string LuxuryVehicles;
         internal static String[] luxuryVehiclesArray;
@@ -86,6 +81,8 @@ namespace SAHighwayCallouts.Ini
         
         //Callouts
         internal static bool DisableAllCallouts;
+        internal static bool NormalVehiclePursuit;
+        internal static bool SemiTruckPursuit;
         internal static bool LuxuryVehiclePursuit;
         internal static bool GrandTheftAuto;
         #endregion iniVariables
@@ -133,6 +130,13 @@ namespace SAHighwayCallouts.Ini
                     "~r~Invalid Key Error",
                     "~b~Please check your ~y~SAHighwayCallouts.ini~w~ for ~y~Invalid Key Input~w~, see log for more details.");
             }
+            
+            //Converts lowercase letters into uppers for all key inputs if not already for example (End to END)
+            DialogueKey = DialogueKey.ToUpper();
+            EndCalloutKey = EndCalloutKey.ToUpper();
+            InteractionKey = InteractionKey.ToUpper();
+            
+            
             //Peds
             //Police Peds
             PaletoBayPeds = ini.ReadString("PolicePeds", "PaletoBayPeds", null);
@@ -166,10 +170,6 @@ namespace SAHighwayCallouts.Ini
             HighwayStatePoliceVehicles = ini.ReadString("PoliceVehicles", "HighwayStatePoliceVehicles");
             HighwayStatePoliceVehiclesArray = HighwayStatePoliceVehicles.Split(':');
             
-            //Callout Use Vehicles
-            TaxiVehicles = ini.ReadString("TransportVehicles", "Taxis");
-            TaxiVehicleArray = TaxiVehicles.Split(':');
-
             //Pursuit Vehicle shit
             NormalVehicles = ini.ReadString("Vehicles", "NormalVehicles", null);
             NormalVehiclesArray = NormalVehicles.Split(':');
@@ -204,6 +204,8 @@ namespace SAHighwayCallouts.Ini
 
             //Callout shit
             DisableAllCallouts = ini.ReadBoolean("Callouts", "DisableAllCallouts", false);
+            NormalVehiclePursuit = ini.ReadBoolean("Callouts", "NormalVehiclePursuit", true);
+            SemiTruckPursuit = ini.ReadBoolean("Callouts", "SemiTruckPursuit", true);
             LuxuryVehiclePursuit = ini.ReadBoolean("Callouts", "VehiclePursuit", true);
             GrandTheftAuto = ini.ReadBoolean("Callouts", "GrandTheftAuto", true);
             Game.Console.Print("-!!- settings loaded!");

@@ -62,13 +62,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Callouts\GrandTheftAuto.cs" />
-    <Compile Include="Callouts\IllegalCarMeet.cs" />
-    <Compile Include="Callouts\VehiclePursuit.cs" />
-    <Compile Include="Functions\CallTransport.cs" />
+    <Compile Include="Callouts\LuxuryVehiclePursuit.cs" />
+    <Compile Include="Callouts\NormalVehiclePursuit.cs" />
+    <Compile Include="Callouts\SemiTruckPursuit.cs" />
     <Compile Include="Functions\Commands.cs" />
     <Compile Include="Functions\SAHC_Functions.cs" />
     <Compile Include="Functions\SpawnStuff\CalloutSpawnpoints\GrandTheftAutoSpawnpoints.cs" />
-    <Compile Include="Functions\SpawnStuff\CalloutSpawnpoints\IllegalCarMeetSpawnpoints.cs" />
     <Compile Include="Functions\SpawnStuff\CalloutSpawnpoints\VehiclePursuitSpawnpoints.cs" />
     <Compile Include="Functions\SpawnStuff\SpawnChunks.cs" />
     <Compile Include="Ini\Settings.cs" />

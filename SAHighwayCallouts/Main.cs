@@ -110,7 +110,9 @@ namespace SAHighwayCallouts
              if (Settings.DisableAllCallouts) Game.Console.Print("-!!- SAHighwayCallouts - |Settings| - All callouts disabled.");
              if (!Settings.DisableAllCallouts)
              {
-                 if (Settings.LuxuryVehiclePursuit) LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.VehiclePursuit));
+                 if (Settings.NormalVehiclePursuit) LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.NormalVehiclePursuit));
+                 if (Settings.SemiTruckPursuit) LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.SemiTruckPursuit));
+                 if (Settings.LuxuryVehiclePursuit) LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.LuxuryVehiclePursuit));
                  if (Settings.GrandTheftAuto) LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.GrandTheftAuto));
              }
          }
