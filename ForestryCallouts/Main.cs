@@ -45,8 +45,6 @@ namespace ForestryCallouts
                     Game.Console.Print("-!!- DialogueKey = " + IniSettings.DialogueKey + "");
                     Game.Console.Print("-!!- EndCalloutKey = " + IniSettings.EndCalloutKey + "");
                     Game.Console.Print("-!!- EndCalloutKey = " + IniSettings.InteractionKey + "");
-                    Game.Console.Print("-!!- RangerBackupVehicles = " + IniSettings.RangerBackupModels+ "");
-                    Game.Console.Print("-!!- AnimalControlModel = " + IniSettings.AnimalControlModel.ToUpper());
                     Game.Console.Print("-!!- Other settings loaded!");
                     Game.Console.Print("-!!- ==================== ForestryCallouts Settings ==================== -!!-");
                     Game.Console.Print();
@@ -57,8 +55,6 @@ namespace ForestryCallouts
                     //ForestryCallouts.ini showing that main settings were set back to default due to invalid key
                     Game.Console.Print("-!!- ==================== ForestryCallouts Settings ==================== -!!-");
                     Game.Console.Print("-!!- All keys set to default settings due to Invalid Key Error.");
-                    Game.Console.Print("-!!- RangerBackupVehicles = " + IniSettings.RangerBackupModels+ "");
-                    Game.Console.Print("-!!- AnimalControlModel = " + IniSettings.AnimalControlModel.ToUpper());
                     Game.Console.Print("-!!- Other settings loaded!");
                     Game.Console.Print("============= Forestry Callouts WARNING ==================");
                     Game.Console.Print("Invalid Key detected in ForestryCallouts.Ini");

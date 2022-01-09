@@ -33,7 +33,7 @@ namespace ForestryCallouts.SimpleFunctions
             var finalPosition = World.GetNextPositionOnStreet(finalStartPosition);
 
             //spawn animal control vehicle
-            acVehicle = new Vehicle(IniSettings.AnimalControlModel, finalPosition);
+            CFunctions.SpawnAnimalControl(out acVehicle, finalPosition, 0f);
             acVehicle.IsPersistent = true;
 
             acVehicle.PrimaryColor = Color.White;

@@ -39,12 +39,24 @@ namespace ForestryCallouts.SimpleFunctions
             cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }
-        internal static void SpawnRangerVehicle(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) //Spawn offroad random car..
+        internal static void SpawnRangerVehicle(out Vehicle vehicle, Vector3 spawnpoint, float heading) //Spawn normal random car..
         {
-            Model[] vehicleModels = {""+IniSettings.RangerBackupModel1+"", ""+IniSettings.RangerBackupModel2+"", ""+IniSettings.RangerBackupModel3+"", ""+IniSettings.RangerBackupModel4+""};
-            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
-            cVehicle.IsPersistent = true;
-            Game.LogTrivial("-!!- ForestryCallouts - |SpawnRangerVehicle| - The model "+cVehicle.Model.Name.ToUpper()+" was picked!");
+            Game.LogTrivial("-!!- ForestryCallouts - |SpawnRangerVehicle| - Choosing Vehicle!");
+            string[] vehicleModels = IniSettings.RangerBackupModelsArray;
+            vehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
+            vehicle.IsPersistent = true;
+            
+            Game.LogTrivial("-!!- ForestryCallouts - |SpawnRangerVehicle| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
+        }
+        
+        internal static void SpawnAnimalControl(out Vehicle vehicle, Vector3 spawnpoint, float heading) //Spawn normal random car..
+        {
+            Game.LogTrivial("-!!- ForestryCallouts - |SpawnAnimalControl| - Choosing Vehicle!");
+            string[] vehicleModels = IniSettings.RangerBackupModelsArray;
+            vehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
+            vehicle.IsPersistent = true;
+            
+            Game.LogTrivial("-!!- ForestryCallouts - |SpawnAnimalControl| - Vehicle Model Choosed: "+vehicle.Model.Name.ToUpper()+"-!!-");
         }
         internal static void SpawnSemiTruck(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) //Spawn offroad semi truck..
         {

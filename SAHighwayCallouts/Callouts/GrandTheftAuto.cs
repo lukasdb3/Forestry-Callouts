@@ -61,11 +61,9 @@ namespace SAHighwayCallouts.Callouts
         private bool _firstNotfiOut;
         private bool _shootoutStarted;
         private bool _victimKnowsLicensePlate;
-        private bool _victimWantsTransport;
         private bool _regularTrafficStop;
         private bool _wrongVehicle;
         private bool _pulloverScearioStarted;
-        private bool _transportDismissed;
 
         //Dialogue stuuf
         private bool _dialogueReady;
@@ -171,22 +169,17 @@ namespace SAHighwayCallouts.Callouts
 
             if (!_dialgueOver && _dialogueReady && Game.IsKeyDown(Settings.InputDialogueKey) && Game.LocalPlayer.Character.IsOnFoot) Dialogue();
 
-            if (_dialgueOver && !_victimWaitingTransport && _victimWantsTransport)
+            if (_dialgueOver && !_victimWaitingTransport)
             {
                 _suspect.Tasks.ParkVehicle(_victimCar, _suspect.Position, _suspect.Heading);
                 Game.DisplayNotification("Call transport via ~y~Stop The Ped~w~ for the victim. Press ~r~'"+Settings.InteractionKey+"'~w~ to continue!");
                 _victimWaitingTransport = true;
             }
 
-            if (_victimWantsTransport && !_victimTakenCareOf && Game.IsKeyDown(Settings.InputInteractionKey))
+            if (_victimWaitingTransport && !_victimTakenCareOf && Game.IsKeyDown(Settings.InputInteractionKey))
             {
                 _victimTakenCareOf = true;
                 _suspect.Tasks.CruiseWithVehicle(_victimCar, 20, VehicleDrivingFlags.Normal);
-            }
-
-            if (!_transportDismissed && _victimTakenCareOf && Game.LocalPlayer.Character.DistanceTo(_suspect) > 50f)
-            {
-                _transportDismissed = true;
             }
 
             if (_victimTakenCareOf && !_infoModelNotiSent)

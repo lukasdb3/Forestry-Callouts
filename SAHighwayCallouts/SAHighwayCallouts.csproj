@@ -66,6 +66,7 @@
     <Compile Include="Callouts\NormalVehiclePursuit.cs" />
     <Compile Include="Callouts\SemiTruckPursuit.cs" />
     <Compile Include="Functions\Commands.cs" />
+    <Compile Include="Functions\Logger\OnDutyMessage.cs" />
     <Compile Include="Functions\SAHC_Functions.cs" />
     <Compile Include="Functions\SpawnStuff\CalloutSpawnpoints\GrandTheftAutoSpawnpoints.cs" />
     <Compile Include="Functions\SpawnStuff\CalloutSpawnpoints\VehiclePursuitSpawnpoints.cs" />

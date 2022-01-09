@@ -25,14 +25,13 @@ namespace ForestryCallouts.Ini
         
         //Vehicles
         //RangerBackupModel for RangerBackup callout.
-        internal static string RangerBackupModel1;
-        internal static string RangerBackupModel2;
-        internal static string RangerBackupModel3;
-        internal static string RangerBackupModel4;
         internal static string RangerBackupModels;
+        internal static String[] RangerBackupModelsArray;
+       
         
         //Animal Control model.
-        internal static string AnimalControlModel;
+        internal static string AnimalControlModels;
+        internal static String[] AnimalControlModelsArray;
         
         //Keys
         internal static string DialogueKey;
@@ -77,13 +76,11 @@ namespace ForestryCallouts.Ini
             EnableEndCalloutHelpMessages = ini.ReadBoolean("Main", "EnableEndCalloutHelpMessages", true);
             
             //Vehicles
-            RangerBackupModel1 = ini.ReadString("Vehicles", "RangerBackupModel1", "PRANGER");
-            RangerBackupModel2 = ini.ReadString("Vehicles", "RangerBackupModel2", "PRANGER");
-            RangerBackupModel3 = ini.ReadString("Vehicles", "RangerBackupModel3", "PRANGER");
-            RangerBackupModel4 = ini.ReadString("Vehicles", "RangerBackupModel4", "PRANGER");
-            RangerBackupModels = ""+RangerBackupModel1.ToUpper()+", "+RangerBackupModel2.ToUpper()+", "+RangerBackupModel3.ToUpper()+", "+RangerBackupModel4.ToUpper()+"";
+            RangerBackupModels = ini.ReadString("Vehicles", "RangerBackupModels", null);
+            RangerBackupModelsArray = RangerBackupModels.Split(':');
 
-            AnimalControlModel = ini.ReadString("Vehicles", "AnimalControlModel", "REBEL2");
+            AnimalControlModels = ini.ReadString("Vehicles", "AnimalControlModels", null);
+            AnimalControlModelsArray = AnimalControlModels.Split(':');
 
             //Key stuff
             DialogueKey = ini.ReadString("Keys", "DialogueKey", "Y");
