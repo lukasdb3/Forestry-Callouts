@@ -13,6 +13,7 @@ using SAHighwayCallouts.Functions;
 using SAHighwayCallouts.Ini;
 using UltimateBackup.API;
 using Rage.Native;
+using SAHighwayCallouts.Functions.Logger;
 
 namespace SAHighwayCallouts.Callouts
 {
@@ -21,7 +22,7 @@ namespace SAHighwayCallouts.Callouts
     {
         #region Variables
 
-        private string callout = "GrandTheftAuto";
+        private string callout = "LuxuryVehiclePursuit";
         internal string CurrentCounty;
         private Vector3 _spawnpoint;
         private float _heading;
@@ -89,27 +90,31 @@ namespace SAHighwayCallouts.Callouts
             SpawnChunks.ChunkGetter(in callout, out CurrentCounty);
             _spawnpoint = SpawnChunks.finalSpawnpoint;
             _heading = SpawnChunks.finalHeading;
-            _vicSpawnpoint = SpawnChunks.finalVicSpawnpoint;
-            _vicHeading = SpawnChunks.finalVicHeading;
+
+            //_vicSpawnpoint = SpawnChunks.finalVicSpawnpoint;
+            //_vicHeading = SpawnChunks.finalVicHeading;
             ShowCalloutAreaBlipBeforeAccepting(_spawnpoint, 30f);
             AddMinimumDistanceCheck(100f, _spawnpoint);
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition(
                 "ATTENTION_ALL_UNITS_01 WE_HAVE_01 CRIME_GRAND_THEFT_AUTO_01 UNITS_RESPOND_CODE_03_01", _spawnpoint);
             CalloutPosition = _spawnpoint;
-            Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Callout displayed!");
-
+            LFunctions.BasicLogger(callout, "Callout Displayed!");
             return base.OnBeforeCalloutDisplayed();
         }
 
         public override bool OnCalloutAccepted()
         {
-            Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Callout accepted!");
-            SAHC_Functions.SpawnNormalPed(out _suspect, _spawnpoint, _heading);
-            SAHC_Functions.PedPersonaChooser(in _suspect);
+            LFunctions.BasicLogger(callout, "Callout Accepted!");
+            SAHC_Functions.SpawnNormalPed(out _victim, _spawnpoint, _heading);
 
-            SAHC_Functions.SpawnNormalPed(out _victim, _vicSpawnpoint, _vicHeading);
-            SAHC_Functions.SpawnNormalCar(out _victimCar, _spawnpoint, _heading);
+            Vector3 aroundVictim = _victim.Position.Around2D(1000f, 1500f);
+            _vicSpawnpoint = World.GetNextPositionOnStreet(aroundVictim);
+            _vicHeading = 0f;
+            SAHC_Functions.SpawnNormalPed(out _suspect, _vicSpawnpoint, _vicHeading);
+            SAHC_Functions.PedPersonaChooser(in _suspect);
+            SAHC_Functions.SpawnNormalCar(out _victimCar, _vicSpawnpoint, _vicHeading);
             SAHC_Functions.ColorPicker(out _vicCarC, out _vicCarColor);
+            
             _victimCar.PrimaryColor = _vicCarC;
             _vicCarModel = _victimCar.Model.Name.ToUpper();
             _vicCarPlateNum = _victimCar.LicensePlate;
@@ -130,9 +135,9 @@ namespace SAHighwayCallouts.Callouts
         {
             if (!_suspectLeft && Game.LocalPlayer.Character.DistanceTo(_victim) <= 600f)
             {
-                Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Main process started!");
+                LFunctions.BasicLogger(callout, "Main process started!");
                 _suspectLeft = true;
-                _suspect.Tasks.CruiseWithVehicle(_victimCar, 25, VehicleDrivingFlags.Normal);
+                //_suspect.Tasks.CruiseWithVehicle(_victimCar, 25, VehicleDrivingFlags.Normal);
             }
             
             if (!_beforeOnScene && Game.LocalPlayer.Character.DistanceTo(_victim) <= 30f)
@@ -171,7 +176,7 @@ namespace SAHighwayCallouts.Callouts
 
             if (_dialgueOver && !_victimWaitingTransport)
             {
-                _suspect.Tasks.ParkVehicle(_victimCar, _suspect.Position, _suspect.Heading);
+                //_suspect.Tasks.ParkVehicle(_victimCar, _suspect.Position, _suspect.Heading);
                 Game.DisplayNotification("Call transport via ~y~Stop The Ped~w~ for the victim. Press ~r~'"+Settings.InteractionKey+"'~w~ to continue!");
                 _victimWaitingTransport = true;
             }
@@ -205,7 +210,7 @@ namespace SAHighwayCallouts.Callouts
                     if (_scenario == 1) _scenarioChoosed = 1;
                     if (_scenario == 2) _scenarioChoosed = 2;
                     if (_scenario == 3) _scenarioChoosed = 3;
-                    Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Suspect has been found, running scenario " + _scenarioChoosed + "!");
+                    LFunctions.BasicLogger(callout, "Suspect found! Running scenario: "+_scenarioChoosed+"");
                     if (_susBlip) _susBlip.Delete();
                 }
 
@@ -263,7 +268,7 @@ namespace SAHighwayCallouts.Callouts
             {
                 if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 25f && !_pursuitStarted)
                 {
-                    Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Pursuit starting!");
+                    LFunctions.BasicLogger(callout, "Pursuit started!");
                     if (_susBlip.Exists()) _susBlip.Delete();
                     _pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
                     LSPD_First_Response.Mod.API.Functions.SetPursuitInvestigativeMode(_pursuit, true);
@@ -335,7 +340,7 @@ namespace SAHighwayCallouts.Callouts
                     "OFFICERS_REPORT_03 OP_CODE OP_4", _spawnpoint);
                 Game.DisplayNotification("~b~Dispatch:~w~ All Units, Grand Theft Auto Code 4");
                 if (LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(_pursuit)) LSPD_First_Response.Mod.API.Functions.ForceEndPursuit(_pursuit);
-                Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Callout was force ended by player -!!-");
+                LFunctions.BasicLogger(callout, "Callout was force ended by player.");
                 End();
             }
             base.Process();
@@ -349,9 +354,7 @@ namespace SAHighwayCallouts.Callouts
                 if (!_pulloverScearioStarted)
                 {
                     LSPD_First_Response.Mod.API.Functions.ForceEndCurrentPullover();
-                    Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout +
-                                    "| - Running Sceario2 Approach Pursuit Option!");
-                    Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Pursuit starting!");
+                    LFunctions.BasicLogger(callout, "Pursuit started!");
                     if (_susBlip.Exists()) _susBlip.Delete();
                     _pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
                     LSPD_First_Response.Mod.API.Functions.SetPursuitInvestigativeMode(_pursuit, true);
@@ -376,7 +379,7 @@ namespace SAHighwayCallouts.Callouts
                 Game.DisplayNotification("You pulled over the wrong ~y~Vehicle~w~!");
                 if (!_wrongVehicle)
                 {
-                    Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Wrong Vehicle pulled over try again!");
+                    LFunctions.BasicLogger(callout, "Wrong vehicle pulled over.");
                     _wrongVehicle = true;
                 }
             }
@@ -394,9 +397,7 @@ namespace SAHighwayCallouts.Callouts
                     if (_scenario2Options == 1 && !_pursuitStarted)
                     {
                         LSPD_First_Response.Mod.API.Functions.ForceEndCurrentPullover();
-                        Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout +
-                                        "| - Running Sceario2 Approach Pursuit Option!");
-                        Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Pursuit starting!");
+                        LFunctions.BasicLogger(callout, "Pursuit starting!");
                         if (_susBlip.Exists()) _susBlip.Delete();
                         _pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
                         LSPD_First_Response.Mod.API.Functions.SetPursuitInvestigativeMode(_pursuit, true);
@@ -417,8 +418,6 @@ namespace SAHighwayCallouts.Callouts
                     {
                         if (!_regularTrafficStop)
                         {
-                            Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout +
-                                            "| - Running Sceario2 Regular Traffic Stop Option!");
                             _regularTrafficStop = true;
                         }
 
@@ -428,7 +427,6 @@ namespace SAHighwayCallouts.Callouts
                     {
                         if (!_shootoutStarted)
                         {
-                            Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Running Sceario2 Shootout Traffic Stop Option!");
                             if (!_suspect.Inventory.HasLoadedWeapon)
                                 SAHC_Functions.NormalWeaponChooser(_suspect, -1, true);
                             _suspect.Tasks.LeaveVehicle(_victimCar, LeaveVehicleFlags.LeaveDoorOpen)
@@ -449,7 +447,7 @@ namespace SAHighwayCallouts.Callouts
                 Game.DisplayNotification("You pulled over the wrong ~y~Vehicle~w~!");
                 if (!_wrongVehicle)
                 {
-                    Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Wrong Vehicle pulled over try again!");
+                    LFunctions.BasicLogger(callout, "Wrong vehicle pulled over.");
                     _wrongVehicle = true;
                 }
             }
@@ -464,7 +462,7 @@ namespace SAHighwayCallouts.Callouts
             if (_victimCar) _victimCar.Dismiss();
             if (LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(_pursuit))
                 LSPD_First_Response.Mod.API.Functions.ForceEndPursuit(_pursuit);
-            Game.LogTrivial("-!!- SAHighwayCallouts - |" + callout + "| - Cleaned up!");
+            LFunctions.BasicLogger(callout, "Cleaned up!");
             base.End();
         }
 

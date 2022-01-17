@@ -85,6 +85,7 @@ namespace SAHighwayCallouts.Ini
         internal static bool SemiTruckPursuit;
         internal static bool LuxuryVehiclePursuit;
         internal static bool GrandTheftAuto;
+        internal static bool AbandonVehicle;
         #endregion iniVariables
 
         internal static void LoadSettings()
@@ -208,6 +209,7 @@ namespace SAHighwayCallouts.Ini
             SemiTruckPursuit = ini.ReadBoolean("Callouts", "SemiTruckPursuit", true);
             LuxuryVehiclePursuit = ini.ReadBoolean("Callouts", "VehiclePursuit", true);
             GrandTheftAuto = ini.ReadBoolean("Callouts", "GrandTheftAuto", true);
+            AbandonVehicle = ini.ReadBoolean("Callouts", "AbandonVehicle", true);
             Game.Console.Print("-!!- settings loaded!");
         }
     }

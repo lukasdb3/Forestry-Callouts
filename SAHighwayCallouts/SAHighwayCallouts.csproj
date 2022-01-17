@@ -61,11 +61,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Callouts\AbandonVehicle.cs" />
     <Compile Include="Callouts\GrandTheftAuto.cs" />
     <Compile Include="Callouts\LuxuryVehiclePursuit.cs" />
     <Compile Include="Callouts\NormalVehiclePursuit.cs" />
     <Compile Include="Callouts\SemiTruckPursuit.cs" />
     <Compile Include="Functions\Commands.cs" />
+    <Compile Include="Functions\Logger\LFunctions.cs" />
     <Compile Include="Functions\Logger\OnDutyMessage.cs" />
     <Compile Include="Functions\SAHC_Functions.cs" />
     <Compile Include="Functions\SpawnStuff\CalloutSpawnpoints\GrandTheftAutoSpawnpoints.cs" />

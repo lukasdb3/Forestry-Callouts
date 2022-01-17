@@ -587,5 +587,69 @@ namespace SAHighwayCallouts.Functions.SpawnStuff.CalloutSpawnpoints
                     break;
             }
         }
+
+        internal static void RockfordHills(out Vector3 _spawnpoint, out float _heading)
+        {
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Spawnpoint in RockfordHills Chunk!");
+            _spawnpoint = default;
+            _heading = default;
+            var chose = new Random().Next(1, 2);
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Case: "+chose+" Out of 1 possible spawns!");
+            switch (chose)
+            {
+                case 1:
+                    _spawnpoint = new Vector3(-852.982f, 5454.836f, 34.233f);
+                    _heading = 117.303f;
+                    break;
+            }
+        }
+        
+        internal static void LaMesa(out Vector3 _spawnpoint, out float _heading)
+        {
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Spawnpoint in LaMesa Chunk!");
+            _spawnpoint = default;
+            _heading = default;
+            var chose = new Random().Next(1, 2);
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Case: "+chose+" Out of 1 possible spawns!");
+            switch (chose)
+            {
+                case 1:
+                    _spawnpoint = new Vector3(-852.982f, 5454.836f, 34.233f);
+                    _heading = 117.303f;
+                    break;
+            }
+        }
+        
+        internal static void Davis(out Vector3 _spawnpoint, out float _heading)
+        {
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Spawnpoint in Davis Chunk!");
+            _spawnpoint = default;
+            _heading = default;
+            var chose = new Random().Next(1, 2);
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Case: "+chose+" Out of 1 possible spawns!");
+            switch (chose)
+            {
+                case 1:
+                    _spawnpoint = new Vector3(-852.982f, 5454.836f, 34.233f);
+                    _heading = 117.303f;
+                    break;
+            }
+        }
+        
+        internal static void MissionRow(out Vector3 _spawnpoint, out float _heading)
+        {
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Spawnpoint in MissionRow Chunk!");
+            _spawnpoint = default;
+            _heading = default;
+            var chose = new Random().Next(1, 2);
+            Game.LogTrivial("-!!- SAHighwayCallouts - |VehiclePursuitSpawnChooser| - Choosing Case: "+chose+" Out of 1 possible spawns!");
+            switch (chose)
+            {
+                case 1:
+                    _spawnpoint = new Vector3(-852.982f, 5454.836f, 34.233f);
+                    _heading = 117.303f;
+                    break;
+            }
+        }
     }
 }

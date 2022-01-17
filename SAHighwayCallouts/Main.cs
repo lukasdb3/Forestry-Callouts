@@ -42,6 +42,7 @@ namespace SAHighwayCallouts
                  if (Settings.SemiTruckPursuit) LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.SemiTruckPursuit));
                  if (Settings.LuxuryVehiclePursuit) LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.LuxuryVehiclePursuit));
                  if (Settings.GrandTheftAuto) LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.GrandTheftAuto));
+                 if (Settings.AbandonVehicle) LSPD_First_Response.Mod.API.Functions.RegisterCallout(typeof(Callouts.AbandonVehicle));
              }
          }
          

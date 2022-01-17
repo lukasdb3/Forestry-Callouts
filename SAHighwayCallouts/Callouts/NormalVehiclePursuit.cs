@@ -10,6 +10,7 @@ using System.Drawing;
 using SAHighwayCallouts.Functions.SpawnStuff;
 using SAHighwayCallouts.Functions.SpawnStuff.CalloutSpawnpoints;
 using SAHighwayCallouts.Functions;
+using SAHighwayCallouts.Functions.Logger;
 using SAHighwayCallouts.Ini;
 using UltimateBackup.API;
 
@@ -41,7 +42,6 @@ namespace SAHighwayCallouts.Callouts
 
         public override bool OnBeforeCalloutDisplayed()
         {
-            Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Callout displayed!");
             CalloutMessage = "~o~Vehicle Pursuit";
             CalloutAdvisory = "~b~Dispatch:~w~ A vehicle is fleeing from law enforcement, Respond ~r~Code 3~w~";
             SpawnChunks.ChunkGetter(in callout, out currentCounty);
@@ -52,20 +52,20 @@ namespace SAHighwayCallouts.Callouts
             AddMinimumDistanceCheck(30f, _spawnpoint);
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("ATTENTION_ALL_UNITS_01 OFFICERS_REPORT_01 CRIME_RESIST_ARREST_01 UNITS_RESPOND_CODE_03_01", _spawnpoint);
             CalloutPosition = _spawnpoint;
-            Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Callout displayed!");
+            LFunctions.BasicLogger(callout, "Callout displayed!");
             return base.OnBeforeCalloutDisplayed();
         }
 
         public override bool OnCalloutAccepted()
         {
-            Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Callout accepted!");
+            LFunctions.BasicLogger(callout, "Callout accepted!");
             SAHC_Functions.SpawnNormalCar(out _susV, _spawnpoint, _heading); //Spawns a normal vehicle to be pursued
             if (_susV.FreeSeatsCount == 0) _passengerChooser = 3; //Forces there to be no passenger sense no seat available
             SAHC_Functions.SpawnNormalPed(out _suspect, _spawnpoint, _heading);
             SAHC_Functions.PedPersonaChooser(in _suspect);
             if (_passengerChooser == 1)
             {
-                Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Passenger was created along with driver");
+                LFunctions.BasicLogger(callout, "Passenger was created along with driver!");
                 SAHC_Functions.SpawnNormalPed(out _passenger, _spawnpoint, _heading);
                 SAHC_Functions.PedPersonaChooser(in _passenger);
                 _passenger.WarpIntoVehicle(_susV, 0);
@@ -82,7 +82,7 @@ namespace SAHighwayCallouts.Callouts
         {
             if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 400f && !_beforeOnScene)
             {
-                Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Main process started");
+                LFunctions.BasicLogger(callout, "Main process started!");
                 _suspect.Tasks.CruiseWithVehicle(_susV, 70, VehicleDrivingFlags.Emergency);
                 _beforeOnScene = true;
             }
@@ -136,7 +136,7 @@ namespace SAHighwayCallouts.Callouts
                     "OFFICERS_REPORT_03 OP_CODE OP_4", _spawnpoint);
                 Game.DisplayNotification("~b~Dispatch:~w~ All Units, Vehicle Pursuit Code 4");
                 
-                Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Callout was force ended by player -!!-");
+                LFunctions.BasicLogger(callout, "Callout was force ended by player!");
                 End();
             }
             
@@ -153,7 +153,7 @@ namespace SAHighwayCallouts.Callouts
             if (_pursuitStarted) LSPD_First_Response.Mod.API.Functions.ForceEndPursuit(_pursuit);
             if (_passenger) _passenger.Dismiss();
 
-            Game.LogTrivial("-!!- SAHighwayCallouts - |"+callout+"| - Cleaned up!");
+            LFunctions.BasicLogger(callout, "Cleaned up!");
             base.End();
         }
     }

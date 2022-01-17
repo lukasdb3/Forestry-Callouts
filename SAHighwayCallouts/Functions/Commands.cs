@@ -5,6 +5,7 @@ using System.Reflection;
 using LSPD_First_Response.Mod.Callouts;
 using SAHighwayCallouts.Ini;
 using SAHighwayCallouts.Functions;
+using SAHighwayCallouts.Functions.Logger;
 
 namespace SAHighwayCallouts.Functions
 {
@@ -22,12 +23,11 @@ namespace SAHighwayCallouts.Functions
             if (LSPD_First_Response.Mod.API.Functions.IsCalloutRunning())
             {
                 LSPD_First_Response.Mod.API.Functions.StopCurrentCallout();
-                Game.LogTrivial("-!!- SAHighwayCallouts - |Commmands| - The current callout was ended");
+                LFunctions.BasicLogger("Commands","The current callout was ended.");
             }
             else
             {
-                Game.LogTrivial("-!!- SAHighwayCallouts - |Commmands| - There is no callout to end");
-            }
+                LFunctions.BasicLogger("Commands","There is no callout to end.");            }
         }
     }
 }
