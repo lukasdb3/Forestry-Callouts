@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using ForestryCallouts.Ini;
+using ForestryCallouts.SimpleFunctions;
 
 namespace ForestryCallouts.Callouts
 {
@@ -46,8 +47,6 @@ namespace ForestryCallouts.Callouts
 
         public override bool OnBeforeCalloutDisplayed()
         {
-            Game.LogTrivial("-!!- Forestry Callouts - |IllegalHunting| - Callout Displayed -!!-");
-            
             //Scenario 1 = Person hunting illegally with a illegal firearm like an automated rifle.
             if (scenario == 1)
             {
@@ -69,6 +68,22 @@ namespace ForestryCallouts.Callouts
             AddMinimumDistanceCheck(30f, spawnpoint);
             return base.OnBeforeCalloutDisplayed();
         }
+        
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 2", "SAPR");
+            Game.LogTrivial("-!!- Forestry Callouts - |IllegalHunting| Callout displayed -!!-");
+
+            base.OnCalloutDisplayed();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+            base.OnCalloutNotAccepted();
+        }
+        
         public override bool OnCalloutAccepted()
         {
             Game.LogTrivial("-!!- Forestry Callouts - |IllegalHunting| - Callout accepted -!!-");
@@ -110,6 +125,7 @@ namespace ForestryCallouts.Callouts
                 suspectBlip.IsRouteEnabled = false;
                 if (!searchNotfiSent)
                 {
+                    if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Search area sent out to responding officers");
                     Game.DisplayHelp("Search for the ~r~Suspect~w~ in the ~y~Yellow Circle~w~");
                     searchNotfiSent = true;
                 }
@@ -156,6 +172,7 @@ namespace ForestryCallouts.Callouts
 
                 if (Game.LocalPlayer.Character.DistanceTo(suspect) <= 11f && !suspectFound)
                 {
+                    if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene. Suspect found.");
                     Game.LogTrivial("-!!- Forestry Callouts - |IllegalHunting| - Suspect found! -!!-");
                     suspectFound = true;
                     timer = 0f;
@@ -235,8 +252,16 @@ namespace ForestryCallouts.Callouts
 
            if (Game.IsKeyDown(IniSettings.InputEndCalloutKey))
            {
+               if (CIPluginChecker.IsCalloutInterfaceRunning)
+               {
+                   MFunctions.SendMessage(this, "Animal attack code 4");
+               }
                LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition(
                    "OFFICERS_REPORT_03 OP_CODE OP_4", spawnpoint);
+               if (CIPluginChecker.IsCalloutInterfaceRunning)
+               {
+                   MFunctions.SendMessage(this, "Illegal Hunting code 4");
+               }
                Game.DisplayNotification("~g~Dispatch:~w~ All Units, Illegal Hunting Code 4");
                Game.LogTrivial("-!!- Forestry Callouts - |IllegalHunting| - Callout was force ended by player -!!-");
                End();

@@ -294,7 +294,7 @@ namespace SAHighwayCallouts.Callouts
                     Game.DisplayHelp("Pullover the ~r~Vehicle~w~");
                     _pulloverPrompted = true;
                     LSPD_First_Response.Mod.API.Functions.SetPedCanBePulledOver(_suspect, true);
-                    _victim.Tasks.CruiseWithVehicle(_victimCar, 20f, VehicleDrivingFlags.Normal);
+                    _suspect.Tasks.CruiseWithVehicle(_victimCar, 20f, VehicleDrivingFlags.Normal);
                     if (!_susBlip && Settings.HelpBlips)
                     {
                         _susBlip = _suspect.AttachBlip();
@@ -339,7 +339,10 @@ namespace SAHighwayCallouts.Callouts
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition(
                     "OFFICERS_REPORT_03 OP_CODE OP_4", _spawnpoint);
                 Game.DisplayNotification("~b~Dispatch:~w~ All Units, Grand Theft Auto Code 4");
-                if (LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(_pursuit)) LSPD_First_Response.Mod.API.Functions.ForceEndPursuit(_pursuit);
+                if (_pursuitStarted)
+                {
+                    if (LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(_pursuit)) LSPD_First_Response.Mod.API.Functions.ForceEndPursuit(_pursuit);   
+                }
                 LFunctions.BasicLogger(callout, "Callout was force ended by player.");
                 End();
             }
@@ -376,11 +379,12 @@ namespace SAHighwayCallouts.Callouts
 
             if (rPed != _suspect)
             {
-                Game.DisplayNotification("You pulled over the wrong ~y~Vehicle~w~!");
-                if (!_wrongVehicle)
+                if (rPed != _suspect)
                 {
+                    Game.DisplayNotification("You pulled over the wrong ~r~Vehicle~w~!");
                     LFunctions.BasicLogger(callout, "Wrong vehicle pulled over.");
                     _wrongVehicle = true;
+
                 }
             }
         }
@@ -444,12 +448,10 @@ namespace SAHighwayCallouts.Callouts
 
             if (rPed != _suspect)
             {
-                Game.DisplayNotification("You pulled over the wrong ~y~Vehicle~w~!");
-                if (!_wrongVehicle)
-                {
-                    LFunctions.BasicLogger(callout, "Wrong vehicle pulled over.");
-                    _wrongVehicle = true;
-                }
+                Game.DisplayNotification("You pulled over the wrong ~r~Vehicle~w~!");
+                LFunctions.BasicLogger(callout, "Wrong vehicle pulled over.");
+                _wrongVehicle = true;
+
             }
         }
 

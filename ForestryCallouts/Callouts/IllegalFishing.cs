@@ -52,6 +52,21 @@ namespace ForestryCallouts.Callouts
             
             return base.OnBeforeCalloutDisplayed();
         }
+        
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 2", "SAPR");
+            Game.LogTrivial("-!!- Forestry Callouts - |IllegalFishing| Callout displayed -!!-");
+
+            base.OnCalloutDisplayed();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+            base.OnCalloutNotAccepted();
+        }
 
         public override bool OnCalloutAccepted()
         {
@@ -77,6 +92,7 @@ namespace ForestryCallouts.Callouts
         {
             if (Game.LocalPlayer.Character.DistanceTo(suspect) <= 10f && !onScene)
             {
+                if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
                 susBlip.IsRouteEnabled = false;
                 Game.DisplayHelp("Press ~r~'" + IniSettings.InteractionKey + "'~w~ to stop the ~r~Suspect~w~.", false);
                 onScene = true;
@@ -131,6 +147,10 @@ namespace ForestryCallouts.Callouts
 
             if (Game.IsKeyDown(IniSettings.InputEndCalloutKey))
             {
+                if (CIPluginChecker.IsCalloutInterfaceRunning)
+                {
+                    MFunctions.SendMessage(this, "Illegal Fishing code 4");
+                }
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition(
                     "OFFICERS_REPORT_03 OP_CODE OP_4", spawnpoint);
                 Game.DisplayNotification("~g~Dispatch:~w~ All Units, Illegal Fishing Code 4");

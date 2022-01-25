@@ -8,6 +8,8 @@ using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using ForestryCallouts.Ini;
+using ForestryCallouts.SimpleFunctions;
+
 
 namespace ForestryCallouts.Callouts
 {
@@ -35,7 +37,6 @@ namespace ForestryCallouts.Callouts
         private bool PassengerAvailable;
         public override bool OnBeforeCalloutDisplayed()
         {
-            Game.LogTrivial("-!!- Forestry Callouts - |HighSpeedPursuit| - Callout Displayed");
             SimpleFunctions.CFunctions.SuspectViolChooser(out SuspectIsViolent);
             CalloutMessage = ("~g~High Speed Pursuit Reported");
             CalloutAdvisory = ("~b~Dispatch:~w~ High speed pursuit of a offroad vehicle reported. Respond ~r~Code 3~w~");
@@ -47,6 +48,21 @@ namespace ForestryCallouts.Callouts
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_01 CRIME_RESIST_ARREST_02 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_02", Spawnpoint);
 
             return base.OnBeforeCalloutDisplayed();
+        }
+        
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 3", "SAPR");
+            Game.LogTrivial("-!!- Forestry Callouts - |HighSpeedPursuit| Callout displayed -!!-");
+
+            base.OnCalloutDisplayed();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+            base.OnCalloutNotAccepted();
         }
         public override bool OnCalloutAccepted()
         {
@@ -100,6 +116,7 @@ namespace ForestryCallouts.Callouts
             }
             if (!PursuitStarted && Game.LocalPlayer.Character.DistanceTo(SusVehicle) <= 450f)
             {
+                if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
                 OnScene = true;
                 if (ToFar)
                 {
@@ -141,6 +158,10 @@ namespace ForestryCallouts.Callouts
             }
             if (Game.IsKeyDown(IniSettings.InputEndCalloutKey)) //If player presses "End" it will forcefully clean the callout up
             {
+                if (CIPluginChecker.IsCalloutInterfaceRunning)
+                {
+                    MFunctions.SendMessage(this, "High Speed Pursuit code 4");
+                }
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", Spawnpoint);
                 Game.DisplayNotification("~g~Dispatch:~w~ All Units, Pursuit Of Offroad Vehicle Code 4");
                 Game.LogTrivial("-!!- Forestry Callouts - |HighSpeedPursuit| - Callout was force ended by player -!!-");

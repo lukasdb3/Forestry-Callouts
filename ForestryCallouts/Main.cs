@@ -7,6 +7,7 @@ using Rage;
 using LSPD_First_Response.Mod.API;
 using System.Reflection;
 using ForestryCallouts.Ini;
+using ForestryCallouts.SimpleFunctions;
 using LSPD_First_Response.Mod.Callouts;
 
 namespace ForestryCallouts
@@ -64,6 +65,11 @@ namespace ForestryCallouts
                     Game.Console.Print("-!!- ==================== ForestryCallouts Settings ==================== -!!-");
                     Game.Console.Print();
                 }
+                Game.Console.Print("Forestry Callouts: Checking for external plugins");
+                Game.Console.Print("CalloutInterface installed: "+ CIPluginChecker.IsCalloutInterfaceRunning + "");
+                Game.Console.Print("UltimateBackup installed: "+ UBPluginChecker.IsUltimateBackupRunning + "");
+                Game.Console.Print("StopThePed installed: "+ STPPluginChecker.IsStopThePedRunning + "");
+                
                 Game.Console.Print("Forestry Callouts: Checking for update!");
                 ForestryCallouts.SimpleFunctions.VersionChecker.IsUpdateAvailable();
                 if (SimpleFunctions.VersionChecker.updateCheckFailed)

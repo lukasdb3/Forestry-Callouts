@@ -90,7 +90,7 @@ namespace SAHighwayCallouts.Callouts
                 timer++;
             }
 
-            if (timer == 1 && !vehLocationSent)
+            if (timer == 1 && !vehLocationSent && !vehicleFound)
             {
                 LFunctions.BasicLogger(callout, "First search notification sent");
                 Game.DisplayNotification("Look for the ~r~Abandoned Vehicle~w~.");
@@ -103,7 +103,7 @@ namespace SAHighwayCallouts.Callouts
                 vehLocationSent = true;
             }
 
-            if (timer == 1250 && vehLocationSent && notfiRan != 15)
+            if (timer == 1250 && vehLocationSent && notfiRan != 15 && !vehicleFound)
             {
                 LFunctions.BasicLogger(callout, "Search notification sent ("+notfiRan+") times");
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition(                   
@@ -115,7 +115,7 @@ namespace SAHighwayCallouts.Callouts
                 timer = 0;
             }
 
-            if (timer == 1250 && notfiRan == 15 && !notfiRanMax)
+            if (timer == 1250 && notfiRan == 15 && !notfiRanMax && !vehicleFound)
             {
                 LFunctions.BasicLogger(callout, "Search notification sent ("+notfiRan+") times, added search blip!");
                 var position = vehicle.Position;
@@ -150,7 +150,7 @@ namespace SAHighwayCallouts.Callouts
                     if (vehBlip) vehBlip.Delete();
                     vehBlip = vehicle.AttachBlip();
                 }
-                Game.DisplayHelp("Take appropriate action for the vehicle.");
+                Game.DisplayNotification("Call a ~y~tow truck~w~ for the ~r~vehicle~w~");
                 timer = 0;
             }
             

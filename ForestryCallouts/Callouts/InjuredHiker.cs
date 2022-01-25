@@ -8,6 +8,7 @@ using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using ForestryCallouts.Ini;
+using ForestryCallouts.SimpleFunctions;
 
 namespace ForestryCallouts.Callouts
 {
@@ -55,9 +56,25 @@ namespace ForestryCallouts.Callouts
 
             return base.OnBeforeCalloutDisplayed();
         }
+        
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 3", "SAPR");
+            Game.LogTrivial("-!!- Forestry Callouts - |InjuredHiker| Callout displayed -!!-");
+
+            base.OnCalloutDisplayed();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+            base.OnCalloutNotAccepted();
+        }
+
         public override bool OnCalloutAccepted()
         {
-            Game.LogTrivial("-!!- Forestry Callout - |InjuredHiker| - Witness/Victim, Case " + randomPeds + " -!!-");
+            Game.LogTrivial("-!!- Forestry Callouts - |InjuredHiker| - Witness/Victim, Case " + randomPeds + " -!!-");
             switch (randomPeds)
             {
                 case 1:
@@ -108,7 +125,8 @@ namespace ForestryCallouts.Callouts
         {
             if (!OnScene && Game.LocalPlayer.Character.DistanceTo(Witness) <= 10f)
             {
-                Game.LogTrivial("-!!- Forestry Callout - |InjuredHiker| - Dialugoe, Case: " + rnd + " -!!-");
+                if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
+                Game.LogTrivial("-!!- Forestry Callouts - |InjuredHiker| - Dialugoe, Case: " + rnd + " -!!-");
                 Game.LogTrivial("-!!- Forestry Callouts - Starting main process -!!-");
                 Game.DisplayHelp("Press ~r~'"+IniSettings.DialogueKey+"'~w~ to talk to the witness", false);
                 OnScene = true;
@@ -124,6 +142,10 @@ namespace ForestryCallouts.Callouts
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", Spawnpoint);
                 Game.DisplayNotification("~g~Dispatch:~w~ All Units, Injured Hiker Code 4");
                 Game.LogTrivial("-!!- Forestry Callouts - |InjuredHiker| - Callout was force ended by player -!!-");
+                if (CIPluginChecker.IsCalloutInterfaceRunning)
+                {
+                    MFunctions.SendMessage(this, "Injured Hiker code 4");
+                }
                 End();
             }
 

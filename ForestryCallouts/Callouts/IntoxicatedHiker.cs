@@ -8,6 +8,7 @@ using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using ForestryCallouts.Ini;
+using ForestryCallouts.SimpleFunctions;
 
 namespace ForestryCallouts.Callouts
 {
@@ -34,9 +35,23 @@ namespace ForestryCallouts.Callouts
             CalloutAdvisory = ("~b~Dispatch:~w~ Person could be ~r~violent~w~, use caution. Respond Code 2");
             CalloutPosition = Spawnpoint; 
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_02 CROME_DISTURBING_THE_PEACE_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_02_02", Spawnpoint);
-
-            Game.LogTrivial("-!!- Forestry Callouts - |IntoxicatedHiker| Callout displayed -!!-");
+            
             return base.OnBeforeCalloutDisplayed();
+        }
+        
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 2", "SAPR");
+            Game.LogTrivial("-!!- Forestry Callouts - |IntoxicatedHiker| Callout displayed -!!-");
+
+            base.OnCalloutDisplayed();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+            base.OnCalloutNotAccepted();
         }
 
         public override bool OnCalloutAccepted()
@@ -68,7 +83,8 @@ namespace ForestryCallouts.Callouts
             }
             if (!OnScene && Game.LocalPlayer.Character.DistanceTo(Suspect) <= 10f)
             {
-            Game.LogTrivial("-!!- Forestry Callout - |IntoxicatedHiker| - Dialugoe, Case: " + rnd + " -!!-");
+                if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
+                Game.LogTrivial("-!!- Forestry Callouts - |IntoxicatedHiker| - Dialogue, Case: " + rnd + " -!!-");
             Game.LogTrivial("-!!- Forestry Callouts - Starting main process -!!-");
             Game.DisplayHelp("Press ~r~'"+IniSettings.DialogueKey+"'~w~ to talk to the suspect", false);
             Suspect.Tasks.StandStill(-1);
@@ -96,6 +112,10 @@ namespace ForestryCallouts.Callouts
             {
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", Spawnpoint);
                 Game.DisplayNotification("~g~Dispatch:~w~ All Units, Intoxicated Hiker Code 4");
+                if (CIPluginChecker.IsCalloutInterfaceRunning)
+                {
+                    MFunctions.SendMessage(this, "Intoxicated Hiker code 4");
+                }
                 Game.LogTrivial("-!!- Forestry Callouts - |IntoxicatedHiker| - Callout was force ended by player -!!-");
                 End();
             }

@@ -49,6 +49,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CalloutInterface, Version=1.2.1.1, Culture=neutral, PublicKeyToken=null">
+      <HintPath>A:\SteamLibrary\steamapps\common\Grand Theft Auto V\Plugins\lspdfr\CalloutInterface.dll</HintPath>
+    </Reference>
     <Reference Include="LSPD First Response, Version=0.4.7874.38392, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\..\Coding\Refrences\LSPD First Response.dll</HintPath>
     </Reference>
@@ -98,6 +101,7 @@
     <Compile Include="Callouts\RecklessDriver.cs" />
     <Compile Include="SimpleFunctions\DeformationVehicles.cs" />
     <Compile Include="SimpleFunctions\MFunctions.cs" />
+    <Compile Include="SimpleFunctions\PluginChecker.cs" />
     <Compile Include="SimpleFunctions\SPFunctions.cs" />
     <Compile Include="SimpleFunctions\VersionChecker.cs" />
   </ItemGroup>

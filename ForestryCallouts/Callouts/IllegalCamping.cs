@@ -8,6 +8,8 @@ using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using ForestryCallouts.Ini;
+using ForestryCallouts.SimpleFunctions;
+
 
 namespace ForestryCallouts.Callouts
 {
@@ -33,7 +35,6 @@ namespace ForestryCallouts.Callouts
 
         public override bool OnBeforeCalloutDisplayed()
         {
-            Game.LogTrivial("-!!- Forestry Callouts - |IllegalCamping| - Callout Displayed -!!-");
             SimpleFunctions.CFunctions.SuspectViolChooser(out SuspectIsViolent);
             if (SuspectIsViolent)
             {
@@ -52,6 +53,21 @@ namespace ForestryCallouts.Callouts
             ShowCalloutAreaBlipBeforeAccepting(Spawnpoint, 30f);
             AddMinimumDistanceCheck(30f, Spawnpoint);
             return base.OnBeforeCalloutDisplayed();
+        }
+        
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 2", "SAPR");
+            Game.LogTrivial("-!!- Forestry Callouts - |Illegal Camping| Callout displayed -!!-");
+
+            base.OnCalloutDisplayed();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+            base.OnCalloutNotAccepted();
         }
         public override bool OnCalloutAccepted()
         {
@@ -89,6 +105,7 @@ namespace ForestryCallouts.Callouts
             {
                 if (Game.LocalPlayer.Character.DistanceTo(SusCamper) <= 15f && !OnScene)
                 {
+                    if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
                     Game.DisplayHelp("Go talk to the driver of the ~r~suspect~w~.");
                     OnScene = true;
                 }
@@ -119,6 +136,10 @@ namespace ForestryCallouts.Callouts
             {
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", Spawnpoint);
                 Game.DisplayNotification("~g~Dispatch:~w~ All Units, Illegal Camping Code 4");
+                if (CIPluginChecker.IsCalloutInterfaceRunning)
+                {
+                    MFunctions.SendMessage(this, "Illegal Camping code 4");
+                }
                 Game.LogTrivial("-!!- Forestry Callouts - |IllegalCamping| - Callout was force ended by player -!!-");
                 End();
             }

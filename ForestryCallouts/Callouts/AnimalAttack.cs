@@ -38,13 +38,27 @@ namespace ForestryCallouts.Callouts
             SimpleFunctions.SPFunctions.AnimalAttatckSpawnChooser(out Spawnpoint, out AnimalSpawmpoint, out AnimalHeading);
             ShowCalloutAreaBlipBeforeAccepting(Spawnpoint, 30f);
             AddMinimumDistanceCheck(30f, Spawnpoint);
-
+            
             CalloutMessage = ("~g~Animal Attack Reported");
             CalloutAdvisory = ("~b~Dispatch:~w~ Animal violently attacking a civilian reported, Respond ~r~Code 3~w~");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("WE_HAVE ASSISTANCE_REQUIRED_02 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_02", Spawnpoint);
             CalloutPosition = Spawnpoint;
-            Game.LogTrivial("-!!- Forestry Callouts - |Animal Attack| Callout displayed -!!-");
             return base.OnBeforeCalloutDisplayed();
+        }
+
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 3", "SAPR");
+            Game.LogTrivial("-!!- Forestry Callouts - |AnimalAttack| Callout displayed -!!-");
+
+                base.OnCalloutDisplayed();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+                base.OnCalloutNotAccepted();
         }
 
         public override bool OnCalloutAccepted()
@@ -74,6 +88,7 @@ namespace ForestryCallouts.Callouts
             if (Game.LocalPlayer.Character.Position.DistanceTo(Victim) <= 8f && !SearchForAnimal)
             {
                 Game.LogTrivial("-!!- Forestry Callout - |AnimalAttack| - Main Process Started -!!-");
+                if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
                 Game.DisplayNotification("The ~r~Mountain Lion~w~ left the area, the animal has been blipped");
                 VictimBlip.IsRouteEnabled = false;
                 SearchForAnimal = true;
@@ -84,7 +99,6 @@ namespace ForestryCallouts.Callouts
             if (!AnimalFound && OnScene && Game.LocalPlayer.Character.Position.DistanceTo(Animal.Position) <= 20f && SearchForAnimal)
             {
                 Animal.Tasks.FightAgainst(Game.LocalPlayer.Character);
-                Game.DisplayNotification("Kill the ~r~Mountain Lion~w~");
                 AnimalFound = true;
             }
             if (Animal.Health == 0 && !animalKilled)
@@ -92,7 +106,8 @@ namespace ForestryCallouts.Callouts
                 Animal.Health = 1;
                 Animal.Kill();
                 animalKilled = true;
-                Game.LogTrivial("-!!- Forestry Callout - |AnimalAttack| - Animal Killed -!!-");
+                if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Animal has been neutralized, one injured victim.");
+                Game.LogTrivial("-!!- Forestry Callouts - |AnimalAttack| - Animal Killed -!!-");
             }
             if (animalKilled && !AnimalDealtWith)
             {
@@ -116,6 +131,7 @@ namespace ForestryCallouts.Callouts
                 if (Game.IsKeyDown(IniSettings.InputInteractionKey))
                 {
                     SimpleFunctions.AnimalControl.CallAnimalControl(in Animal);
+                    if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Animal control called for dead animal");
                 }
             }
             //End Script stufs
@@ -135,6 +151,10 @@ namespace ForestryCallouts.Callouts
         {
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", Spawnpoint);
             Game.DisplayNotification("~g~Dispatch:~w~ All Units, Animal Attack Code 4");
+            if (CIPluginChecker.IsCalloutInterfaceRunning)
+            {
+                MFunctions.SendMessage(this, "Animal Attack code 4");
+            }
             Game.LogTrivial("-!!- Forestry Callouts - |AnimalAttack| - Callout was force ended by player -!!-");
             SimpleFunctions.AnimalControl.destroyAnimalControl();
             

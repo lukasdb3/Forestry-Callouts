@@ -106,3 +106,12 @@ Forestry Callouts v1.2.4
 Forestry Callouts v1.2.5
 	*Ini
 		- Fixed the "DisableAllCallouts" option, it wasnt reading the given value and automatically setting it to default.
+		
+Forestry Callouts v1.2.6
+	*Ini
+		- Changed the DisableAllCallouts option to default to false.
+		- Changed RangerBackupModels changed to accept a unlimtied amount of vehicles!
+	*Callouts
+		- Added support for Callout Interface for Animal Attack, Dangerous Person, Dead Animal, High Speed Pursuit, Illegal Camping, Illegal Fishing, Illegal Hunting, Injured Hiker, Intoxicated Hiker. The rest will come soon.
+		- Fixed some spelling errors.
+		

@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using ForestryCallouts.Ini;
+using ForestryCallouts.SimpleFunctions;
 
 namespace ForestryCallouts.Callouts
 {
@@ -67,12 +68,25 @@ namespace ForestryCallouts.Callouts
                     
             }
             CalloutPosition = spawnpoint;
-
-            Game.LogTrivial("-!!- Forestry Callouts - |DangerousPerson| Callout displayed -!!-");
+            
             
             return base.OnBeforeCalloutDisplayed();
         }
+
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 3", "SAPR");
+            Game.LogTrivial("-!!- Forestry Callouts - |Dangerous Person| Callout displayed -!!-");
+            base.OnCalloutDisplayed();
+        }
         
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+            base.OnCalloutNotAccepted();
+        }
+
         public override bool OnCalloutAccepted()
         {
             Game.LogTrivial("-!!- Forestry Callouts - |DangerousPerson| - Callout Accepted");
@@ -200,6 +214,7 @@ namespace ForestryCallouts.Callouts
                 {
                     suspectFound = true;
                     Game.LogTrivial("-!!- Forestry Callouts - |DangerousPerson| - Suspect found!");
+                    if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Suspect found. Take appropriate caution.");
                     if (susBlip.Exists())
                     {
                         susBlip.Delete();
@@ -251,6 +266,7 @@ namespace ForestryCallouts.Callouts
                     suspectsDead = true;
                     if (Ini.IniSettings.EnableEndCalloutHelpMessages)
                     {
+                        if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Active threat neutralized");
                         Game.DisplayHelp("Press ~r~'"+IniSettings.EndCalloutKey+"'~w~ at anytime to end the callout", false);
                     }
 
@@ -264,7 +280,12 @@ namespace ForestryCallouts.Callouts
                 {
                     LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition(
                         "OFFICERS_REPORT_03 OP_CODE OP_4", spawnpoint);
+                    
                     Game.DisplayNotification("~g~Dispatch:~w~ All Units, Dangerous Person Code 4");
+                    if (CIPluginChecker.IsCalloutInterfaceRunning)
+                    {
+                        MFunctions.SendMessage(this, "Dangerous Person code 4");
+                    }
                     Game.LogTrivial(
                         "-!!- Forestry Callouts - |DangerousPerson| - Callout was force ended by player -!!-");
                     End();

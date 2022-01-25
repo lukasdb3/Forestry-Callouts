@@ -8,6 +8,8 @@ using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using ForestryCallouts.Ini;
+using ForestryCallouts.SimpleFunctions;
+
 
 namespace ForestryCallouts.Callouts
 {
@@ -32,9 +34,22 @@ namespace ForestryCallouts.Callouts
             CalloutAdvisory = ("~b~Dispatch:~w~ Dead Animal reported blocking roadway, Respond Code 2");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("WE_HAVE ASSISTANCE_REQUIRED_02 IN_OR_ON_POSITION UNITS_RESPOND_CODE_02_02", spawnpoint);
             CalloutPosition = spawnpoint;
-
-            Game.LogTrivial("-!!- Forestry Callouts - |DeadAnimalBlock| - Callout displayed -!!-");
             return base.OnBeforeCalloutDisplayed();
+        }
+        
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 2", "SAPR");
+            Game.LogTrivial("-!!- Forestry Callouts - |Dead Animal| Callout displayed -!!-");
+
+            base.OnCalloutDisplayed();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+            base.OnCalloutNotAccepted();
         }
         public override bool OnCalloutAccepted()
         {
@@ -54,6 +69,7 @@ namespace ForestryCallouts.Callouts
             {
                 if (Game.LocalPlayer.Character.DistanceTo(animal.Position) <= 25f && !on_Scene)
                 {
+                    if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
                     Game.LogTrivial("-!!- Forestry Callouts - |DeadAnimalBlock| - Player arrived to the scene -!!-");
                     Game.DisplayHelp("Use appropriate action to take care of the ~r~dead animal~w~. Press ~r~'"+IniSettings.EndCalloutKey+"'~w~ when finished with the call.");
                     on_Scene = true;
@@ -64,6 +80,7 @@ namespace ForestryCallouts.Callouts
                     Game.DisplayHelp("Press ~y~'"+IniSettings.InteractionKey+"'~w~ to call ~g~Animal Control~w~ to your location");
                     if (Game.IsKeyDown(IniSettings.InputInteractionKey))
                     {
+                        if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Animal control called for dead animal");
                         animal_dealt_with = true;
                         ForestryCallouts.SimpleFunctions.AnimalControl.CallAnimalControl(in animal);
                     }
@@ -79,7 +96,8 @@ namespace ForestryCallouts.Callouts
             if (Game.IsKeyDown(IniSettings.InputEndCalloutKey))
             {
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", spawnpoint);
-                Game.DisplayNotification("~g~Dispatch:~w~ All Units, Animal Attack Code 4");
+                Game.DisplayNotification("~g~Dispatch:~w~ All Units, Dead Animal Code 4");
+                if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Dead Animal code 4");
                 Game.LogTrivial("-!!- Forestry Callouts - |DeadAnimalBlock| - Callout was force ended by player -!!-");
                 SimpleFunctions.AnimalControl.destroyAnimalControl();
                 End();

@@ -1,4 +1,5 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=A_003A_005CSteamLibrary_005Csteamapps_005Ccommon_005CGrand_0020Theft_0020Auto_0020V_005CPlugins_005Clspdfr_005CCalloutInterface_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=A_003A_005CSteamLibrary_005Csteamapps_005Ccommon_005CGrand_0020Theft_0020Auto_0020V_005CPlugins_005Clspdfr_005CUltimateBackup_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005CDocuments_005CCoding_005CRefrences_005CLSPD_0020First_0020Response_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005CDocuments_005CCoding_005CRefrences_005CStopThePed_002Edll/@EntryIndexedValue">True</s:Boolean>
