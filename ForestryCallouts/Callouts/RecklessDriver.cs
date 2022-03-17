@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Rage;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using ForestryCallouts.Ini;
-
+using ForestryCallouts.SimpleFunctions;
+using ForestryCallouts.SimpleFunctions.Logger;
 
 namespace ForestryCallouts.Callouts
 {
@@ -32,7 +29,6 @@ namespace ForestryCallouts.Callouts
 
         public override bool OnBeforeCalloutDisplayed()
         {
-            Game.LogTrivial("-!!- Forestry Callouts - |RecklessDriver| - Callout Displayed");
             SimpleFunctions.CFunctions.SuspectViolChooser(out SuspectIsViolent);
             SimpleFunctions.SPFunctions.SpawnChooser(out Spawnpoint);
             CalloutMessage = ("~g~Reckless Driver Reported");
@@ -43,10 +39,25 @@ namespace ForestryCallouts.Callouts
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_03 CRIME_RESIST_ARREST_02 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_02", Spawnpoint);
             return base.OnBeforeCalloutDisplayed();
         }
+        
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 3", "SAPR");
+           LFunctions.Log(this, "Callout displayed!");
+
+            base.OnCalloutDisplayed();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+            base.OnCalloutNotAccepted();
+        }
 
         public override bool OnCalloutAccepted()
         {
-            Game.LogTrivial("-!!- Forestry Callouts - |RecklessDriver| - Callout Accepted");
+            LFunctions.Log(this, "Callout accepted!");
             SimpleFunctions.CFunctions.SpawnOffroadCar(out susVehicle, Spawnpoint, 0);
             SimpleFunctions.CFunctions.SpawnCountryPed(out Suspect, Spawnpoint, 0);
             SimpleFunctions.CFunctions.PedPersonaChooser(Suspect, true, true);
@@ -62,16 +73,17 @@ namespace ForestryCallouts.Callouts
         {
             if (!CalloutStarted && Game.LocalPlayer.Character.DistanceTo(Suspect) <= 300f) //Suspect starts driving
             {
-                Game.LogTrivial("-!!- Forestry Callouts - |RecklessDriver| - Main Process Started -!!-");
+                LFunctions.Log(this, "Main process started!");
                 Suspect.Tasks.CruiseWithVehicle(susVehicle, 25f, VehicleDrivingFlags.Normal);
                 CalloutStarted = true;
 
             }
             if (!OnScene && Game.LocalPlayer.Character.DistanceTo(Suspect) <= 30f) //Start main code
             {
+                if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
                 OnScene = true;
                 LSPD_First_Response.Mod.API.Functions.SetPedCanBePulledOver(Suspect, false);
-                Game.LogTrivial("-!!- Forestry Callouts - |RecklessDriver| - ScenarioChoice, Case: " + ScenarioChoice + " -!!-");
+                LFunctions.Log(this, "Scenario = "+ScenarioChoice+"");
                 switch (ScenarioChoice) //switch statement can choose 2 differnt things, 1: wait for player to approach suspect on traffic stop, 2: Start a pursuit as soon as player is behind suspect. 
                 {
                     case 1:
@@ -109,7 +121,7 @@ namespace ForestryCallouts.Callouts
             //End Script Shit
             if (Game.LocalPlayer.IsDead) //If suspect is dead or player or suspect not exist callout ends
             {
-                Game.LogTrivial("-!!- Forestry Callouts - |RecklessDriver| - Callout was ended due to players death -!!-");
+                LFunctions.Log(this, "Callout was ended due to players death!");
                 End();
             }
             if (PursuitStarted && !LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(Pursuit))
@@ -130,7 +142,11 @@ namespace ForestryCallouts.Callouts
             {
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", Spawnpoint);
                 Game.DisplayNotification("~g~Dispatch:~w~ All Units, Reckless Driver Code 4");
-                Game.LogTrivial("-!!- Forestry Callouts - |Reckless Driver| - Callout was force ended by player -!!-");
+                if (CIPluginChecker.IsCalloutInterfaceRunning)
+                {
+                    MFunctions.SendMessage(this, "Reckless Driver code 4");
+                }
+                LFunctions.Log(this, "Callout was force ended by player!");
                 End();
             }
             base.Process();
@@ -202,7 +218,7 @@ namespace ForestryCallouts.Callouts
             {
                 susVehicle.Dismiss();
             }
-            Game.LogTrivial("-!!- Forestry Callouts - |RecklessDriver| - Cleaned Up -!!-");
+            LFunctions.Log(this, "Cleaned Up!");
             base.End();
         }
     }

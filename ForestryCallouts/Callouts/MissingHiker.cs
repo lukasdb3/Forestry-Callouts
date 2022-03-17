@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Rage;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using ForestryCallouts.Ini;
+using ForestryCallouts.SimpleFunctions;
+using ForestryCallouts.SimpleFunctions.Logger;
 
 namespace ForestryCallouts.Callouts
 {
@@ -43,7 +41,6 @@ namespace ForestryCallouts.Callouts
 
         public override bool OnBeforeCalloutDisplayed()
         {
-            Game.LogTrivial("-!!- Forestry Callouts - |MissingHiker| - Callout Displayed -!!-");
             CalloutMessage = ("~g~Missing Hiker Reported");
             CalloutAdvisory = ("~b~Dispatch:~w~ Search for the person, may be ~r~disorientated~w~. Respond Code 2");
             ForestryCallouts.SimpleFunctions.SPFunctions.MissingHikkerSpawnChooser(out PedSpawnpoint, out Heading);
@@ -53,23 +50,38 @@ namespace ForestryCallouts.Callouts
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("WE_HAVE_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_02_02", PedSpawnpoint);
             return base.OnBeforeCalloutDisplayed();
         }
+        
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 3", "SAPR");
+            LFunctions.Log(this, "Callout displayed!");
+
+            base.OnCalloutDisplayed();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+            base.OnCalloutNotAccepted();
+        }
         public override bool OnCalloutAccepted()
         {
-            Game.LogTrivial("-!!- Forestry Callouts - |MissingHiker| - Callout accepted -!!-");
+            LFunctions.Log(this, "Callout accepted!");
             ForestryCallouts.SimpleFunctions.CFunctions.SpawnHikerPed(out Suspect, PedSpawnpoint, Heading);
             if (WantedDrunkOrNothing == 1)
             {
                 ForestryCallouts.SimpleFunctions.CFunctions.SetWanted(Suspect, true);
-                Game.LogTrivial("-!!- Forestry Callouts - |MissingHiker| - Hiker is wanted! -!!-");
+                LFunctions.Log(this, "Hiker is wanted!");
             }
             if (WantedDrunkOrNothing == 2)
             {
                 ForestryCallouts.SimpleFunctions.CFunctions.SetDrunk(Suspect, true);
-                Game.LogTrivial("-!!- Forestry Callouts - |MissingHiker| - Hiker is drunk! -!!-");
+                LFunctions.Log(this, "Hiker is drunk!");
             }
             if (WantedDrunkOrNothing == 3)
             {
-                Game.LogTrivial("-!!- Forestry Callouts - |MissingHiker| - Hiker is not changed! -!!-");
+                LFunctions.Log(this, "Hiker is wasn't changed!");
             }
             
             if (Suspect.IsMale)
@@ -82,7 +94,7 @@ namespace ForestryCallouts.Callouts
             }
             IsTimerPaused = false;
             FirstBlip = true;
-            Game.LogTrivial("-!!- Forestry Callouts - |MissingHiker| - Timer started! -!!-");
+            LFunctions.Log(this, "Timer started!");
             CalloutAccepted = true;
             timer = 0f;
             return base.OnCalloutAccepted();
@@ -108,7 +120,7 @@ namespace ForestryCallouts.Callouts
                     if (FirstBlip)
                     {
                         IsTimerPaused = true;
-                        Game.LogTrivial("-!!- Forestry Callouts - |MissingHiker| - Timer paused! -!!-");
+                        LFunctions.Log(this, "Timer paused!");
                         FirstBlip = false;
                     }
                     if (!FirstBlip)
@@ -123,11 +135,12 @@ namespace ForestryCallouts.Callouts
                     IsTimerPaused = false;
                     SuspectAreaBlip.DisableRoute();
                     OnScene = true;
-                    Game.LogTrivial("-!!- Forestry Callouts - |MissingHiker| - Timer unpaused! -!!-");
+                    LFunctions.Log(this, "Timer unpaused!");
                 }
                 if (Game.LocalPlayer.Character.DistanceTo(Suspect) <= 10f && !FoundHiker)
                 {
-                    Game.LogTrivial("-!!- Forestry Callouts - |MissingHiker| - Missing Hiker found! -!!-");
+                    if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
+                    LFunctions.Log(this, "Hiker is found!");
                     FoundHiker = true;
                     IsTimerPaused = true;
                     if (SuspectAreaBlip.Exists())
@@ -173,12 +186,16 @@ namespace ForestryCallouts.Callouts
             {
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", PedSpawnpoint);
                 Game.DisplayNotification("~g~Dispatch:~w~ All Units, Missing Hiker Code 4");
-                Game.LogTrivial("-!!- Forestry Callouts - |MissingHiker| - Callout was force ended by player -!!-");
+                if (CIPluginChecker.IsCalloutInterfaceRunning)
+                {
+                    MFunctions.SendMessage(this, "Missing Hiker code 4");
+                }
+                LFunctions.Log(this, "Callout was force ended by player!");
                 End();
             }
             if (Game.LocalPlayer.Character.IsDead)
             {
-                Game.LogTrivial("-!!- Forestry Callouts - |MissingHiker| - Callout was ended due to players death -!!-");
+                LFunctions.Log(this, "Player died callout ending!");
                 End();
             }
             base.Process();
@@ -409,7 +426,7 @@ namespace ForestryCallouts.Callouts
             {
                 SuspectAreaBlip.Delete();
             }
-            Game.LogTrivial("-!!- Forestry Callouts - |MissingHiker| - Cleaned Up -!!-");
+            LFunctions.Log(this, "Cleaned up!");
             base.End();
         }
     }

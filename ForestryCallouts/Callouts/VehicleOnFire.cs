@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Rage;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using Rage.Native;
 using ForestryCallouts.Ini;
+using ForestryCallouts.SimpleFunctions;
+using ForestryCallouts.SimpleFunctions.Logger;
 
 namespace ForestryCallouts.Callouts
 {
@@ -48,7 +46,6 @@ namespace ForestryCallouts.Callouts
 
         public override bool OnBeforeCalloutDisplayed()
         {
-            Game.LogTrivial("-!!- Forestry Callouts - |VehicleOnFire| - Callout Displayed");
             SimpleFunctions.CFunctions.SuspectViolChooser(out SuspectIsViolent);
             CalloutMessage = ("~g~Vehicle Arson Reported");
             CalloutAdvisory = ("~b~Dispatch:~w~ Reports of vehicle set on fire by a person, Respond ~r~Code 3~w~");
@@ -60,6 +57,21 @@ namespace ForestryCallouts.Callouts
 
             return base.OnBeforeCalloutDisplayed();
         }
+        
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 3", "SAPR");
+            LFunctions.Log(this, "Callout displayed!");
+
+            base.OnCalloutDisplayed();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+            base.OnCalloutNotAccepted();
+        }
         public override bool OnCalloutAccepted()
         {
             ForestryCallouts.SimpleFunctions.CFunctions.SpawnOffroadCar(out SusVehicle, Spawnpoint, Heading);
@@ -70,7 +82,7 @@ namespace ForestryCallouts.Callouts
             FireSpawnpoint = SusVehicle.GetOffsetPositionFront(1.5f);
             FireSpawnpoint2 = SusVehicle.Position;
             SusVehicle.FuelTankHealth = 20f;
-            Game.LogTrivial("-!!- Forestry Callouts - |VehicleOnFire| - Callout accepted! -!!-");
+            LFunctions.Log(this, "Callout accepted!");
             return base.OnCalloutAccepted();
         }
         public override void Process()
@@ -79,7 +91,7 @@ namespace ForestryCallouts.Callouts
             {
                 ForestryCallouts.SimpleFunctions.CFunctions.FireControl(FireSpawnpoint, 2, false);
                 ForestryCallouts.SimpleFunctions.CFunctions.FireControl(FireSpawnpoint2, 2, false);
-                Game.LogTrivial("-!!- Forestry Callouts - |VehicleOnFire| - Fires Spawned! -!!-");
+                LFunctions.Log(this, "Fires spawned!");
                 OnScene = true;
                 TimerSet = true;
                 FirstSearchArea = true;
@@ -87,7 +99,7 @@ namespace ForestryCallouts.Callouts
             if (Game.LocalPlayer.Character.DistanceTo(SusVehicle) <= 25f && !StartTimer)
             {
                 StartTimer = true;
-                Game.LogTrivial("-!!- Forestry Callouts - |VehicleOnFire| - Timer started! -!!-");
+                LFunctions.Log(this, "Timer started!");
             }
             if (!FoundSuspect && TimerSet && StartTimer)
             {
@@ -102,7 +114,7 @@ namespace ForestryCallouts.Callouts
                 Suspect.Inventory.EquippedWeapon = SuspectsJerryCan;
                 Suspect.Tasks.Wander();
                 SuspectSpawned = true;
-                Game.LogTrivial("-!!- Forestry Callouts - |VehicleOnFire| - Suspect Spawned -!!-");
+                LFunctions.Log(this, "Suspect spawned!");
             }
             if (TimerSet)
             {
@@ -129,24 +141,23 @@ namespace ForestryCallouts.Callouts
                     timer = 0f;
                     if (FirstSearchAreaGiven)
                     {
-                        Game.LogTrivial("-!!- Forestry Callouts - |VehicleOnFire| - Suspect's location has been updated! -!!-");
                         Game.DisplayNotification("~b~Dispatch:~w~ Suspect's location updated");
                         LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("WE_HAVE_01 SUSPECT_LAST_SEEN_01 IN_OR_ON_POSITION", Spawnpoint);
                     }
                     if (!FirstSearchAreaGiven)
                     {
-                        Game.LogTrivial("-!!- Forestry Callouts - |VehicleOnFire| - Suspect's location has been pinned! -!!-");
                         FirstSearchAreaGiven = true;
                     }
                 }
             }
                 if (FirePutOut && !FoundSuspect && Game.LocalPlayer.Character.DistanceTo(Suspect.Position) <= 10f)
                 {
-                if (SuspectAreaBlip.Exists())
-                {
-                    SuspectAreaBlip.Delete();
-                }
-                FoundSuspect = true;
+                    if (SuspectAreaBlip.Exists())
+                    {
+                        SuspectAreaBlip.Delete();
+                    }
+                    if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
+                    FoundSuspect = true;
                 }
                 if (FoundSuspect)
                 {
@@ -155,7 +166,7 @@ namespace ForestryCallouts.Callouts
                         Pursuit = LSPD_First_Response.Mod.API.Functions.CreatePursuit();
                         LSPD_First_Response.Mod.API.Functions.SetPursuitIsActiveForPlayer(Pursuit, true);
                         LSPD_First_Response.Mod.API.Functions.AddPedToPursuit(Pursuit, Suspect);
-                        Game.DisplaySubtitle("~r~Suspect:~w~ OH SHITT RUN!", 2500);
+                        Game.DisplaySubtitle("~r~Suspect:~w~ OH SHIT RUN!", 2500);
                         LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
                         PursuitStarted = true;
                     }
@@ -202,12 +213,16 @@ namespace ForestryCallouts.Callouts
                 {
                     LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", Spawnpoint);
                     Game.DisplayNotification("~g~Dispatch:~w~ All Units, Vehicle On Fire Code 4");
-                    Game.LogTrivial("-!!- Forestry Callouts - |VehicleOnFire| - Callout was force ended by player -!!-");
+                    if (CIPluginChecker.IsCalloutInterfaceRunning)
+                    {
+                        MFunctions.SendMessage(this, "Vehicle On Fire code 4");
+                    }
+                    LFunctions.Log(this, "Callout was force ended by player!");
                     End();
                 }
                 if (Game.LocalPlayer.Character.IsDead)
                 {
-                    Game.LogTrivial("-!!- Forestry Callouts - |VehicleOnFire| - Callout was ended due to players death -!!-");
+                    LFunctions.Log(this, "Callout was ended due to players death!");
                     End();
                 }
 
@@ -234,7 +249,7 @@ namespace ForestryCallouts.Callouts
             }
             NativeFunction.Natives.STOP_FIRE_IN_RANGE(FireSpawnpoint, 15f);
             NativeFunction.Natives.STOP_FIRE_IN_RANGE(FireSpawnpoint2, 15f);
-            Game.LogTrivial("-!!- Forestry Callouts - |VehicleOnFire| - Cleaned Up -!!-");
+            LFunctions.Log(this, "Cleaned up!");
 
             base.End();
         }

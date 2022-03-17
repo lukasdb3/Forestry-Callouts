@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Rage;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using ForestryCallouts.Ini;
-using Rage.Native;
+using ForestryCallouts.SimpleFunctions;
+using ForestryCallouts.SimpleFunctions.Logger;
 
 namespace ForestryCallouts.Callouts
 {
@@ -62,7 +59,6 @@ namespace ForestryCallouts.Callouts
         private bool ScenarioTwoMainProcessOver;
         public override bool OnBeforeCalloutDisplayed()
         {
-            Game.LogTrivial("-!!- Forestry Callouts - |RangerBackup| - Callout Displayed -!!-");
             SimpleFunctions.CFunctions.SuspectViolChooser(out SuspectIsViolent);
             //Scenario 1 Callout Messeages
             if (Scenario == 1)
@@ -94,9 +90,24 @@ namespace ForestryCallouts.Callouts
             AddMinimumDistanceCheck(30f, CopSpawnpoint);
             return base.OnBeforeCalloutDisplayed();
         }
+        
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 3", "SAPR");
+            LFunctions.Log(this, "Callout displayed!");
+
+            base.OnCalloutDisplayed();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+            base.OnCalloutNotAccepted();
+        }
         public override bool OnCalloutAccepted()
         {
-            Game.LogTrivial("-!!- Forestry Callouts - |RangerBackup| - Callout accepted -!!-");
+            LFunctions.Log(this, "Callout accepted!");
             Cop = new Ped("s_m_y_ranger_01", CopSpawnpoint, CopHeading);
             ForestryCallouts.SimpleFunctions.CFunctions.SpawnRangerVehicle(out CopVehicle, CopSpawnpoint, CopHeading);
             Cop.WarpIntoVehicle(CopVehicle, -1);
@@ -132,7 +143,7 @@ namespace ForestryCallouts.Callouts
                 ForestryCallouts.SimpleFunctions.CFunctions.SpawnHikerPed(out Passenger, SusSpawnpoint, SusHeading);
                 ForestryCallouts.SimpleFunctions.CFunctions.PedPersonaChooser(in Passenger, true, true);
                 Passenger.WarpIntoVehicle(SusVehicle, 0);
-                Game.LogTrivial("-!!- Forestry Callouts - |RangerBackup| - Passenger added! -!!-");
+                LFunctions.Log(this, "Passenger added!");
                 Passenger.RelationshipGroup = "SUSPECT";
             }
             Game.LocalPlayer.Character.RelationshipGroup = "PLAYER";
@@ -146,6 +157,7 @@ namespace ForestryCallouts.Callouts
             {
                 if (Game.LocalPlayer.Character.DistanceTo(CopVehicle) <= 15f && !OnScene)
                 {
+                    if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
                     Game.DisplayHelp("Go talk to the ~g~Ranger~w~");
                     LSPD_First_Response.Mod.API.Functions.StartPulloverOnParkedVehicle(SusVehicle, false, true);
                     OnScene = true;
@@ -229,7 +241,7 @@ namespace ForestryCallouts.Callouts
 
                     Suspect.Tasks.LeaveVehicle(SusVehicle, LeaveVehicleFlags.LeaveDoorOpen).WaitForCompletion(500);
                     Suspect.Tasks.FireWeaponAt(Cop, -1, FiringPattern.DelayFireByOneSecond);
-                    Game.LogTrivial("-!!- Forestry Callouts - |RangerBackup| - Cop and Suspect given weapons -!!-");
+                    LFunctions.Log(this, "Cop and suspect given weapons!");
 
                     if (PassengerChooser == 1)
                     {
@@ -238,11 +250,9 @@ namespace ForestryCallouts.Callouts
 
                         Passenger.Tasks.LeaveVehicle(SusVehicle, LeaveVehicleFlags.LeaveDoorOpen).WaitForCompletion(500);
                         Passenger.Tasks.AimWeaponAt(Cop, -1).WaitForCompletion(200);
-                        Game.LogTrivial("-!!- Forestry Callouts - |RangerBackup| - Passenger is shooting along with suspect -!!-");
                     }
                     Game.SetRelationshipBetweenRelationshipGroups("SUSPECT", "COP", Relationship.Hate);
                     Game.SetRelationshipBetweenRelationshipGroups("COP", "SUSPECT", Relationship.Hate);
-                    Game.LogTrivial("-!!- Forestry Callouts - |RangerBackup| - Cop covering and shooting -!!-");
                 }
                 if (Cop.IsDead || Suspect.IsDead)
                 {
@@ -263,13 +273,12 @@ namespace ForestryCallouts.Callouts
                             Game.SetRelationshipBetweenRelationshipGroups("SUSPECT", "PLAYER", Relationship.Hate);
                             Passenger.Tasks.FireWeaponAt(Game.LocalPlayer.Character, -1, FiringPattern.DelayFireByOneSecond);
                         }
-                        Game.LogTrivial("-!!- Forestry Callouts - |RangerBackup| - AI cop is dead, suspect now shooting player -!!-");
                     }
                     if (Passenger.Exists())
                     {
                         if (Suspect.IsDead && Passenger.IsDead && Cop.IsAlive && !AICopIsAlive)
                         {
-                            Game.LogTrivial("-!!- Forestry Callouts - |RangerBackup| - Suspect is dead -!!-");
+                            LFunctions.Log(this, "Suspect is dead!");
                             AICopIsAlive = true;
                             Game.SetRelationshipBetweenRelationshipGroups("SUSPECT", "COP", Relationship.Dislike);
                             Game.SetRelationshipBetweenRelationshipGroups("COP", "SUSPECT", Relationship.Dislike);
@@ -279,7 +288,7 @@ namespace ForestryCallouts.Callouts
                     {
                         if (Suspect.IsDead && Cop.IsAlive && !AICopIsAlive)
                         {
-                            Game.LogTrivial("-!!- Forestry Callouts - |RangerBackup| - Suspect is dead -!!-");
+                            LFunctions.Log(this, "Suspect is dead!");
                             AICopIsAlive = true;
                             Game.SetRelationshipBetweenRelationshipGroups("SUSPECT", "COP", Relationship.Dislike);
                             Game.SetRelationshipBetweenRelationshipGroups("COP", "SUSPECT", Relationship.Dislike);
@@ -292,8 +301,12 @@ namespace ForestryCallouts.Callouts
             if (Game.IsKeyDown(IniSettings.InputEndCalloutKey)) //If player presses "End" it will forcefully clean the callout up
             {
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", CopSpawnpoint);
+                if (CIPluginChecker.IsCalloutInterfaceRunning)
+                {
+                    MFunctions.SendMessage(this, "Ranger Requesting Backup code 4");
+                }
                 Game.DisplayNotification("~g~Dispatch:~w~ All Units, Ranger Requesting Backup Code 4");
-                Game.LogTrivial("-!!- Forestry Callouts - |RangerBackup| - Callout was force ended by player -!!-");
+                LFunctions.Log(this, "Callout was force ended by player!");
                 End();
             }
             if (PursuitStarted && !LSPD_First_Response.Mod.API.Functions.IsPursuitStillRunning(Pursuit) || Suspect.IsDead)
@@ -309,7 +322,7 @@ namespace ForestryCallouts.Callouts
                 {
                     LSPD_First_Response.Mod.API.Functions.ForceEndPursuit(Pursuit);
                 }
-                Game.LogTrivial("-!!- Forestry Callouts - |RangerBackup| - Callout was ended due to players death -!!-");
+                LFunctions.Log(this, "Callout was ended since player died!");
                 End();
             }
             base.Process();

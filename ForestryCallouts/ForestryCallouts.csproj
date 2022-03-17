@@ -100,6 +100,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Callouts\RecklessDriver.cs" />
     <Compile Include="SimpleFunctions\DeformationVehicles.cs" />
+    <Compile Include="SimpleFunctions\Logger\LFunctions.cs" />
     <Compile Include="SimpleFunctions\MFunctions.cs" />
     <Compile Include="SimpleFunctions\PluginChecker.cs" />
     <Compile Include="SimpleFunctions\SPFunctions.cs" />

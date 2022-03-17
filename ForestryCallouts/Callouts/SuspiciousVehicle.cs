@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Rage;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using ForestryCallouts.Ini;
+using ForestryCallouts.SimpleFunctions;
+using ForestryCallouts.SimpleFunctions.Logger;
 
 namespace ForestryCallouts.Callouts
 {
@@ -61,7 +59,6 @@ namespace ForestryCallouts.Callouts
 
         public override bool OnBeforeCalloutDisplayed()
         {
-            Game.LogTrivial("-!!- Forestry Callouts - |SuspiciousVehicle| - Callout Displayed");
             SimpleFunctions.CFunctions.SuspectViolChooser(out SuspectIsViolent);
             SimpleFunctions.SPFunctions.SuspiciousVehicleSpawnChooser(out Spawnpoint, out Heading);
             if (Scenario == 1)
@@ -82,10 +79,25 @@ namespace ForestryCallouts.Callouts
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_03 CRIME_DISTURBING_THE_PEACE_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_02_02", Spawnpoint);
             return base.OnBeforeCalloutDisplayed();
         }
+        
+        public override void OnCalloutDisplayed()
+        {
+            if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendCalloutDetails(this, "CODE 2", "SAPR");
+           LFunctions.Log(this, "Callout displayed!");
+
+            base.OnCalloutDisplayed();
+        }
+
+        public override void OnCalloutNotAccepted()
+        {
+            if (!CIPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+
+            base.OnCalloutNotAccepted();
+        }
 
         public override bool OnCalloutAccepted()
         {
-            Game.LogTrivial("-!!- Forestry Callouts - |SuspiciousVehicle| - Callout Accepted");
+            LFunctions.Log(this, "Callout accepted!");
             var position = Spawnpoint;
             SearchArea = position.Around2D(30f, 60f);
             SusVehAreaBlip = new Blip(SearchArea, 65f) { Color = Color.Yellow, Alpha = .5f };
@@ -130,7 +142,7 @@ namespace ForestryCallouts.Callouts
                 }
                 if (VehicleHavePassenger != 1)
                 {
-                    Game.LogTrivial("-!!- Forestry Callouts - |RecklessDriver| - Suspect's vehicle does not have passenger");
+                    LFunctions.Log(this, "No passenger selceted!");
                 }
             }
             if (IsSusVehicleOn == 1)
@@ -150,7 +162,7 @@ namespace ForestryCallouts.Callouts
             {
                 Game.DisplayNotification("Look for the ~r~Suspicious Vehicle~w~ in the ~y~Yellow~w~ Circle");
                 SearchingForCar = true;
-                Game.LogTrivial("-!!- Forestry Callouts - |SuspiciousVehicle| - ScenarioChoice, Case: " + Scenario + " -!!-");
+                LFunctions.Log(this, "Scenario = " +Scenario+"!");
                 SusVehAreaBlip.IsRouteEnabled = false;
             }
             if (Game.LocalPlayer.Character.Position.DistanceTo(SusVehicle.Position) <= 20f && !OnScene)
@@ -158,24 +170,24 @@ namespace ForestryCallouts.Callouts
                 switch (Scenario)
                 {
                     case 1:
-                        Game.LogTrivial("-!!- Forestry Callouts - |SuspiciousVehicle| - Vehicle found -!!-");
+                        if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
+                        LFunctions.Log(this, "Vehicle found!");
                         SusVehAreaBlip.Delete();
                         SusVehicleBlip = SusVehicle.AttachBlip();
                         SusVehicleBlip.Color = Color.Red;
                         SusVehicleBlip.EnableRoute(Color.Yellow);
                         OnScene = true;
-                        Game.LogTrivial("-!!- Forestry Callouts - |SuspiciousVehicle| - ScenarioOneChooser, Case: " + ScenarioOneChooser + " -!!-");
+                        LFunctions.Log(this, "ScenarioOneChooser = " +ScenarioOneChooser+"!");
                         if (ScenarioOneChooser == 1)
                         {
                             LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
-                            Game.LogTrivial("-!!- Forestry Callouts - |SuspiciousVehicle| - OnFootOrVehicle, Case: " + OnFootOrVehicle + " -!!-");
+                            LFunctions.Log(this, "OnFootOrVehicle = " +OnFootOrVehicle+"!");
                             if (OnFootOrVehicle == 1)
                             {
                                 Game.DisplaySubtitle("~r~Suspect:~w~ OH SHITT RUN!", 2500);
                                 Suspect.Tasks.LeaveVehicle(SusVehicle, LeaveVehicleFlags.LeaveDoorOpen).WaitForCompletion(2500);
                                 SusVehicle.IsDriveable = false;
                                 Rage.Native.NativeFunction.Natives.TASK_REACT_AND_FLEE_PED(Suspect, Game.LocalPlayer.Character);
-                                Game.LogTrivial("-!!- Forestry Callouts - |SuspiciousVehicle| - Suspect should be on foot fleeing -!!-");
                             }
                             else
                             {
@@ -191,7 +203,7 @@ namespace ForestryCallouts.Callouts
                             }
                             else
                             {
-                                Game.LogTrivial("-!!- Forestry Callouts - |SuspiciousVehicle| - Prostitute not in pursuit -!!-");
+                                LFunctions.Log(this, "Prostitute not running!");
                             }
                             SusVehicleBlip.Delete();
                             Game.DisplayHelp("Pursue the ~r~SUSPECT~w~");
@@ -199,7 +211,8 @@ namespace ForestryCallouts.Callouts
                         break;
 
                     case 2:
-                        Game.LogTrivial("-!!- Forestry Callouts - |SuspiciousVehicle| - Vehicle found -!!-");
+                        if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
+                        LFunctions.Log(this, "Vehicle found!");
                         SusVehAreaBlip.Delete();
                         OnScene = true;
                         Game.DisplaySubtitle("~r~Suspect:~w~ OH SHITT RUN!", 2500);
@@ -211,7 +224,8 @@ namespace ForestryCallouts.Callouts
                         break;
 
                     case 3:
-                        Game.LogTrivial("-!!- Forestry Callouts - |SuspiciousVehicle| - Vehicle found -!!-");
+                        if (CIPluginChecker.IsCalloutInterfaceRunning) MFunctions.SendMessage(this, "Officer is on scene.");
+                        LFunctions.Log(this, "Vehicle found!");
                         SusVehAreaBlip.Delete();
                         SusVehicleBlip = SusVehicle.AttachBlip();
                         SusVehicleBlip.Color = Color.Red;
@@ -242,12 +256,11 @@ namespace ForestryCallouts.Callouts
                     }
                     if (Game.IsKeyDown(IniSettings.InputInteractionKey) && !ProstituteReadyForDialgue)
                     {
-                        Game.LogTrivial("-!!- Forestry Callouts - |SuspiciousVehicle| - , Case: ScenarioOneDialogueChooser" + ScenarioOneDialogueChooser + " -!!-");
+                        LFunctions.Log(this, "ScenarioOneDialogueChooser = " +ScenarioOneDialogueChooser+"!");
                         Game.DisplaySubtitle("~y~Player:~w~ Hello mam please exit the vehicle");
                         Prostitute.Tasks.LeaveVehicle(SusVehicle, LeaveVehicleFlags.None).WaitForCompletion(2500);
                         Prostitute.Heading = Game.LocalPlayer.Character.Heading + 180f;
                         Prostitute.Tasks.StandStill(-1);
-                        Game.LogTrivial("-!!- Forestry Callouts - |SuspiciousVehicle| - Prostitute left the vehicle as asked -!!-");
                         ProstituteReadyForDialgue = true;
                         Game.DisplayNotification("To continue dialogue with the ~r~passenger~w~ press ~r~'"+IniSettings.DialogueKey+"'~w~");
                     }
@@ -317,7 +330,7 @@ namespace ForestryCallouts.Callouts
             {
                 if (Game.LocalPlayer.Character.Position.DistanceTo(Suspect) <= 5f && !S3ReadyForDialogue)
                 {
-                    Game.LogTrivial("-!!- Forestry Callouts - |SuspiciousVehicle| - ScenarioThreeDialogueChooser, Case: " + ScenarioThreeDialogueChooser + " -!!-");
+                    LFunctions.Log(this, "ScenarioThreeDialogueChooser = " +ScenarioThreeDialogueChooser+"!");
                     Game.DisplayHelp("Press ~r~'"+IniSettings.DialogueKey+"'~w~ to talk to the ~r~driver~w~", false);
                     S3ReadyForDialogue = true;
                 }
@@ -372,12 +385,16 @@ namespace ForestryCallouts.Callouts
             {
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", Spawnpoint);
                 Game.DisplayNotification("~g~Dispatch:~w~ All Units, Suspicious Vehicle Code 4");
-                Game.LogTrivial("-!!- Forestry Callouts - |Suspicious Vehicle| - Callout was force ended by player -!!-");
+                if (CIPluginChecker.IsCalloutInterfaceRunning)
+                {
+                    MFunctions.SendMessage(this, "Reckless Driver code 4");
+                }
+                LFunctions.Log(this, "Callout force ended by player!");
                 End();
             }
             if (Game.LocalPlayer.IsDead) //If suspect is dead or player or suspect not exist callout ends
             {
-                Game.LogTrivial("-!!- Forestry Callouts - |HighSpeedPursuit| - Callout was ended due to players death -!!-");
+                LFunctions.Log(this, "Callout ended, player died");
                 End();
             }
             if (ProstituteJoinPursuit == 1 && OnFootOrVehicle != 1)
@@ -637,7 +654,7 @@ namespace ForestryCallouts.Callouts
             {
                 SusVehicleBlip.Delete();
             }
-
+            LFunctions.Log(this, "Cleaned up!");
             base.End();
         }
     }
