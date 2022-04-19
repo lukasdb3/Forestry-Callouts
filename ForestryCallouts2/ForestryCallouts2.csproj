@@ -2,16 +2,32 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <FileVersion>2.0.0.0</FileVersion>
+        <Title>ForestryCallouts2</Title>
+        <Authors>lukasdb3</Authors>
+        <Description>Callout plugin for LSPDFR</Description>
     </PropertyGroup>
 
     <ItemGroup>
       <Reference Include="LSPD First Response, Version=0.4.7874.38392, Culture=neutral, PublicKeyToken=null">
         <HintPath>..\..\..\Coding\Refrences\LSPD First Response.dll</HintPath>
       </Reference>
+      <Reference Include="LSPD First Response, Version=0.4.8037.37597, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\Coding\Refrences\LSPD First Response.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Windows" />
+      <Reference Include="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+        <HintPath>..\..\..\Coding\Refrences\System.Windows.Forms.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="RagePluginHook" Version="1.86.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Backbone\SpawnSystem\Water\CalloutSpawnpoints" />
     </ItemGroup>
 
 </Project>

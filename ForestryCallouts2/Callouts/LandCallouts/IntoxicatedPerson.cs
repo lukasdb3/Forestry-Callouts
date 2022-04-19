@@ -4,7 +4,7 @@ using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using System;
 
-namespace ForestryCallouts2.Callouts
+namespace ForestryCallouts2.Callouts.LandCallouts
 {
     
     [CalloutInfo("IntoxicatedPerson", CalloutProbability.Medium)]

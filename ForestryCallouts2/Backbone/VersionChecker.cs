@@ -13,7 +13,7 @@ namespace ForestryCallouts2.Backbone
         
         internal static bool IsUpdateAvailable()
         {
-            var curVersion = IniSettings.curV;
+            var curVersion = IniSettings.CurV;
 
             var latestVersionUri =
                 new Uri(
@@ -36,7 +36,7 @@ namespace ForestryCallouts2.Backbone
                 // server or connection is having issues
             }
 
-            if (receivedData != IniSettings.curV)
+            if (receivedData != IniSettings.CurV)
             {
                 updateAvailable = true;
                 Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~Forestry Callouts 2 Warning",

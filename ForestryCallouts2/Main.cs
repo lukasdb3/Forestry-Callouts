@@ -32,12 +32,25 @@ namespace ForestryCallouts2
         //Registers all callouts
         internal static void RegisterCallouts()
         {
-            if (IniSettings.allCalls)
+            //Player is using water calls so we register them and dont register land callouts
+            if (IniSettings.WaterCalls)
             {
                 
             }
-            if (IniSettings.intoxPerson) Functions.RegisterCallout(typeof(Callouts.IntoxicatedPerson)); 
             
+            //Player is not using water callouts and wants all land callouts to be loaded
+            if (IniSettings.AllCalls && !IniSettings.WaterCalls)
+            {
+                
+            }
+
+            //Player is not using water callouts and only want park ranger related calls to be registered
+            if (!IniSettings.WaterCalls)
+            {
+                if (IniSettings.IntoxPerson) Functions.RegisterCallout(typeof(Callouts.LandCallouts.IntoxicatedPerson));   
+                
+            }
+
         }
         
     }

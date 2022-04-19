@@ -1,13 +1,20 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=A_003A_005CSteamLibrary_005Csteamapps_005Ccommon_005CGrand_0020Theft_0020Auto_0020V_005CPlugins_005Clspdfr_005CCalloutInterface_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=A_003A_005CSteamLibrary_005Csteamapps_005Ccommon_005CGrand_0020Theft_0020Auto_0020V_005CPlugins_005Clspdfr_005CUltimateBackup_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005CDocuments_005CCoding_005CRefrences_005CCalloutInterface_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005CDocuments_005CCoding_005CRefrences_005CLSPD_0020First_0020Response_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005CDocuments_005CCoding_005CRefrences_005CRAGEPluginHook_002Eexe/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005CDocuments_005CCoding_005CRefrences_005CStopThePed_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005CDocuments_005CCoding_005CRefrences_005CSystem_002EWindows_002EForms_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005CDocuments_005CCoding_005CRefrences_005CUltimateBackup_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005CDocuments_005CGTA_0020Mod_0020Development_005CCoding_005CCoding_0020Refrences_0020For_0020GTA5_005CRagePluginHookSDK_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005CDocuments_005CRefrences_005CLSPD_0020First_0020Response_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005CDocuments_005CRefrences_005CStopThePed_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005CDocuments_005CRefrences_005CUltimateBackup_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005COneDrive_005CDocuments_005CRefrences_005CLSPD_0020First_0020Response_002Edll/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005COneDrive_005CDocuments_005CRefrences_005CStopThePed_002Edll/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005COneDrive_005CDocuments_005CRefrences_005CStopThePed_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Clukas_005C_002Edotnet_005Cpacks_005CMicrosoft_002ENETCore_002EApp_002ERef_005C5_002E0_002E0_005Cref_005Cnet5_002E0_005CSystem_002EWindows_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
+  &lt;Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Windows.Forms.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Intox/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
