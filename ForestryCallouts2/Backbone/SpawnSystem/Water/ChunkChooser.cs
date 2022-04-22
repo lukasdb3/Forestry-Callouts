@@ -22,6 +22,9 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Water
             //finds closest water chunk to the player
             closestChunk = ChunkLoader.WaterChunkList.OrderBy(x => x.DistanceTo(playerPos)).FirstOrDefault();
             Logger.Log("Closest water chunk: "+closestChunk+"");
+            
+            //Checks and makes sure the chunk is within the max distance range if not callout is ended.
+            DistanceChecker.Main(closestChunk);
 
             if (closestChunk == SpawnSystem.Water.ChunkLoader.chunk1) Chunk1(currentCallout);
             if (closestChunk == SpawnSystem.Water.ChunkLoader.chunk2) Chunk2(currentCallout);

@@ -17,6 +17,8 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
                 {
                     LSPD_First_Response.Mod.API.Functions.StopCurrentCallout();
                     Logger.Log("Current callout was ended due to closest chunk being out of the MaxDistance range");
+                    Logger.Log("New callout being randomly selected");
+                    CalloutsGetter.StartRandomCallout();
                 } 
             }
             //the distance between the chunk and the player is within the IniSettings.MaxDistance range.

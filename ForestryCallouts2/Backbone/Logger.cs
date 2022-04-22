@@ -23,6 +23,8 @@ namespace ForestryCallouts2.Backbone
             Game.Console.Print("Forestry Callouts update available:"+VersionChecker.IsUpdateAvailable()+"");
             Game.Console.Print("Version: "+VersionChecker.receivedData+"");
             Game.Console.Print("Running Plugin Checks...");
+            Game.Console.Print("Checking players plugins for callouts..");
+            CalloutsGetter.CacheCallouts();
             Game.Console.Print("CalloutInterface installed: "+ CiPluginChecker.IsCalloutInterfaceRunning + "");
             Game.Console.Print("UltimateBackup installed: "+ UbPluginChecker.IsUltimateBackupRunning + "");
             Game.Console.Print("StopThePed installed: "+ StpPluginChecker.IsStopThePedRunning + "");
