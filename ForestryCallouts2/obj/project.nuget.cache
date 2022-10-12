@@ -1,21 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "xbJbA4aCfJbDrV42S28oYdbsmm3WY0tgEgEhDdvYkwPpnCXldBfJn3DUirsfWjKmH41mIRVJfhy0OQJl0qkoaA==",
+  "dgSpecHash": "ufRxJ3tkdT+mr9BUZyo0ha8KLfVQU3Pvf5HWncRCwoB4Uqku/857g/Z+nZAu3Ph6UoqnZ2Gf8gL+ziY+rmzqdA==",
   "success": true,
   "projectFilePath": "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lukas\\.nuget\\packages\\ragepluginhook\\1.86.1\\ragepluginhook.1.86.1.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'RagePluginHook 1.86.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.",
-      "libraryId": "RagePluginHook",
-      "targetGraphs": [
-        "net5.0"
-      ]
-    }
-  ]
+  "logs": []
 }

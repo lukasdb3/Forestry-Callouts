@@ -9,15 +9,15 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land
         internal static List<Vector3> chunklist = new List<Vector3>(); //All chunks
         
         //Vector3 in the middle of each chunk
-        internal static Vector3 chunk1 = new Vector3();
-        internal static Vector3 chunk2 = new Vector3();
-        internal static Vector3 chunk3 = new Vector3();
-        internal static Vector3 chunk4 = new Vector3();
-        internal static Vector3 chunk5 = new Vector3();
+        internal static Vector3 nPaletoBayForest = new Vector3(-532.092f, 5322.865f, 91.310f);
+        internal static Vector3 chunk2 = new Vector3(-532.092f, 5322.865f, 91.310f);
+        internal static Vector3 chunk3 = new Vector3(-532.092f, 5322.865f, 91.310f);
+        internal static Vector3 chunk4 = new Vector3(-532.092f, 5322.865f, 91.310f);
+        internal static Vector3 chunk5 = new Vector3(-532.092f, 5322.865f, 91.310f);
         internal static void Main()
         {
             //Adds chunks to a list
-            chunklist.Add(chunk1);
+            chunklist.Add(nPaletoBayForest);
             chunklist.Add(chunk2);
             chunklist.Add(chunk3);
             chunklist.Add(chunk4);

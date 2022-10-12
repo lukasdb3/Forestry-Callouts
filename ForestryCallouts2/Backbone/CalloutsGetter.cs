@@ -10,21 +10,19 @@ namespace ForestryCallouts2.Backbone
 {
     internal static class CalloutsGetter
     {
-        internal static List<string> randomCalloutCache = new List<string>();
-
-        static CalloutsGetter()
-        {
-            CacheCallouts();
-        }
+        private static List<string> randomCalloutCache = new List<string>();
+        private static int callCount;
 
         internal static void CacheCallouts()
         { 
             Game.Console.Print("Caching players callouts..");
-            foreach (Assembly assem in Functions.GetAllUserPlugins())
+            Logger.DebugLog("CALLOUT CACHER", "Assembly using: "+System.Reflection.Assembly.GetExecutingAssembly().GetName().ToString()+"");
+            foreach (Assembly assem in LSPD_First_Response.Mod.API.Functions.GetAllUserPlugins())
             {
                 AssemblyName assemName = assem.GetName();
-                if (assemName.ToString() != "ForestryCallouts2")
+                if (assemName.ToString() != System.Reflection.Assembly.GetExecutingAssembly().GetName().ToString())
                 {
+                    Logger.DebugLog("CALLOUT CACHER", "Assembly checking: "+assemName+"");
                     List<Type> assemCallouts = (from Callout in assem.GetTypes()
                         where Callout.IsClass && Callout.BaseType == typeof(LSPD_First_Response.Mod.Callouts.Callout)
                         select Callout).ToList();
@@ -35,7 +33,6 @@ namespace ForestryCallouts2.Backbone
                     }
                     else
                     {
-                        int addCount = 0;
                         foreach (Type callout in assemCallouts)
                         {
                             object[] CalloutAttributes =
@@ -49,17 +46,18 @@ namespace ForestryCallouts2.Backbone
                                 if (CalloutAttribute != null)
                                 {
                                     randomCalloutCache.Add(CalloutAttribute.Name);
-                                    addCount++;
+                                    callCount++;
                                 }
                             }
                         }
-                        Game.Console.Print("Caching callouts finished");
                     }
                 }
             }
+            Game.Console.Print("Cached "+callCount+" callouts!");
+            Game.Console.Print("Caching callouts finished");
         }
 
-        internal static string StartRandomCallout()
+        internal static void StartRandomCallout()
         {
             Random randomValue = new Random();
 
@@ -67,14 +65,20 @@ namespace ForestryCallouts2.Backbone
             {
                 string randomCallout = randomCalloutCache[randomValue.Next(0, randomCalloutCache.Count)];
 
-                Functions.StartCallout(randomCallout);
-                return randomCallout;
+                LSPD_First_Response.Mod.API.Functions.StartCallout(randomCallout);
+                Logger.DebugLog("RANDOM CALLOUT STARTER", "Starting "+randomCallout+"");
             }
 
-            catch
+            catch (Exception e)
             {
-                Logger.Log("[Callout Getter] - WARNING: There was an error trying to start a random callout");
-                return null;
+                Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~Forestry Callouts 2 Warning",
+                    "~g~Failed to start random callout",
+                    "Please check log for more details");
+                Game.Console.Print("=============== FORESTRY CALLOUTS WARNING ===============");
+                Game.Console.Print("There was an error in selecting a random callout");
+                Game.Console.Print("ERROR: "+e+"");
+                Game.Console.Print("Please send this log to https://dsc.gg/ulss)");
+                Game.Console.Print("=============== FORESTRY CALLOUTS WARNING ===============");
             }
         }
     }

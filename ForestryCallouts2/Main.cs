@@ -2,6 +2,7 @@
 using Rage;
 using LSPD_First_Response.Mod.API;
 using ForestryCallouts2.Backbone;
+using ForestryCallouts2.Backbone.IniConfiguration;
 
 namespace ForestryCallouts2
 {
@@ -26,6 +27,7 @@ namespace ForestryCallouts2
             if (OnDuty)
             {
                 Logger.StartLoadingPhase();
+                RegisterCallouts();
             }
         }
 
@@ -38,18 +40,18 @@ namespace ForestryCallouts2
                 
             }
             
-            //Player is not using water callouts and wants all land callouts to be loaded
-            if (IniSettings.AllCalls && !IniSettings.WaterCalls)
-            {
-                
-            }
-
-            //Player is not using water callouts and only want park ranger related calls to be registered
+            //Player is not using water callouts and wants land callouts to be loaded
             if (!IniSettings.WaterCalls)
             {
-                if (IniSettings.IntoxPerson) Functions.RegisterCallout(typeof(Callouts.LandCallouts.IntoxicatedPerson));   
+                if (IniSettings.IntoxPerson)  Functions.RegisterCallout(typeof(Callouts.LandCallouts.IntoxicatedPerson));
                 
+                //If player wants all land callouts the below calls are also loaded
+                if (IniSettings.AllCalls)
+                {
+                    
+                }
             }
+            
 
         }
         
