@@ -3,7 +3,7 @@ using Rage;
 
 namespace ForestryCallouts2.Backbone.Functions
 {
-    internal static class CFunctions
+    internal static class  CFunctions
     {
         //Callout Interface Functions
         public static void SendCalloutDetails(LSPD_First_Response.Mod.Callouts.Callout sender, string priority, string agency)
@@ -12,7 +12,7 @@ namespace ForestryCallouts2.Backbone.Functions
             {
                 CalloutInterface.API.Functions.SendCalloutDetails(sender, priority, agency);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Game.LogTrivial("-!!- Forestry Callouts ERROR - |SendCalloutDetails| - There was en error sending callout details with Callout Interface please send this log to https://dsc.gg/ulss -!!-");
                 Game.LogTrivial(ex.Message);
@@ -25,7 +25,7 @@ namespace ForestryCallouts2.Backbone.Functions
             {
                 CalloutInterface.API.Functions.SendMessage(sender, message);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Game.LogTrivial("-!!- Forestry Callouts ERROR - |SendMessage| - There was en error sending a MDT message with Callout Interface please send this log to https://dsc.gg/ulss -!!-");
                 Game.LogTrivial(ex.Message);

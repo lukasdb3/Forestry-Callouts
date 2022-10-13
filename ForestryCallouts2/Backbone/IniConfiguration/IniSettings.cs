@@ -14,14 +14,14 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static bool DebugLogs;
         
         //Distance Checker Variables
-        private static bool _disableDistacneChecker;
+        private static bool _disableDistanceChecker;
         private static int _unit;
         private static double _inputDistance;
         internal static double FinalDistance;
         
         internal static bool AllCalls;
         internal static bool WaterCalls;
-        internal static int SearchAreaNotfis;
+        internal static int SearchAreaNotifis;
         
         //Callouts
         internal static bool IntoxPerson;
@@ -46,9 +46,11 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             //Current plugin version installed
             CurV = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-            _disableDistacneChecker = ini.ReadBoolean("Main", "DisableDistanceChecker", false);
-            if (_disableDistacneChecker) Game.Console.Print("Distance checker disabled");
-            if (!_disableDistacneChecker)
+            //disables the distance checker to a callout if True
+            _disableDistanceChecker = ini.ReadBoolean("Main", "DisableDistanceChecker", false);
+            if (_disableDistanceChecker) Game.Console.Print("Distance checker disabled");
+            //If miles is being used for distanceChecker, converts to meters.
+            if (!_disableDistanceChecker)
             {
                 _unit = ini.ReadInt32("DistanceChecker", "UnitOfMeasurement", 1);
                 _inputDistance = ini.ReadInt32("DistanceChecker", "MaxDistance");
@@ -75,8 +77,8 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             WaterCalls = ini.ReadBoolean("Main", "WaterCallouts", false);
 
             //Max number of search blips that cna be sent out for callouts that use them, min is 10
-            SearchAreaNotfis = ini.ReadInt32("Main", "SearchAreaBlipsMax", 15);
-            if (SearchAreaNotfis < 10) SearchAreaNotfis = 15;
+            SearchAreaNotifis = ini.ReadInt32("Main", "SearchAreaBlipsMax", 15);
+            if (SearchAreaNotifis < 10) SearchAreaNotifis = 15;
 
             //Key stuff
             DialogueKey = ini.ReadString("Keys", "DialogueKey", "Y");

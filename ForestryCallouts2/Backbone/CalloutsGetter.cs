@@ -16,13 +16,13 @@ namespace ForestryCallouts2.Backbone
         internal static void CacheCallouts()
         { 
             Game.Console.Print("Caching players callouts..");
-            Logger.DebugLog("CALLOUT CACHER", "Assembly using: "+System.Reflection.Assembly.GetExecutingAssembly().GetName().ToString()+"");
+            Logger.DebugLog("CALLOUT CACHE", "Assembly using: "+Assembly.GetExecutingAssembly().GetName()+"");
             foreach (Assembly assem in LSPD_First_Response.Mod.API.Functions.GetAllUserPlugins())
             {
                 AssemblyName assemName = assem.GetName();
                 if (assemName.ToString() != System.Reflection.Assembly.GetExecutingAssembly().GetName().ToString())
                 {
-                    Logger.DebugLog("CALLOUT CACHER", "Assembly checking: "+assemName+"");
+                    Logger.DebugLog("CALLOUT CACHE", "Assembly checking: "+assemName+"");
                     List<Type> assemCallouts = (from Callout in assem.GetTypes()
                         where Callout.IsClass && Callout.BaseType == typeof(LSPD_First_Response.Mod.Callouts.Callout)
                         select Callout).ToList();

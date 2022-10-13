@@ -3,7 +3,6 @@ using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using System.Drawing;
 using System;
-using ForestryCallouts.SimpleFunctions;
 using ForestryCallouts2.Backbone;
 using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
@@ -63,14 +62,14 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         public override void OnCalloutDisplayed()
         {
             //Send callout info to Callout Interface
-            if (CiPluginChecker.IsCalloutInterfaceRunning) CFunctions.SendCalloutDetails(this, "CODE 2", "SAPR");
+            if (PluginChecker.CalloutInterface) CFunctions.SendCalloutDetails(this, "CODE 2", "SAPR");
             Logger.CallDebugLog(this, "Callout displayed");
             base.OnCalloutDisplayed();
         }
         
         public override void OnCalloutNotAccepted()
         {
-            if (CiPluginChecker.IsCalloutInterfaceRunning) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+            if (PluginChecker.CalloutInterface) LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
 
             base.OnCalloutNotAccepted();
         }
@@ -117,7 +116,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 }
                 
                 //we delete the search area, and blip the suspect because the player is taking to long to find the suspect
-                if (notfiSentCount == IniSettings.SearchAreaNotfis && !maxNotfiSent)
+                if (notfiSentCount == IniSettings.SearchAreaNotifis && !maxNotfiSent)
                 {
                     //Pause the timer so search blips dont keep coming in
                     pauseTimer = true;
@@ -146,7 +145,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             {
                 LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", suspectSpawn);
                 Game.DisplayNotification("~g~Dispatch:~w~ All Units, Intoxicated Person Code 4");
-                if (CiPluginChecker.IsCalloutInterfaceRunning)
+                if (PluginChecker.CalloutInterface)
                 {
                     CFunctions.SendMessage(this, "Intoxicated Person Code 4");
                 }

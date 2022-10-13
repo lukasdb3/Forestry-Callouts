@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj": {}
+    "C:\\Users\\lukas\\OneDrive\\Desktop\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj": {
+    "C:\\Users\\lukas\\OneDrive\\Desktop\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj",
+        "projectUniqueName": "C:\\Users\\lukas\\OneDrive\\Desktop\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj",
         "projectName": "ForestryCallouts2",
-        "projectPath": "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj",
+        "projectPath": "C:\\Users\\lukas\\OneDrive\\Desktop\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj",
         "packagesPath": "C:\\Users\\lukas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\obj\\",
+        "outputPath": "C:\\Users\\lukas\\OneDrive\\Desktop\\BlondeePlugins\\ForestryCallouts2\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
           "C:\\Users\\lukas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -45,7 +49,7 @@
               "version": "[1.86.1, )"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

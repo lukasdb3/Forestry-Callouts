@@ -1,5 +1,4 @@
 ﻿using System;
-using ForestryCallouts.SimpleFunctions;
 using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.SpawnSystem;
 using LSPD_First_Response.Mod.Callouts;
@@ -43,9 +42,18 @@ namespace ForestryCallouts2.Backbone
             Game.Console.Print("Running Plugin Checks...");
             Game.Console.Print("Checking players plugins for callouts..");
             CalloutsGetter.CacheCallouts();
-            Game.Console.Print("CalloutInterface installed: "+ CiPluginChecker.IsCalloutInterfaceRunning + "");
-            Game.Console.Print("UltimateBackup installed: "+ UbPluginChecker.IsUltimateBackupRunning + "");
-            Game.Console.Print("StopThePed installed: "+ StpPluginChecker.IsStopThePedRunning + "");
+            if (PluginChecker.ForestryCallouts)
+            {
+                Game.Console.Print();
+                Game.Console.Print("===== WARNING =====");
+                Game.Console.Print("First version of ForestryCallouts was detected still in the plugins folder.");
+                Game.Console.Print("Please remove ForestryCallouts and reload LSPDFR");
+                Game.Console.Print("===== WARNING =====");
+                Game.Console.Print();
+            }
+            Game.Console.Print("CalloutInterface installed: "+ PluginChecker.CalloutInterface + "");
+            Game.Console.Print("UltimateBackup installed: "+ PluginChecker.UltimateBackup + "");
+            Game.Console.Print("StopThePed installed: "+ PluginChecker.StopThePed + "");
             Game.Console.Print("All callouts enabled: "+IniSettings.AllCalls+"");
             Game.Console.Print("Water callouts enabled: "+IniSettings.WaterCalls+"");
             Game.Console.Print("Loading needed chunks...");
