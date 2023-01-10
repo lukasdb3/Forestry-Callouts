@@ -48,3 +48,15 @@ C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\ForestryCallouts\bin\Debug\StopTh
 C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\ForestryCallouts\bin\Debug\RAGENativeUI.xml
 C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\ForestryCallouts\bin\Debug\RagePluginHook.xml
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\bin\Debug\ForestryCallouts.dll
+C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\bin\Debug\ForestryCallouts.pdb
+C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\bin\Debug\CalloutInterface.dll
+C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\bin\Debug\RAGENativeUI.dll
+C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\bin\Debug\RagePluginHook.dll
+C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\bin\Debug\RAGENativeUI.xml
+C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\bin\Debug\RagePluginHook.xml
+C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\obj\Debug\ForestryCallouts.csproj.AssemblyReference.cache
+C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\obj\Debug\ForestryCallouts.csproj.CoreCompileInputs.cache
+C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\obj\Debug\ForestryCallouts.csproj.CopyComplete
+C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\obj\Debug\ForestryCallouts.dll
+C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\obj\Debug\ForestryCallouts.pdb

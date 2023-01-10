@@ -32,6 +32,8 @@ namespace ForestryCallouts2.Backbone.Functions
             }
         }
         
+        //My Functions
+        
         internal static void SpawnHikerPed(out Ped cPed, Vector3 Spawnpoint, float heading)
         {
             String[] pedModels = { "a_m_y_hiker_01", "a_f_y_hiker_01" };
@@ -50,6 +52,7 @@ namespace ForestryCallouts2.Backbone.Functions
                 drunkAnimset.LoadAndWait();
                 Bad.MovementAnimationSet = drunkAnimset;
                 Rage.Native.NativeFunction.Natives.SET_PED_IS_DRUNK(Bad, isDrunk);
+                StopThePed.API.Functions.setPedAlcoholOverLimit(Bad, true);
             });
         }
         
@@ -59,32 +62,16 @@ namespace ForestryCallouts2.Backbone.Functions
             double badHeading = ped.Heading;
             double heading = Math.Round(badHeading, 1);
             //   LESS THAN       GREATER THAN
-            if (heading < 22.5f && heading > 337.5f) direction = "NORTH"; //North
-            if (heading < 67.5f && heading > 22.5f) direction = "NORTH WEST"; //North West
-            if (heading < 112.5f && heading > 67.5f) direction = "WEST"; //West
-            if (heading < 157.5f && heading > 112.5f) direction = "SOUTH WEST"; //South West
-            if (heading < 202.5f && heading > 157.5f) direction = "SOUTH"; //South
-            if (heading < 247.5f && heading > 202.5f) direction = "SOUTH EAST"; //South East
-            if (heading < 292.5f && heading > 247.5f) direction = "EAST"; //East
-            if (heading < 337.5f && heading > 292.5f) direction = "NORTH EAST"; //North
+            if (heading < 22.5f && heading > 337.5f) direction = "NORTH"; 
+            if (heading < 67.5f && heading > 22.5f) direction = "NORTH WEST"; 
+            if (heading < 112.5f && heading > 67.5f) direction = "WEST"; 
+            if (heading < 157.5f && heading > 112.5f) direction = "SOUTH WEST"; 
+            if (heading < 202.5f && heading > 157.5f) direction = "SOUTH"; 
+            if (heading < 247.5f && heading > 202.5f) direction = "SOUTH EAST"; 
+            if (heading < 292.5f && heading > 247.5f) direction = "EAST"; 
+            if (heading < 337.5f && heading > 292.5f) direction = "NORTH EAST"; 
             if (direction == "null") direction = "~r~NOT KNOWN";
         }
         
-        internal static void GetVehicleDirection(in Vehicle vehicle, out string direction)
-        {
-            direction = "null";
-            double badHeading = vehicle.Heading;
-            double heading = Math.Round(badHeading, 1);
-            //   LESS THAN       GREATER THAN
-            if (heading < 22.5f && heading > 337.5f) direction = "NORTH"; //North
-            if (heading < 67.5f && heading > 22.5f) direction = "NORTH WEST"; //North West
-            if (heading < 112.5f && heading > 67.5f) direction = "WEST"; //West
-            if (heading < 157.5f && heading > 112.5f) direction = "SOUTH WEST"; //South West
-            if (heading < 202.5f && heading > 157.5f) direction = "SOUTH"; //South
-            if (heading < 247.5f && heading > 202.5f) direction = "SOUTH EAST"; //South East
-            if (heading < 292.5f && heading > 247.5f) direction = "EAST"; //East
-            if (heading < 337.5f && heading > 292.5f) direction = "NORTH EAST"; //North
-            if (direction == "null") direction = "~r~NOT KNOWN";
-        }
     }
 }

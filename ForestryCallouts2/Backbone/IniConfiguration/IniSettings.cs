@@ -14,25 +14,19 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static bool DebugLogs;
         
         //Distance Checker Variables
-        private static bool _disableDistanceChecker;
         private static int _unit;
         private static double _inputDistance;
         internal static double FinalDistance;
         
-        internal static bool AllCalls;
         internal static bool WaterCalls;
-        internal static int SearchAreaNotifis;
+        internal static int SearchAreaNotifications;
         
         //Callouts
         internal static bool IntoxPerson;
 
         //Keys
-        internal static string DialogueKey;
-        internal static Keys InputDialogueKey;
-        internal static string EndCalloutKey;
-        internal static Keys InputEndCalloutKey;
-        internal static string InteractionKey;
-        internal static Keys InputInteractionKey;
+        internal static Keys DialogueKey;
+        internal static Keys EndCalloutKey;
 
         #endregion
         
@@ -45,66 +39,48 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             
             //Current plugin version installed
             CurV = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
-            //disables the distance checker to a callout if True
-            _disableDistanceChecker = ini.ReadBoolean("Main", "DisableDistanceChecker", false);
-            if (_disableDistanceChecker) Game.Console.Print("Distance checker disabled");
-            //If miles is being used for distanceChecker, converts to meters.
-            if (!_disableDistanceChecker)
-            {
-                _unit = ini.ReadInt32("DistanceChecker", "UnitOfMeasurement", 1);
-                _inputDistance = ini.ReadInt32("DistanceChecker", "MaxDistance");
-                if (_unit == 1) Game.Console.Print("Using meters for MaxDistance, value set to: "+_inputDistance+"");
-                if (_unit == 2)
-                {
-                    Game.Console.Print("Using miles for MaxDistance, value set to: "+_inputDistance+"");
-                    FinalDistance = _inputDistance * 1609.344;
-                    Game.Console.Print("Conversion to meters: "+FinalDistance+"");
-                }
-
-                if (_unit != 1 || _unit != 2)
-                {
-                    Game.Console.Print("FORESTRY CALLOUTS ERROR: The MaxDistance Measurement unit was not set to 1 (meters) or 2 (miles)");
-                    Game.Console.Print("Setting measurement to meters and max distance to 1500");
-                    _iniError = true;
-                }
-            }
-            DebugLogs = ini.ReadBoolean("Main", "DebugLogs", false);
             
-            //With this disabled only park ranger calls will appear and be playable for example calls like silent alarms or trespassing near
-            //the forest wont be playable to the player since this really isn't a call for park rangers.
-            AllCalls = ini.ReadBoolean("Main", "AllCallouts", true);
-            WaterCalls = ini.ReadBoolean("Main", "WaterCallouts", false);
-
-            //Max number of search blips that cna be sent out for callouts that use them, min is 10
-            SearchAreaNotifis = ini.ReadInt32("Main", "SearchAreaBlipsMax", 15);
-            if (SearchAreaNotifis < 10) SearchAreaNotifis = 15;
-
-            //Key stuff
-            DialogueKey = ini.ReadString("Keys", "DialogueKey", "Y");
-            EndCalloutKey = ini.ReadString("Keys", "EndCalloutKey", "End");
-            InteractionKey = ini.ReadString("Keys", "InteractionKey", "R");
-
-            //Lets us convert strings into keys
-            KeysConverter kc = new KeysConverter();
-            //this tries to Convert each of the above strings into keys
-            try
+            //If miles is being used for distanceChecker, converts to meters.
+            _unit = ini.ReadInt32("DistanceChecker", "UnitOfMeasurement", 1);
+            _inputDistance = ini.ReadDouble("DistanceChecker", "MaxDistance", 1);
+            if (_unit == 1) Game.Console.Print("Using meters for MaxDistance, value set to: "+_inputDistance+"");
+            if (_unit == 2)
             {
-                InputDialogueKey = (Keys)kc.ConvertFromString(DialogueKey);
-                InputEndCalloutKey = (Keys)kc.ConvertFromString(EndCalloutKey);
-                InputInteractionKey = (Keys)kc.ConvertFromString(InteractionKey);
+                Game.Console.Print("Using miles for MaxDistance, value set to: "+_inputDistance+"");
+                FinalDistance = _inputDistance * 1609.344;
+                Game.Console.Print("Conversion to meters: "+FinalDistance+"");
             }
-            //This catch, catches Invalid Keys and informs the user of the mistake.
-            catch (Exception e)
+
+            if (_unit != 1 && _unit != 2)
             {
-                InputDialogueKey = Keys.Y;
-                InputEndCalloutKey = Keys.End;
-                InputInteractionKey = Keys.T;
-                Game.Console.Print("FORESTRY CALLOUTS ERROR - A invalid key has been detected and all keys have been set to default options");
-                Game.Console.Print("FORESTRY CALLOUTS ERROR - "+e+"");
+                Game.Console.Print("FORESTRY CALLOUTS ERROR: The MaxDistance Measurement unit was not set to 1 (meters) or 2 (miles)");
+                Game.Console.Print("Setting measurement to meters and max distance to 1500");
                 _iniError = true;
             }
             
+            DebugLogs = ini.ReadBoolean("Main", "DebugLogs", false);
+            
+            WaterCalls = ini.ReadBoolean("Main", "WaterCallouts", false);
+
+            //Max number of search blips that can be sent out for callouts that use them, min is 10
+            SearchAreaNotifications = ini.ReadInt32("Main", "SearchAreaBlipsMax", 15);
+            if (SearchAreaNotifications < 5) SearchAreaNotifications = 15;
+
+            //Key stuff
+            try
+            {
+                DialogueKey = ini.ReadEnum("Keys", "DialogueKey", Keys.Y);
+                EndCalloutKey = ini.ReadEnum("Keys", "EndCalloutKey", Keys.End);
+            }
+            catch (Exception e)
+            {
+                Game.Console.Print("!!! ERROR !!! - Forestry Callouts Keybinding Error");
+                Game.Console.Print("One or more of your keybindings are not valid keys, all keys have been set to default");
+                Game.Console.Print(e.ToString());
+                DialogueKey = Keys.Y;
+                EndCalloutKey = Keys.End;
+            }
+
             //Callouts
             IntoxPerson = ini.ReadBoolean("Callouts", "IntoxicatedPerson", true);
 
@@ -113,7 +89,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             {
                 Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~FORESTRY CALLOUTS WARNING",
                     "~r~CONFIGURATION ERROR",
-                    "Please check the log for forestry callouts errors for more info!");
+                    "Please check the rage log for more information!");
             }
         }
     }

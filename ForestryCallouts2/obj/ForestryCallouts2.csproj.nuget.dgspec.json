@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj": {}
+    "C:\\Users\\lukas\\Documents\\GitHub\\Forestry Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj": {
+    "C:\\Users\\lukas\\Documents\\GitHub\\Forestry Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj",
+        "projectUniqueName": "C:\\Users\\lukas\\Documents\\GitHub\\Forestry Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj",
         "projectName": "ForestryCallouts2",
-        "projectPath": "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj",
+        "projectPath": "C:\\Users\\lukas\\Documents\\GitHub\\Forestry Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj",
         "packagesPath": "C:\\Users\\lukas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\obj\\",
+        "outputPath": "C:\\Users\\lukas\\Documents\\GitHub\\Forestry Callouts\\ForestryCallouts2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\lukas\\AppData\\Roaming\\NuGet\\NuGet.Config"

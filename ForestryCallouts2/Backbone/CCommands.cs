@@ -14,7 +14,7 @@ namespace ForestryCallouts2.Backbone
         }
         
         [Rage.Attributes.ConsoleCommand]
-        public static void FCEndCallout()
+        public static void FC_EndCallout()
         {
             if (LSPD_First_Response.Mod.API.Functions.IsCalloutRunning())
             {

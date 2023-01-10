@@ -5,26 +5,24 @@ using System.Reflection;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using Rage;
+using RAGENativeUI.Elements;
 
 namespace ForestryCallouts2.Backbone
 {
     internal static class CalloutsGetter
     {
-        private static List<string> randomCalloutCache = new List<string>();
-        private static int callCount;
-
+        private static List<string> _randomCalloutCache = new List<string>();
+        private static int _callCount;
         internal static void CacheCallouts()
-        { 
-            Game.Console.Print("Caching players callouts..");
-            Logger.DebugLog("CALLOUT CACHE", "Assembly using: "+Assembly.GetExecutingAssembly().GetName()+"");
+        {
             foreach (Assembly assem in LSPD_First_Response.Mod.API.Functions.GetAllUserPlugins())
             {
-                AssemblyName assemName = assem.GetName();
-                if (assemName.ToString() != System.Reflection.Assembly.GetExecutingAssembly().GetName().ToString())
+                string assemName = assem.GetName().Name;
+                if (assemName != Assembly.GetExecutingAssembly().GetName().Name && assemName != "CalloutInterface")
                 {
                     Logger.DebugLog("CALLOUT CACHE", "Assembly checking: "+assemName+"");
                     List<Type> assemCallouts = (from Callout in assem.GetTypes()
-                        where Callout.IsClass && Callout.BaseType == typeof(LSPD_First_Response.Mod.Callouts.Callout)
+                        where Callout.IsClass && Callout.BaseType == typeof(Callout)
                         select Callout).ToList();
 
                     if (assemCallouts.Count < 1)
@@ -45,15 +43,15 @@ namespace ForestryCallouts2.Backbone
 
                                 if (CalloutAttribute != null)
                                 {
-                                    randomCalloutCache.Add(CalloutAttribute.Name);
-                                    callCount++;
+                                    _randomCalloutCache.Add(CalloutAttribute.Name);
+                                    _callCount++;
                                 }
                             }
                         }
                     }
                 }
             }
-            Game.Console.Print("Cached "+callCount+" callouts!");
+            Game.Console.Print("Cached "+_callCount+" callouts!");
             Game.Console.Print("Caching callouts finished");
         }
 
@@ -63,7 +61,7 @@ namespace ForestryCallouts2.Backbone
 
             try
             {
-                string randomCallout = randomCalloutCache[randomValue.Next(0, randomCalloutCache.Count)];
+                string randomCallout = _randomCalloutCache[randomValue.Next(0, _randomCalloutCache.Count)];
 
                 LSPD_First_Response.Mod.API.Functions.StartCallout(randomCallout);
                 Logger.DebugLog("RANDOM CALLOUT STARTER", "Starting "+randomCallout+"");
@@ -71,13 +69,17 @@ namespace ForestryCallouts2.Backbone
 
             catch (Exception e)
             {
-                Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~Forestry Callouts 2 Warning",
-                    "~g~Failed to start random callout",
-                    "Please check log for more details");
+                Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~FORESTRY CALLOUTS WARNING",
+                    "~g~FAILED TO START RANDOM CALLOUT",
+                    "Please check the rage log for more information!");
                 Game.Console.Print("=============== FORESTRY CALLOUTS WARNING ===============");
                 Game.Console.Print("There was an error in selecting a random callout");
                 Game.Console.Print("ERROR: "+e+"");
                 Game.Console.Print("Please send this log to https://dsc.gg/ulss)");
+                Game.Console.Print("ADDITIONAL INFORMATION:");
+                Game.Console.Print("This error may have been caused by ForestryCallouts being the");
+                Game.Console.Print("only source of callouts in your plugins folder. If you are only playing with");
+                Game.Console.Print("Forestry Callouts please disable the distance checker in the ini file.");
                 Game.Console.Print("=============== FORESTRY CALLOUTS WARNING ===============");
             }
         }

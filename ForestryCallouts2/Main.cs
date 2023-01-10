@@ -3,6 +3,7 @@ using Rage;
 using LSPD_First_Response.Mod.API;
 using ForestryCallouts2.Backbone;
 using ForestryCallouts2.Backbone.IniConfiguration;
+using RAGENativeUI;
 
 namespace ForestryCallouts2
 {
@@ -11,7 +12,7 @@ namespace ForestryCallouts2
         //When user loads up LSPDFR, FC initializes.
         public override void Initialize()
         {
-            LSPD_First_Response.Mod.API.Functions.OnOnDutyStateChanged += OnOnDutyStateChangedHandler;
+            Functions.OnOnDutyStateChanged += OnOnDutyStateChangedHandler;
             Game.LogTrivial("Plugin ForestryCallouts2 " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " by lukasdb3 has been initialized");
             Game.LogTrivial("Go on duty to fully load ForestryCallouts2.");
         }
@@ -28,6 +29,7 @@ namespace ForestryCallouts2
             {
                 Logger.StartLoadingPhase();
                 RegisterCallouts();
+                Game.DisplayNotification("commonmenu", "shop_franklin_icon_a", "~g~Forestry Callouts 2", "~g~Plugin Version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " ", "Plugin Loaded! Enjoy!");
             }
         }
 
@@ -45,15 +47,7 @@ namespace ForestryCallouts2
             {
                 if (IniSettings.IntoxPerson)  Functions.RegisterCallout(typeof(Callouts.LandCallouts.IntoxicatedPerson));
                 
-                //If player wants all land callouts the below calls are also loaded
-                if (IniSettings.AllCalls)
-                {
-                    
-                }
             }
-            
-
         }
-        
     }
 }

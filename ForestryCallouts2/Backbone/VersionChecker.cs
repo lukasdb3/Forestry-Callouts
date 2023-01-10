@@ -30,8 +30,8 @@ namespace ForestryCallouts2.Backbone
             }
             catch (WebException)
             {
-                Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~Forestry Callouts 2 Warning",
-                    "~g~Failed to check for an update", 
+                Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~FORESTRY CALLOUTS WARNING",
+                    "~g~FAILED UPDATE CHECK", 
                     "Please check if you are ~o~online~w~, or try to reload the plugin.");
                 updateCheckFailed = true;
                 // server or connection is having issues
@@ -40,8 +40,8 @@ namespace ForestryCallouts2.Backbone
             if (receivedData != IniSettings.CurV)
             {
                 updateAvailable = true;
-                Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~Forestry Callouts 2 Warning",
-                    "~g~A new Update is available!",
+                Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~FORESTRY CALLOUTS WARNING",
+                    "~g~NEW UPDATE AVAILABLE!",
                     "Current Version: ~r~" + curVersion + "~w~<br>New Version: ~g~" + receivedData);
                 return true;
             }
