@@ -48,6 +48,7 @@
 
     <ItemGroup>
       <Folder Include="Backbone\SpawnSystem\Water\CalloutSpawnpoints" />
+      <Folder Include="Callouts\WaterCallouts" />
     </ItemGroup>
 
 </Project>

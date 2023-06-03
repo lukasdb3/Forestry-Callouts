@@ -1,88 +1,136 @@
-﻿using System;
+﻿#region Refrences
+//System
+using System;
 using System.Windows.Forms;
+//Rage
 using Rage;
+#endregion
 
 namespace ForestryCallouts2.Backbone.IniConfiguration
 {
-    internal class IniSettings
+    internal static class IniSettings
     {
         #region variables
 
         //Main
+        internal static InitializationFile Ini;
         private static bool _iniError;
         internal static string CurV;
+
         internal static bool DebugLogs;
-        
-        //Distance Checker Variables
-        private static int _unit;
-        private static double _inputDistance;
-        internal static double FinalDistance;
-        
+        internal static bool EnableDistanceChecker;
+        internal static double MaxDistance;
+        internal static int MinCalloutDistance;
+
         internal static bool WaterCalls;
         internal static int SearchAreaNotifications;
-        
-        //Callouts
-        internal static bool IntoxPerson;
 
         //Keys
         internal static Keys DialogueKey;
         internal static Keys EndCalloutKey;
+        internal static Keys InteractionMenuKey;
 
+        //Binoculars
+        internal static bool BinocularsEnabled;
+        internal static Keys BinocularsKey;
+        internal static int BinocularsSensitivity;
+        
+        //AmbientEvents
+        internal static bool AmbientEventsEnabled;
+        internal static int MinimumWaitTime;
+        internal static int MaximumWaitTime;
+        
+        //Callouts
+        internal static bool IntoxPerson;
+        internal static bool RegularPursuit;
+        internal static bool AnimalAttack;
+        internal static bool DirtBikePursuit;
+        internal static bool AtvPursuit;
+        
+        //Vehicles
+        private static string _normalVehicles;
+        internal static String[] NormalVehicles;
+        private static string _offRoadVehicles;
+        internal static String[] OffRoadVehicles;
+        private static string _animalControlVehicles;
+        internal static String[] AnimalControlVehicles;
+        private static string _dirtbikes;
+        internal static String[] Dirtbikes;
+        private static string _atvVehicles;
+        internal static String[] AtvVehicles;
         #endregion
         
         //Loads settings in the users INI file. Used in main.cs
         internal static void LoadSettings()
         {
-            string IniPath = "Plugins/LSPDFR/ForestryCallouts2/mainconfig.ini";
-            InitializationFile ini = new InitializationFile(IniPath);
-            ini.Create();
+            //If ini error is true we want to set it to false so it doesnt throw a false error
+            _iniError = false;
+            //Create Ini
+            string IniPath = "Plugins/LSPDFR/ForestryCallouts2.ini";
+            Ini = new InitializationFile(IniPath);
+            Ini.Create();
             
             //Current plugin version installed
             CurV = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             
-            //If miles is being used for distanceChecker, converts to meters.
-            _unit = ini.ReadInt32("DistanceChecker", "UnitOfMeasurement", 1);
-            _inputDistance = ini.ReadDouble("DistanceChecker", "MaxDistance", 1);
-            if (_unit == 1) Game.Console.Print("Using meters for MaxDistance, value set to: "+_inputDistance+"");
-            if (_unit == 2)
-            {
-                Game.Console.Print("Using miles for MaxDistance, value set to: "+_inputDistance+"");
-                FinalDistance = _inputDistance * 1609.344;
-                Game.Console.Print("Conversion to meters: "+FinalDistance+"");
-            }
-
-            if (_unit != 1 && _unit != 2)
-            {
-                Game.Console.Print("FORESTRY CALLOUTS ERROR: The MaxDistance Measurement unit was not set to 1 (meters) or 2 (miles)");
-                Game.Console.Print("Setting measurement to meters and max distance to 1500");
-                _iniError = true;
-            }
-            
-            DebugLogs = ini.ReadBoolean("Main", "DebugLogs", false);
-            
-            WaterCalls = ini.ReadBoolean("Main", "WaterCallouts", false);
-
+            //Main
+            DebugLogs = Ini.ReadBoolean("Main", "DebugLogs", false);
+            WaterCalls = Ini.ReadBoolean("Main", "WaterCallouts", false);
+            EnableDistanceChecker = Ini.ReadBoolean("Main", "EnableDistanceChecker", true);
+            MaxDistance = Ini.ReadDouble("Main", "MaxDistance", 2500);
+            MinCalloutDistance = Ini.ReadInt32("Main", "MinimumCalloutSpawnDistance", 100);
             //Max number of search blips that can be sent out for callouts that use them, min is 10
-            SearchAreaNotifications = ini.ReadInt32("Main", "SearchAreaBlipsMax", 15);
+            SearchAreaNotifications = Ini.ReadInt32("Main", "SearchAreaBlipsMax", 15);
             if (SearchAreaNotifications < 5) SearchAreaNotifications = 15;
-
-            //Key stuff
+            
+            //Keys
             try
             {
-                DialogueKey = ini.ReadEnum("Keys", "DialogueKey", Keys.Y);
-                EndCalloutKey = ini.ReadEnum("Keys", "EndCalloutKey", Keys.End);
+                DialogueKey = Ini.ReadEnum("Keys", "DialogueKey", Keys.Y);
+                EndCalloutKey = Ini.ReadEnum("Keys", "EndCalloutKey", Keys.End);
+                InteractionMenuKey = Ini.ReadEnum("Keys", "InteractionMenuKey", Keys.I);
+                BinocularsKey = Ini.ReadEnum("Keys", "BinocularsKey", Keys.O);
             }
             catch (Exception e)
             {
+                _iniError = true;
                 Game.Console.Print("!!! ERROR !!! - Forestry Callouts Keybinding Error");
                 Game.Console.Print("One or more of your keybindings are not valid keys, all keys have been set to default");
                 Game.Console.Print(e.ToString());
                 DialogueKey = Keys.Y;
                 EndCalloutKey = Keys.End;
             }
-
+            
+            //Binoculars
+            BinocularsEnabled = Ini.ReadBoolean("Binoculars", "EnableBinoculars", true);
+            BinocularsSensitivity = Ini.ReadInt32("Binoculars", "BinocularsSensitivity", 3);
+            
+            //AmbientEvents
+            AmbientEventsEnabled = Ini.ReadBoolean("AmbientEvents", "AmbientEventsEnabled", true);
+            MinimumWaitTime = Ini.ReadInt32("AmbientEvents", "MinimumWaitTimeBetweenEvents", 5);
+            MaximumWaitTime = Ini.ReadInt32("AmbientEvents", "MaximumWaitTimeBetweenEvents", 10);
+            
+            
             //Callouts
-            IntoxPerson = ini.ReadBoolean("Callouts", "IntoxicatedPerson", true);
+            IntoxPerson = Ini.ReadBoolean("Callouts", "IntoxicatedPerson", true);
+            RegularPursuit = Ini.ReadBoolean("Callouts", "Pursuit", true);
+            AnimalAttack = Ini.ReadBoolean("Callouts", "AnimalAttack", true);
+            DirtBikePursuit = Ini.ReadBoolean("Callouts", "DirtBikePursuit", true);
+            AtvPursuit = Ini.ReadBoolean("Callouts", "AtvPursuit", true);
+            
+            
+            
+            //Vehicles
+            _normalVehicles = Ini.ReadString("Vehicles", "NormalVehicles", null);
+            NormalVehicles = _normalVehicles.Split(':');
+            _offRoadVehicles = Ini.ReadString("Vehicles", "OffRoadVehicles", null);
+            OffRoadVehicles = _offRoadVehicles.Split(':');
+            _animalControlVehicles = Ini.ReadString("Vehicles", "AnimalControlVehicles", null);
+            AnimalControlVehicles = _animalControlVehicles.Split(':');
+            _dirtbikes = Ini.ReadString("Vehicles", "Dirtbikes", null);
+            Dirtbikes = _dirtbikes.Split(':');
+            _atvVehicles = Ini.ReadString("Vehicles", "AtvVehicles", null);
+            AtvVehicles = _atvVehicles.Split(':');
 
             //Sees if any errors took place and if so a notification is sent to check the log
             if (_iniError)
@@ -91,6 +139,32 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
                     "~r~CONFIGURATION ERROR",
                     "Please check the rage log for more information!");
             }
+        }
+
+        internal static void SaveNewSettings()
+        {
+            //Main
+            Ini.Write("Main", "DebugLogs", Menu.Create.DebugLogs.SelectedValue);
+            Ini.Write("Main", "WaterCallouts", Menu.Create.WaterCallouts.SelectedValue);
+            Ini.Write("Main", "SearchAreaBlipsMax", Menu.Create.SearchAreaBlipsMax.Value);
+            Ini.Write("Main", "MaxDistance", Menu.Create.MaxDistance.Value);
+            Ini.Write("Main", "EnableDistanceChecker", Menu.Create.EnableDistanceChecker.SelectedValue);
+            Ini.Write("Main", "MinimumCalloutSpawnDistance", Menu.Create.MinCalloutDistance.Value);
+            //Binoculars
+            Ini.Write("Binoculars", "EnableBinoculars", Menu.Create.EnableBinoculars.SelectedValue);
+            Ini.Write("Binoculars", "BinocularsSensitivity", Menu.Create.BinocularsSense.Value);
+            //AmbientEvents
+            Ini.Write("AmbientEvents", "AmbientEventsEnabled", Menu.Create.AmbientEventsEnabled.SelectedValue);
+            Ini.Write("AmbientEvents", "MinimumWaitTimeBetweenEvents", Menu.Create.MinimumWaitTimeBetweenEvents.Value);
+            Ini.Write("AmbientEvents", "MaximumWaitTimeBetweenEvents", Menu.Create.MaximumWaitTimeBetweenEvents.Value);
+            //Callouts
+            Ini.Write("Callouts", "IntoxicatedPerson", Menu.Create.IntoxicatedPerson.SelectedValue);
+            Ini.Write("Callouts", "RegularPursuit", Menu.Create.RegularPursuit.SelectedValue);
+            Ini.Write("Callouts", "AnimalAttack", Menu.Create.AnimalAttack.SelectedValue);
+            Ini.Write("Callouts", "DirtBikePursuit", Menu.Create.DirtBikePursuit.SelectedValue);
+            Ini.Write("Callouts", "AtvPursuit", Menu.Create.AtvPursuit.SelectedValue);
+            Game.DisplayNotification("~g~Settings Saved To ForestryCallouts2.ini\n" +
+                                     "~r~If you changed any Callouts to True or False, LSPDFR will have to be reloaded for changes to be made!");
         }
     }
 }

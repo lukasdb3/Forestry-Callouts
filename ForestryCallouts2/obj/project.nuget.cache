@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EJEp7kPBX9093y2gpPOkSCjo7DWQv1E3brBukQRNA0FbFBIiC7yF0wT39nA+UsFcZcHrHnZVSnrjodfK2FpZJg==",
+  "dgSpecHash": "cyTtulE+Z/RPF3NqskDfqT60G0vIEfTyY0NVEGR97lqUr8WMx8+dEb2O5wF0wxM68znIKGu2Jgi2RnnajtUAvA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\lukas\\Documents\\GitHub\\Forestry Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj",
+  "projectFilePath": "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lukas\\.nuget\\packages\\ragepluginhook\\1.86.1\\ragepluginhook.1.86.1.nupkg.sha512"
   ],

@@ -5,10 +5,14 @@
       "RagePluginHook/1.86.1": {
         "type": "package",
         "compile": {
-          "lib/net472/RagePluginHook.dll": {}
+          "lib/net472/RagePluginHook.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net472/RagePluginHook.dll": {}
+          "lib/net472/RagePluginHook.dll": {
+            "related": ".xml"
+          }
         }
       }
     }
@@ -47,11 +51,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lukas\\Documents\\GitHub\\Forestry Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj",
+      "projectUniqueName": "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj",
       "projectName": "ForestryCallouts2",
-      "projectPath": "C:\\Users\\lukas\\Documents\\GitHub\\Forestry Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj",
+      "projectPath": "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\ForestryCallouts2.csproj",
       "packagesPath": "C:\\Users\\lukas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lukas\\Documents\\GitHub\\Forestry Callouts\\ForestryCallouts2\\obj\\",
+      "outputPath": "C:\\Users\\lukas\\Documents\\GitHub\\BlondeePlugins\\ForestryCallouts2\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\lukas\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -83,7 +87,7 @@
             "version": "[1.86.1, )"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Users\\lukas\\.dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-preview.1.23115.2\\RuntimeIdentifierGraph.json"
       }
     }
   }

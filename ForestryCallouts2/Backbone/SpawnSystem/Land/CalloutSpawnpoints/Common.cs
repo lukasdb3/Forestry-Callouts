@@ -1,5 +1,10 @@
-﻿using System;
+﻿#region Refrences
+//System
+using System;
+//Rage
 using Rage;
+#endregion
+
 
 namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
 {
@@ -10,7 +15,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
             Logger.DebugLog("COMMON SPAWNPOINT CHOOSER", "Choosing spawnpoint in Paleto Forest chunk");
             spawnpoint = default;
             heading = 0f;
-            int var = new Random().Next(1, 2);
+            int var = new Random().Next(1, 28);
             Logger.DebugLog("CASE", ""+var+"");
             switch (var)
             {

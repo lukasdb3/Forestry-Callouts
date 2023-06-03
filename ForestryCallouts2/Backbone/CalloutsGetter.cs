@@ -1,30 +1,74 @@
-﻿using System;
+﻿#region Refrences
+//System
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using LSPD_First_Response.Mod.API;
-using LSPD_First_Response.Mod.Callouts;
+using System.IO;
+using ForestryCallouts2.Backbone.Functions;
+using ForestryCallouts2.Backbone.IniConfiguration;
+//Rage
 using Rage;
-using RAGENativeUI.Elements;
+//LSPDFR
+using LSPD_First_Response.Mod.Callouts;
+#endregion
 
 namespace ForestryCallouts2.Backbone
 {
     internal static class CalloutsGetter
     {
-        private static List<string> _randomCalloutCache = new List<string>();
+        private static readonly List<string> RandomCalloutCache = new();
+        internal static readonly List<string> ForestryCalloutsCalls = new();
         private static int _callCount;
+
+        internal static bool IsCalloutEnabledInIni(string assemName, string callout)
+        {
+            //Get all files in user plugins lspdfr directory
+            string[] _allFiles = Directory.GetFiles("Plugins/LSPDFR");
+            //For each file we check if its the designated assembly's ini file
+            List<string> calloutEdits = new List<string>();
+            foreach (var file in _allFiles)
+            {
+                if (file.Contains(assemName + ".ini"))
+                {
+                    //We make similar strings to the callout as some authors don't use the same name as the class
+                    calloutEdits.Add(callout);
+                    if (callout.Any(char.IsDigit)) calloutEdits.Add(callout.RemoveIntegers());
+                    if (callout.Contains("And")) callout.Replace("And", String.Empty);
+                    //Set the file to an ini file
+                    var iniFile = new InitializationFile(file);
+                    //Few common sections we should check if they exist
+                    string[] sections = {"Settings", "Callouts", "Callout"};
+                    //Check each section for existence and then read the boolean value for the callout
+                    foreach (var section in sections)
+                    {
+                        if (iniFile.DoesSectionExist(section))
+                        {
+                            foreach (var call in calloutEdits)
+                            {
+                                if (iniFile.ReadBoolean(section, call)) return true;   
+                            }
+                        }   
+                    }
+                }
+                else
+                {
+                    //assem does not have an ini file to go with it, therefore we return true as the callout has to be enabled.
+                    return true;
+                }
+            }
+            return false;
+        }
+        
         internal static void CacheCallouts()
         {
             foreach (Assembly assem in LSPD_First_Response.Mod.API.Functions.GetAllUserPlugins())
             {
                 string assemName = assem.GetName().Name;
-                if (assemName != Assembly.GetExecutingAssembly().GetName().Name && assemName != "CalloutInterface")
+                if (assemName != "CalloutInterface")
                 {
-                    Logger.DebugLog("CALLOUT CACHE", "Assembly checking: "+assemName+"");
-                    List<Type> assemCallouts = (from Callout in assem.GetTypes()
-                        where Callout.IsClass && Callout.BaseType == typeof(Callout)
-                        select Callout).ToList();
-
+                    List<Type> assemCallouts = (from callout in assem.GetTypes() where callout.IsClass && callout.BaseType == typeof(Callout) select callout).ToList();
+                    
                     if (assemCallouts.Count < 1)
                     {
                         //no callouts in assembly
@@ -33,18 +77,31 @@ namespace ForestryCallouts2.Backbone
                     {
                         foreach (Type callout in assemCallouts)
                         {
-                            object[] CalloutAttributes =
+                            object[] calloutAttributes =
                                 callout.GetCustomAttributes(typeof(CalloutInfoAttribute), true);
 
-                            if (CalloutAttributes.Count() > 0)
+                            if (calloutAttributes.Count() > 0)
                             {
-                                CalloutInfoAttribute CalloutAttribute =
-                                    (CalloutInfoAttribute) (from a in CalloutAttributes select a).FirstOrDefault();
+                                CalloutInfoAttribute calloutAttribute =
+                                    (CalloutInfoAttribute) (from a in calloutAttributes select a).FirstOrDefault();
 
-                                if (CalloutAttribute != null)
+                                if (calloutAttribute != null && assemName != "ForestryCallouts2")
                                 {
-                                    _randomCalloutCache.Add(CalloutAttribute.Name);
-                                    _callCount++;
+                                    if (IsCalloutEnabledInIni(assemName, calloutAttribute.Name))
+                                    {
+                                        RandomCalloutCache.Add(calloutAttribute.Name);
+                                        _callCount++;
+                                    }
+                                    else
+                                    {
+                                        Game.Console.Print(assemName + " " + callout + " Is Disabled");
+                                    }
+                                        
+                                }
+
+                                if (calloutAttribute != null && assemName == "ForestryCallouts2")
+                                {
+                                    ForestryCalloutsCalls.Add(calloutAttribute.Name);
                                 }
                             }
                         }
@@ -61,7 +118,7 @@ namespace ForestryCallouts2.Backbone
 
             try
             {
-                string randomCallout = _randomCalloutCache[randomValue.Next(0, _randomCalloutCache.Count)];
+                string randomCallout = RandomCalloutCache[randomValue.Next(0, RandomCalloutCache.Count)];
 
                 LSPD_First_Response.Mod.API.Functions.StartCallout(randomCallout);
                 Logger.DebugLog("RANDOM CALLOUT STARTER", "Starting "+randomCallout+"");

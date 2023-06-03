@@ -1,6 +1,7 @@
-﻿using Rage;
-using System;
+﻿#region Refrences
+//ForestyCallouts2
 using ForestryCallouts2.Backbone.IniConfiguration;
+#endregion
 
 namespace ForestryCallouts2.Backbone
 {

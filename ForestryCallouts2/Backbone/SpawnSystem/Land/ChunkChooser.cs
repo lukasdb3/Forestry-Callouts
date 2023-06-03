@@ -1,7 +1,12 @@
-﻿using System.Linq;
+﻿#region Refrences
+//System
+using System.Linq;
 using ForestryCallouts2.Backbone.IniConfiguration;
+//Rage
 using Rage;
+//ForestryCallouts2
 using ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints;
+#endregion
 
 namespace ForestryCallouts2.Backbone.SpawnSystem.Land
 {
@@ -9,6 +14,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land
     {
         internal static  Vector3 ClosestChunk; //Closet land chunk to player
         internal static string Curcall;
+        internal static bool CalloutForceEnded;
         
         #region Common
         internal static Vector3 FinalSpawnpoint;
@@ -18,6 +24,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land
         internal static void Main(in string currentCallout)
         {
             Curcall = currentCallout;
+            CalloutForceEnded = false;
             Vector3 playerPos = Game.LocalPlayer.Character.Position;
 
             //finds closest land chunk to the player
@@ -25,18 +32,23 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land
             Logger.DebugLog("CHUNK CHOOSER","Closest land chunk: "+ClosestChunk+"");
 
             //Checks and makes sure the chunk is within the max distance range if not callout is ended.
-            if (DistanceChecker.IsChunkToFar(ClosestChunk))
+            if (IniSettings.EnableDistanceChecker)
             {
-                LSPD_First_Response.Mod.API.Functions.StopCurrentCallout();
-                Logger.DebugLog("DISTANCE CHECKER", "Stopping current callout due to it being out of the max distance range");
-                Logger.DebugLog("DISTANCE CHECKER", "Selecting new callout to start");
-                CalloutsGetter.StartRandomCallout();
+                if (DistanceChecker.IsChunkToFar(ClosestChunk))
+                {
+                    CalloutForceEnded = true;
+                    LSPD_First_Response.Mod.API.Functions.StopCurrentCallout();
+                    Logger.DebugLog("DISTANCE CHECKER", "Stopping current callout due to it being out of the max distance range");
+                    Logger.DebugLog("DISTANCE CHECKER", "Selecting new callout to start");
+                    CalloutsGetter.StartRandomCallout();
+                }
+                else
+                {
+                    Logger.DebugLog("DISTANCE CHECKER", "Player is in good range of the chunk");
+                    CalloutSpawnSorter();
+                }   
             }
-            else
-            {
-                Logger.DebugLog("DISTANCE CHECKER", "Player is in good range of the chunk");
-                CalloutSpawnSorter();
-            }
+            else CalloutSpawnSorter();
         }
 
         internal static void CalloutSpawnSorter()
@@ -51,7 +63,8 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land
 
         private static void NPaletoBayForest(in string currentCallout)
         {
-            if (currentCallout == "IntoxicatedPerson") Common.PaletoBayForest(out FinalSpawnpoint, out FinalHeading);
+            if (currentCallout is "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack" or "DirtBikePursuit" or "AtvPursuit") 
+                Common.PaletoBayForest(out FinalSpawnpoint, out FinalHeading);
         }
         
         /*private static void Chunk2(in string currentCallout)

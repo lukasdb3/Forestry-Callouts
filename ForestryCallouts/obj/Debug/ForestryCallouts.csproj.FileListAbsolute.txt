@@ -36,9 +36,7 @@ C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\RAGENa
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\RagePluginHook.dll
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\RAGENativeUI.xml
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\RagePluginHook.xml
-C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\obj\Debug\ForestryCallouts.csprojAssemblyReference.cache
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\obj\Debug\ForestryCallouts.csproj.CoreCompileInputs.cache
-C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\obj\Debug\ForestryCallouts.csproj.CopyComplete
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\obj\Debug\ForestryCallouts.dll
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\obj\Debug\ForestryCallouts.pdb
 C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\ForestryCallouts\bin\Debug\LSPD First Response.dll
@@ -47,7 +45,6 @@ C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\ForestryCallouts\bin\Debug\RagePl
 C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\ForestryCallouts\bin\Debug\StopThePed.dll
 C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\ForestryCallouts\bin\Debug\RAGENativeUI.xml
 C:\Users\lukas\OneDrive\Desktop\BlondeePlugins\ForestryCallouts\bin\Debug\RagePluginHook.xml
-C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
 C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\bin\Debug\ForestryCallouts.dll
 C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\bin\Debug\ForestryCallouts.pdb
 C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\bin\Debug\CalloutInterface.dll
@@ -60,3 +57,6 @@ C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\obj\Debug\For
 C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\obj\Debug\ForestryCallouts.csproj.CopyComplete
 C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\obj\Debug\ForestryCallouts.dll
 C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\obj\Debug\ForestryCallouts.pdb
+C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\CalloutInterface.dll
+C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\obj\Debug\ForestryCallouts.csproj.AssemblyReference.cache
+C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\obj\Debug\ForestryCallouts.csproj.CopyComplete

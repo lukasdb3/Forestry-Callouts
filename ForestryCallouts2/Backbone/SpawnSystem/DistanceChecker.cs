@@ -1,5 +1,9 @@
-﻿using ForestryCallouts2.Backbone.IniConfiguration;
+﻿#region Refrences
+//Rage
 using Rage;
+//ForestryCallouts2
+using ForestryCallouts2.Backbone.IniConfiguration;
+#endregion
 
 namespace ForestryCallouts2.Backbone.SpawnSystem
 {
@@ -12,7 +16,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
            _distance = Game.LocalPlayer.Character.Position.DistanceTo(closestChunk);
             
             //returns true if the player is out farther than the max distance
-            if (_distance > IniSettings.FinalDistance)
+            if (_distance > IniSettings.MaxDistance)
             {
                 return true;
             }
