@@ -46,12 +46,15 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static bool AnimalAttack;
         internal static bool DirtBikePursuit;
         internal static bool AtvPursuit;
+        internal static bool HighSpeedPursuit;
         
         //Vehicles
         private static string _normalVehicles;
         internal static String[] NormalVehicles;
         private static string _offRoadVehicles;
         internal static String[] OffRoadVehicles;
+        private static string _offRoadFastVehicles;
+        internal static String[] OffRoadFastVehicles;
         private static string _animalControlVehicles;
         internal static String[] AnimalControlVehicles;
         private static string _dirtbikes;
@@ -60,7 +63,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static String[] AtvVehicles;
         #endregion
         
-        //Loads settings in the users INI file. Used in main.cs
+        //Loads settings in the users INI file.
         internal static void LoadSettings()
         {
             //If ini error is true we want to set it to false so it doesnt throw a false error
@@ -81,8 +84,12 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             MinCalloutDistance = Ini.ReadInt32("Main", "MinimumCalloutSpawnDistance", 100);
             //Max number of search blips that can be sent out for callouts that use them, min is 10
             SearchAreaNotifications = Ini.ReadInt32("Main", "SearchAreaBlipsMax", 15);
-            if (SearchAreaNotifications < 5) SearchAreaNotifications = 15;
-            
+            if (SearchAreaNotifications < 5) 
+            {
+                SearchAreaNotifications = 15;
+                Game.Console.Print("!!! INVALID CONFIG !!! - Forestry Callouts Config Error");
+                Game.Console.Print("We detected SearchAreaBlipsMax was set to a lower integer than the minimum 5. Default has been set (15)");
+            }
             //Keys
             try
             {
@@ -117,14 +124,15 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             AnimalAttack = Ini.ReadBoolean("Callouts", "AnimalAttack", true);
             DirtBikePursuit = Ini.ReadBoolean("Callouts", "DirtBikePursuit", true);
             AtvPursuit = Ini.ReadBoolean("Callouts", "AtvPursuit", true);
-            
-            
+            HighSpeedPursuit = Ini.ReadBoolean("Callouts", "HighSpeedPursuit", true);
             
             //Vehicles
             _normalVehicles = Ini.ReadString("Vehicles", "NormalVehicles", null);
             NormalVehicles = _normalVehicles.Split(':');
             _offRoadVehicles = Ini.ReadString("Vehicles", "OffRoadVehicles", null);
             OffRoadVehicles = _offRoadVehicles.Split(':');
+            _offRoadFastVehicles = Ini.ReadString("Vehicles", "OffRoadFastVehicles", null);
+            OffRoadFastVehicles = _offRoadFastVehicles.Split(":");
             _animalControlVehicles = Ini.ReadString("Vehicles", "AnimalControlVehicles", null);
             AnimalControlVehicles = _animalControlVehicles.Split(':');
             _dirtbikes = Ini.ReadString("Vehicles", "Dirtbikes", null);

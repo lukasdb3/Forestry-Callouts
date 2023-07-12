@@ -21,7 +21,6 @@ namespace ForestryCallouts2
         internal static Random Rnd = new Random();
         internal static MenuPool pool = new();
         private static GameFiber _mainFiber;
-        //When user loads up LSPDFR, FC initializes.
         public override void Initialize()
         {
             Functions.OnOnDutyStateChanged += OnOnDutyStateChangedHandler;
@@ -54,10 +53,10 @@ namespace ForestryCallouts2
             //Player is using water calls so we register them and dont register land callouts
             if (IniSettings.WaterCalls)
             {
-                
+    
             }
             
-            //Player is not using water callouts and wants land callouts to be loaded
+            //Player is not using water callouts so we register land callouts
             if (!IniSettings.WaterCalls)
             {
                 if (IniSettings.IntoxPerson)  Functions.RegisterCallout(typeof(Callouts.LandCallouts.IntoxicatedPerson));
@@ -65,6 +64,7 @@ namespace ForestryCallouts2
                 if (IniSettings.AnimalAttack) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AnimalAttack));
                 if (IniSettings.DirtBikePursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DirtBikePursuit));
                 if (IniSettings.AtvPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AtvPursuit));
+                if (IniSettings.HighSpeedPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.HighSpeedPursuit));
             }
         }
         
@@ -77,6 +77,7 @@ namespace ForestryCallouts2
                 {
                     GameFiber.Yield();
                     
+                    //Menu
                     pool.ProcessMenus();
                     if (Game.IsKeyDown(IniSettings.InteractionMenuKey) && !Binoculars.IsRendering)
                     {
@@ -84,6 +85,7 @@ namespace ForestryCallouts2
                         else Create.InteractionMenu.Visible = true;
                     }
 
+                    //Binoculars Hotkey
                     if (Game.IsKeyDown(IniSettings.BinocularsKey) && IniSettings.BinocularsEnabled && !Binoculars.IsRendering)
                     {
                         Binoculars.Enable();

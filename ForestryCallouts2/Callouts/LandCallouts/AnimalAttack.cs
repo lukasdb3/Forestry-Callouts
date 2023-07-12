@@ -183,7 +183,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_victim) _victim.Dismiss();
             if (_victimBlip) _victimBlip.Delete();
             if (_animal) _animal.Dismiss();
-            if (!ChunkChooser.CalloutForceEnded)
+            if (!ChunkChooser.stoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _victimSpawn);
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Animal Attack Code 4", "");

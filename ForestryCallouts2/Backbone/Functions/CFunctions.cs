@@ -72,6 +72,12 @@ namespace ForestryCallouts2.Backbone.Functions
             cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }
+        internal static void SpawnFastOffroadCar(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
+        {
+            string[] vehicleModels = IniSettings.OffRoadFastVehicles;
+            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
+            cVehicle.IsPersistent = true;
+        }
         internal static void SpawnAnimalControl(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
         {
             string[] vehicleModels = IniSettings.AnimalControlVehicles;

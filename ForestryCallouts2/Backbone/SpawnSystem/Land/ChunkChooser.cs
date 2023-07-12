@@ -14,7 +14,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land
     {
         internal static  Vector3 ClosestChunk; //Closet land chunk to player
         internal static string Curcall;
-        internal static bool CalloutForceEnded;
+        internal static bool stoppingCurrentCall;
         
         #region Common
         internal static Vector3 FinalSpawnpoint;
@@ -24,7 +24,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land
         internal static void Main(in string currentCallout)
         {
             Curcall = currentCallout;
-            CalloutForceEnded = false;
+            stoppingCurrentCall = false;
             Vector3 playerPos = Game.LocalPlayer.Character.Position;
 
             //finds closest land chunk to the player
@@ -36,7 +36,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land
             {
                 if (DistanceChecker.IsChunkToFar(ClosestChunk))
                 {
-                    CalloutForceEnded = true;
+                    stoppingCurrentCall = true;
                     LSPD_First_Response.Mod.API.Functions.StopCurrentCallout();
                     Logger.DebugLog("DISTANCE CHECKER", "Stopping current callout due to it being out of the max distance range");
                     Logger.DebugLog("DISTANCE CHECKER", "Selecting new callout to start");

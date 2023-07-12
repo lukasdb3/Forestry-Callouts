@@ -60,7 +60,7 @@ namespace ForestryCallouts2.Backbone
             {
                 Game.Console.Print();
                 Game.Console.Print("===== WARNING =====");
-                Game.Console.Print("First version of ForestryCallouts was detected still in the plugins folder.");
+                Game.Console.Print("The first version of ForestryCallouts was detected still in the plugins folder.");
                 Game.Console.Print("Please remove ForestryCallouts and reload LSPDFR");
                 Game.Console.Print("===== WARNING =====");
                 Game.Console.Print();
