@@ -65,14 +65,9 @@ namespace ForestryCallouts2.Backbone
                 Game.Console.Print("===== WARNING =====");
                 Game.Console.Print();
             }
-            Game.Console.Print("CalloutInterface installed: "+ PluginChecker.CalloutInterface + "");
-            Game.Console.Print("UltimateBackup installed: "+ PluginChecker.UltimateBackup + "");
-            Game.Console.Print("StopThePed installed: "+ PluginChecker.StopThePed + "");
-            Game.Console.Print("Water callouts enabled: "+IniSettings.WaterCalls+"");
             Game.Console.Print("Loading needed chunks...");
             if (!IniSettings.WaterCalls) SpawnSystem.Land.ChunkLoader.Main();
             if (IniSettings.WaterCalls) SpawnSystem.Water.ChunkLoader.Main();
-            Game.Console.Print("Loading commands!");
             Game.AddConsoleCommands(new[]{typeof(CCommands)});
             if (IniSettings.AmbientEventsEnabled) Game.Console.Print("Registering AmbientEvents");
             AmbientEvents.Main.RegisterEvents();

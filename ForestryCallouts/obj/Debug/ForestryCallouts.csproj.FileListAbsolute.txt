@@ -60,3 +60,4 @@ C:\Users\lukas\Documents\GitHub\Forestry Callouts\ForestryCallouts\obj\Debug\For
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\bin\Debug\CalloutInterface.dll
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\obj\Debug\ForestryCallouts.csproj.AssemblyReference.cache
 C:\Users\lukas\Documents\GitHub\BlondeePlugins\ForestryCallouts\obj\Debug\ForestryCallouts.csproj.CopyComplete
+C:\Users\admin\Documents\GitHub\Forestry-Callouts\ForestryCallouts\obj\Debug\ForestryCallouts.pdb
