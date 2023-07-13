@@ -96,6 +96,12 @@ namespace ForestryCallouts2.Backbone.Functions
             cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }
+        internal static void SpawnSemiTrucks(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
+        {
+            string[] vehicleModels = IniSettings.SemiTrucks;
+            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
+            cVehicle.IsPersistent = true;
+        }
         
         
         //Callout Interface Functions

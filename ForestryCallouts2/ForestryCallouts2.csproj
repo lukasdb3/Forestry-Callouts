@@ -46,11 +46,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Backbone\SpawnSystem\Water\CalloutSpawnpoints" />
-      <Folder Include="Callouts\WaterCallouts" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="RagePluginHook" Version="1.98.0" />
     </ItemGroup>
 

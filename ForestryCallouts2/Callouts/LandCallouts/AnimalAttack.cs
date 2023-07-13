@@ -10,6 +10,7 @@ using LSPD_First_Response.Mod.Callouts;
 using ForestryCallouts2.Backbone;
 using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
+using ForestryCallouts2.Backbone.SpawnSystem;
 using ForestryCallouts2.Backbone.SpawnSystem.Land;
 #endregion
 
@@ -183,7 +184,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_victim) _victim.Dismiss();
             if (_victimBlip) _victimBlip.Delete();
             if (_animal) _animal.Dismiss();
-            if (!ChunkChooser.stoppingCurrentCall)
+            if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _victimSpawn);
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Animal Attack Code 4", "");

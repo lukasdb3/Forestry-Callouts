@@ -21,8 +21,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static bool EnableDistanceChecker;
         internal static double MaxDistance;
         internal static int MinCalloutDistance;
-
-        internal static bool WaterCalls;
+        
         internal static int SearchAreaNotifications;
 
         //Keys
@@ -44,10 +43,12 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static bool IntoxPerson;
         internal static bool RegularPursuit;
         internal static bool AnimalAttack;
+        internal static bool DeadAnimalOnRoadway;
         internal static bool DirtBikePursuit;
         internal static bool AtvPursuit;
         internal static bool HighSpeedPursuit;
-        
+        internal static bool LoggerTruckPursuit;
+
         //Vehicles
         private static string _normalVehicles;
         internal static String[] NormalVehicles;
@@ -61,6 +62,9 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static String[] Dirtbikes;
         private static string _atvVehicles;
         internal static String[] AtvVehicles;
+        private static string _semiTrucks;
+        internal static String[] SemiTrucks;
+        
         #endregion
         
         //Loads settings in the users INI file.
@@ -78,7 +82,6 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             
             //Main
             DebugLogs = Ini.ReadBoolean("Main", "DebugLogs", false);
-            WaterCalls = Ini.ReadBoolean("Main", "WaterCallouts", false);
             EnableDistanceChecker = Ini.ReadBoolean("Main", "EnableDistanceChecker", true);
             MaxDistance = Ini.ReadDouble("Main", "MaxDistance", 2500);
             MinCalloutDistance = Ini.ReadInt32("Main", "MinimumCalloutSpawnDistance", 100);
@@ -116,29 +119,33 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             AmbientEventsEnabled = Ini.ReadBoolean("AmbientEvents", "AmbientEventsEnabled", true);
             MinimumWaitTime = Ini.ReadInt32("AmbientEvents", "MinimumWaitTimeBetweenEvents", 5);
             MaximumWaitTime = Ini.ReadInt32("AmbientEvents", "MaximumWaitTimeBetweenEvents", 10);
-            
-            
+
             //Callouts
             IntoxPerson = Ini.ReadBoolean("Callouts", "IntoxicatedPerson", true);
             RegularPursuit = Ini.ReadBoolean("Callouts", "Pursuit", true);
             AnimalAttack = Ini.ReadBoolean("Callouts", "AnimalAttack", true);
+            DeadAnimalOnRoadway = Ini.ReadBoolean("Callouts", "DeadAnimalOnRoadway", true);
             DirtBikePursuit = Ini.ReadBoolean("Callouts", "DirtBikePursuit", true);
             AtvPursuit = Ini.ReadBoolean("Callouts", "AtvPursuit", true);
             HighSpeedPursuit = Ini.ReadBoolean("Callouts", "HighSpeedPursuit", true);
-            
+            LoggerTruckPursuit = Ini.ReadBoolean("Callouts", "LoggerTruckPursuit", true);
+
             //Vehicles
             _normalVehicles = Ini.ReadString("Vehicles", "NormalVehicles", null);
             NormalVehicles = _normalVehicles.Split(':');
             _offRoadVehicles = Ini.ReadString("Vehicles", "OffRoadVehicles", null);
             OffRoadVehicles = _offRoadVehicles.Split(':');
             _offRoadFastVehicles = Ini.ReadString("Vehicles", "OffRoadFastVehicles", null);
-            OffRoadFastVehicles = _offRoadFastVehicles.Split(":");
+            Game.Console.Print(_offRoadFastVehicles);
+            OffRoadFastVehicles = _offRoadFastVehicles.Split(':');
             _animalControlVehicles = Ini.ReadString("Vehicles", "AnimalControlVehicles", null);
             AnimalControlVehicles = _animalControlVehicles.Split(':');
             _dirtbikes = Ini.ReadString("Vehicles", "Dirtbikes", null);
             Dirtbikes = _dirtbikes.Split(':');
             _atvVehicles = Ini.ReadString("Vehicles", "AtvVehicles", null);
             AtvVehicles = _atvVehicles.Split(':');
+            _semiTrucks = Ini.ReadString("Vehicles", "SemiTrucks", null);
+            SemiTrucks = _semiTrucks.Split(':');
 
             //Sees if any errors took place and if so a notification is sent to check the log
             if (_iniError)
@@ -153,7 +160,6 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         {
             //Main
             Ini.Write("Main", "DebugLogs", Menu.Create.DebugLogs.SelectedValue);
-            Ini.Write("Main", "WaterCallouts", Menu.Create.WaterCallouts.SelectedValue);
             Ini.Write("Main", "SearchAreaBlipsMax", Menu.Create.SearchAreaBlipsMax.Value);
             Ini.Write("Main", "MaxDistance", Menu.Create.MaxDistance.Value);
             Ini.Write("Main", "EnableDistanceChecker", Menu.Create.EnableDistanceChecker.SelectedValue);

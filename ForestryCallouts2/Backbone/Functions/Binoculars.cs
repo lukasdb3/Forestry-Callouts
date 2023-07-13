@@ -80,7 +80,7 @@ namespace ForestryCallouts2.Backbone.Functions
                         NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 17, true);
                         NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 27, true);
                         IsRendering = false;
-                        GameFiber.Wait(1000);
+                        GameFiber.Wait(10000);
                         break;
                     }
                 }

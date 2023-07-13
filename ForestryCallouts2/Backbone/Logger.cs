@@ -8,6 +8,8 @@ using LSPD_First_Response.Mod.Callouts;
 using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.Menu;
 using ForestryCallouts2.AmbientEvents;
+using ForestryCallouts2.Backbone.SpawnSystem;
+
 #endregion
 
 namespace ForestryCallouts2.Backbone
@@ -66,8 +68,7 @@ namespace ForestryCallouts2.Backbone
                 Game.Console.Print();
             }
             Game.Console.Print("Loading needed chunks...");
-            if (!IniSettings.WaterCalls) SpawnSystem.Land.ChunkLoader.Main();
-            if (IniSettings.WaterCalls) SpawnSystem.Water.ChunkLoader.Main();
+            ChunkLoader.Main();
             Game.AddConsoleCommands(new[]{typeof(CCommands)});
             if (IniSettings.AmbientEventsEnabled) Game.Console.Print("Registering AmbientEvents");
             AmbientEvents.Main.RegisterEvents();

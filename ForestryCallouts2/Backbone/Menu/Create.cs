@@ -40,7 +40,6 @@ namespace ForestryCallouts2.Backbone.Menu
         // Settings Menu
         //Main
         internal static UIMenuListItem DebugLogs;
-        internal static UIMenuListItem WaterCallouts;
         internal static UIMenuNumericScrollerItem<int> SearchAreaBlipsMax;
         internal static UIMenuListItem EnableDistanceChecker;
         internal static UIMenuNumericScrollerItem<double> MaxDistance;
@@ -126,7 +125,6 @@ namespace ForestryCallouts2.Backbone.Menu
             _settingsMenu.MouseControlsEnabled = false;
             //Main
             DebugLogs = new UIMenuListItem("DebugsLogs", "For Debugging ForestryCallouts Crashes", IniSettings.DebugLogs.ToString().ToLower(), (IniSettings.DebugLogs) ? "false" : "true");
-            WaterCallouts = new UIMenuListItem("WaterCallouts", "Enabling Water Callouts will Disable Land Callouts", IniSettings.WaterCalls.ToString().ToLower(), (IniSettings.WaterCalls) ? "false" : "true");
             SearchAreaBlipsMax = new UIMenuNumericScrollerItem<int>("SearchAreaBlipsMax", "Amount of Search Areas sent out before object is Blipped", 5, 15, 1);
             SearchAreaBlipsMax.Value = IniSettings.SearchAreaNotifications;
             EnableDistanceChecker = new UIMenuListItem("EnableDistanceChecker", "If true Distance Checker is enabled", IniSettings.EnableDistanceChecker, (IniSettings.EnableDistanceChecker) ? "false" : "true");
@@ -154,7 +152,7 @@ namespace ForestryCallouts2.Backbone.Menu
             _saveSettings = new UIMenuItem("~g~Save Settings", "~r~Required To Press If Settings Were Just Changed");
             _reload = new UIMenuItem("~b~Reload", "Reloads Forestry Callouts Settings and AmbientEvents");
             
-            _settingsMenu.AddItems(DebugLogs, WaterCallouts, SearchAreaBlipsMax, MaxDistance, MinCalloutDistance, EnableBinoculars, BinocularsSense, AmbientEventsEnabled, MinimumWaitTimeBetweenEvents, MaximumWaitTimeBetweenEvents, IntoxicatedPerson, RegularPursuit, AnimalAttack, DirtBikePursuit, AtvPursuit, _saveSettings, _reload);
+            _settingsMenu.AddItems(DebugLogs, SearchAreaBlipsMax, MaxDistance, MinCalloutDistance, EnableBinoculars, BinocularsSense, AmbientEventsEnabled, MinimumWaitTimeBetweenEvents, MaximumWaitTimeBetweenEvents, IntoxicatedPerson, RegularPursuit, AnimalAttack, DirtBikePursuit, AtvPursuit, _saveSettings, _reload);
             _optionsMenu.BindMenuToItem(_settingsMenu, _settings);
             _settingsMenu.RefreshIndex();
             _settingsMenu.OnItemSelect += OnSettingsMenuItemSelected;

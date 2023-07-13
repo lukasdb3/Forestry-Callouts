@@ -12,6 +12,7 @@ using LSPD_First_Response.Mod.Callouts;
 using ForestryCallouts2.Backbone;
 using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
+using ForestryCallouts2.Backbone.SpawnSystem;
 using ForestryCallouts2.Backbone.SpawnSystem.Land;
 #endregion
 
@@ -79,11 +80,11 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             //Spawn Suspect and car
             CFunctions.SpawnCountryPed(out _suspect, _suspectSpawn, _suspectHeading);
             Vector3 vehicleSpawn = World.GetNextPositionOnStreet(_suspectSpawn);
-            CFunctions.SpawnSemiTruck(out _susVehicle, vehicleSpawn, _suspectHeading);
+            CFunctions.SpawnSemiTrucks(out _susVehicle, vehicleSpawn, _suspectHeading);
             _susVehicle.TopSpeed = 25f;
-            _susVehTrailer = new Vehicle("trailerlogs", SusVehTruck.GetOffsetPositionFront(10f), Heading);
+            _susVehTrailer = new Vehicle("trailerlogs", _susVehicle.GetOffsetPositionFront(10f), _suspectHeading);
             _susVehTrailer.IsPersistent = true;
-            _susVehicle.Trailer = SusVehTrailer;
+            _susVehicle.Trailer = _susVehTrailer;
             //Spawn possible passenger
             var pChoice = _rand.Next(1, 3);
             if (pChoice == 1)
@@ -166,16 +167,17 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_suspect) _suspect.Dismiss();
             if (_suspectBlip) _suspectBlip.Delete();
             if (_susVehicle) _susVehicle.Dismiss();
+            if (_susVehTrailer) _susVehTrailer.Dismiss();
             foreach (Ped passenger in _passengerList)
             {
                 if (passenger) passenger.Dismiss();
             }
             if (Functions.IsPursuitStillRunning(_pursuit) && _pursuitStarted) Functions.ForceEndPursuit(_pursuit);
-            if (!ChunkChooser.CalloutForceEnded)
+            if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _suspectSpawn);
-                Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Pursuit Code 4", "");
-                if (PluginChecker.CalloutInterface) CFunctions.CISendMessage(this, "Pursuit Code 4");
+                Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Logger Truck Pursuit Code 4", "");
+                if (PluginChecker.CalloutInterface) CFunctions.CISendMessage(this, "Logger Truck Pursuit Code 4");
             }
             Logger.CallDebugLog(this, "Callout ended");
             base.End();

@@ -50,22 +50,14 @@ namespace ForestryCallouts2
         //Registers all callouts
         internal static void RegisterCallouts()
         {
-            //Player is using water calls so we register them and dont register land callouts
-            if (IniSettings.WaterCalls)
-            {
-    
-            }
-            
-            //Player is not using water callouts so we register land callouts
-            if (!IniSettings.WaterCalls)
-            {
-                if (IniSettings.IntoxPerson)  Functions.RegisterCallout(typeof(Callouts.LandCallouts.IntoxicatedPerson));
-                if (IniSettings.RegularPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.RegularPursuit));
-                if (IniSettings.AnimalAttack) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AnimalAttack));
-                if (IniSettings.DirtBikePursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DirtBikePursuit));
-                if (IniSettings.AtvPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AtvPursuit));
-                if (IniSettings.HighSpeedPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.HighSpeedPursuit));
-            }
+            if (IniSettings.IntoxPerson)  Functions.RegisterCallout(typeof(Callouts.LandCallouts.IntoxicatedPerson));
+            if (IniSettings.RegularPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.RegularPursuit));
+            if (IniSettings.AnimalAttack) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AnimalAttack));
+            if (IniSettings.DirtBikePursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DirtBikePursuit));
+            if (IniSettings.AtvPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AtvPursuit));
+            if (IniSettings.HighSpeedPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.HighSpeedPursuit));
+            if (IniSettings.LoggerTruckPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.LoggerTruckPursuit));
+            if (IniSettings.DeadAnimalOnRoadway) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DeadAnimalOnRoadway));
         }
         
         //GameFiber that runs constantly for interaction menu and binoculars
@@ -86,7 +78,7 @@ namespace ForestryCallouts2
                     }
 
                     //Binoculars Hotkey
-                    if (Game.IsKeyDown(IniSettings.BinocularsKey) && IniSettings.BinocularsEnabled && !Binoculars.IsRendering)
+                    if (Game.IsKeyDown(IniSettings.BinocularsKey) && IniSettings.BinocularsEnabled && !Binoculars.IsRendering && Game.LocalPlayer.Character.IsOnFoot)
                     {
                         Binoculars.Enable();
                     }

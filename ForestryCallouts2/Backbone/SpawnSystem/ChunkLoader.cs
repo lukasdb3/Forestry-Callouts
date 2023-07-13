@@ -1,11 +1,12 @@
 ﻿#region Refrences
 //System
 using System.Collections.Generic;
-//Rage
 using Rage;
+//Rage
+
 #endregion
 
-namespace ForestryCallouts2.Backbone.SpawnSystem.Land
+namespace ForestryCallouts2.Backbone.SpawnSystem
 {
     internal static class ChunkLoader
     {

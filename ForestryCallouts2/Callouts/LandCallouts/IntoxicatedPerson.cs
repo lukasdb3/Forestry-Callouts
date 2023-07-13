@@ -14,6 +14,7 @@ using RAGENativeUI.Elements;
 using ForestryCallouts2.Backbone;
 using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
+using ForestryCallouts2.Backbone.SpawnSystem;
 using ForestryCallouts2.Backbone.SpawnSystem.Land;
 #endregion
 
@@ -251,7 +252,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_suspect) _suspect.Dismiss();
             if (_suspectBlip) _suspectBlip.Delete();
             if (_suspectAreaBlip) _suspectAreaBlip.Delete();
-            if (!ChunkChooser.CalloutForceEnded)
+            if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _suspectSpawn);
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Intoxicated Person Code 4", "");

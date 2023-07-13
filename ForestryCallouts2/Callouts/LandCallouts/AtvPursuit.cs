@@ -10,6 +10,7 @@ using LSPD_First_Response.Mod.Callouts;
 using ForestryCallouts2.Backbone;
 using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
+using ForestryCallouts2.Backbone.SpawnSystem;
 using ForestryCallouts2.Backbone.SpawnSystem.Land;
 #endregion
 
@@ -116,7 +117,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_suspectBlip) _suspectBlip.Delete();
             if (_susVehicle) _susVehicle.Dismiss();
             if (Functions.IsPursuitStillRunning(_pursuit)) Functions.ForceEndPursuit(_pursuit);
-            if (!ChunkChooser.stoppingCurrentCall)
+            if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _suspectSpawn);
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~ATV Pursuit Code 4", "");

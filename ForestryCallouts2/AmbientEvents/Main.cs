@@ -27,6 +27,9 @@ namespace ForestryCallouts2.AmbientEvents
 
         internal static void RegisterEvents()
         {
+            // hard coded disabling ambient as its wip and currently crashing :(
+            IniSettings.AmbientEventsEnabled = false;
+            
             if (IniSettings.AmbientEventsEnabled)
             {
                 RegisterEvent("DeadAnimal");
@@ -34,7 +37,7 @@ namespace ForestryCallouts2.AmbientEvents
             }
             else
             {
-                Logger.InfoLog("AmbientEvents","Ambient Events are disabled aborting loading");
+                Logger.InfoLog("AmbientEvents","Ambient Events are disabled");
             }
         }
 
