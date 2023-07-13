@@ -12,32 +12,23 @@
 
     <ItemGroup>
       <Reference Include="CalloutInterface">
-        <HintPath>..\..\..\CodingCrap\Refrences\CalloutInterface.dll</HintPath>
+        <HintPath>..\..\..\Coding Refrences\CalloutInterface.dll</HintPath>
+      </Reference>
+      <Reference Include="CalloutInterfaceAPI">
+        <HintPath>..\..\..\Coding Refrences\CalloutInterfaceAPI.dll</HintPath>
       </Reference>
       <Reference Include="LSPD First Response">
-        <HintPath>..\..\..\CodingCrap\Refrences\LSPD First Response.dll</HintPath>
-      </Reference>
-      <Reference Include="LSPD First Response, Version=0.4.8037.37597, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\..\..\GTA Mod Development\Coding\Coding Refrences For GTA5\LSPD First Response.dll</HintPath>
-      </Reference>
-      <Reference Include="LSPD First Response, Version=0.4.8242.35949, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\..\Dependencies\LSPD First Response.dll</HintPath>
-      </Reference>
-      <Reference Include="LSPD First Response, Version=0.4.8334.1822, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\..\..\Coding\Refrences\LSPD First Response.dll</HintPath>
+        <HintPath>..\..\..\Coding Refrences\LSPD First Response.dll</HintPath>
       </Reference>
       <Reference Include="Microsoft.CSharp" />
       <Reference Include="RAGENativeUI">
-        <HintPath>..\..\..\CodingCrap\Refrences\RAGENativeUI.dll</HintPath>
+        <HintPath>..\..\..\Coding Refrences\RAGENativeUI.dll</HintPath>
       </Reference>
       <Reference Include="RagePluginHookLauncher">
         <HintPath>..\..\..\CodingCrap\Refrences\RAGEPluginHook.exe</HintPath>
       </Reference>
       <Reference Include="RagePluginHookLauncher, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
         <HintPath>..\..\Dependencies\RAGEPluginHook.exe</HintPath>
-      </Reference>
-      <Reference Include="StopThePed">
-        <HintPath>..\..\..\CodingCrap\Refrences\StopThePed.dll</HintPath>
       </Reference>
       <Reference Include="System.Windows" />
       <Reference Include="System.Windows.Forms">

@@ -27,7 +27,7 @@ namespace ForestryCallouts2.Backbone.Functions
                 drunkAnimset.LoadAndWait();
                 Bad.MovementAnimationSet = drunkAnimset;
                 Rage.Native.NativeFunction.Natives.SET_PED_IS_DRUNK(Bad, isDrunk);
-                StopThePed.API.Functions.setPedAlcoholOverLimit(Bad, true);
+                //StopThePed.API.Functions.setPedAlcoholOverLimit(Bad, true);
             });
         }
         
@@ -102,6 +102,40 @@ namespace ForestryCallouts2.Backbone.Functions
             cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }
+        
+        //Weapons
+        internal static void MeleeWeaponChooser(Ped cPed, short ammo, bool isNow)
+        {
+            String[] weaponModels = { "WEAPON_KNIFE", "WEAPON_DAGGER", "WEAPON_BAT", "WEAPON_BOTTLE", "WEAPON_UNARMED", "WEAPON_HATCHET", "WEAPON_KNUCKLE", "WEAPON_MACHETE", "WEAPON_CROWBAR", "WEAPON_HAMMER"};
+            WeaponDescriptor cWeapon = weaponModels[new Random().Next(weaponModels.Length)];
+
+            cPed.Inventory.GiveNewWeapon(cWeapon, ammo, isNow);
+        }
+        
+        internal static void RifleWeaponChooser(Ped cPed, short ammo, bool isNow)
+        {
+            String[] weaponModels = { "weapon_assaultrifle", "weapon_carbinerifle", "weapon_advancedrifle", "weapon_specialcarbine"};
+            WeaponDescriptor cWeapon = weaponModels[new Random().Next(weaponModels.Length)];
+
+            cPed.Inventory.GiveNewWeapon(cWeapon, ammo, isNow);
+        }
+        
+        internal static void PistolWeaponChooser(Ped cPed, short ammo, bool isNow)
+        {
+            String[] weaponModels = { "weapon_pistol", "weapon_combatpistol", "weapon_pistol50", "weapon_revolver"};
+            WeaponDescriptor cWeapon = weaponModels[new Random().Next(weaponModels.Length)];
+
+            cPed.Inventory.GiveNewWeapon(cWeapon, ammo, isNow);
+        }
+        
+        internal static void ShotgunWeaponChooser(Ped cPed, short ammo, bool isNow)
+        {
+            String[] weaponModels = { "weapon_pumpshotgun", "weapon_sawnoffshotgun", "weapon_dbshotgun"};
+            WeaponDescriptor cWeapon = weaponModels[new Random().Next(weaponModels.Length)];
+
+            cPed.Inventory.GiveNewWeapon(cWeapon, ammo, isNow);
+        }
+        
         
         
         //Callout Interface Functions

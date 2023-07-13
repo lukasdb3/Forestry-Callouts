@@ -2,6 +2,7 @@
 //System
 using System;
 using System.Windows.Forms;
+using ForestryCallouts2.Callouts.LandCallouts;
 //Rage
 using Rage;
 #endregion
@@ -44,6 +45,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static bool RegularPursuit;
         internal static bool AnimalAttack;
         internal static bool DeadAnimalOnRoadway;
+        internal static bool DangerousPerson;
         internal static bool DirtBikePursuit;
         internal static bool AtvPursuit;
         internal static bool HighSpeedPursuit;
@@ -125,10 +127,12 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             RegularPursuit = Ini.ReadBoolean("Callouts", "Pursuit", true);
             AnimalAttack = Ini.ReadBoolean("Callouts", "AnimalAttack", true);
             DeadAnimalOnRoadway = Ini.ReadBoolean("Callouts", "DeadAnimalOnRoadway", true);
+            DangerousPerson = Ini.ReadBoolean("Callouts", "DangerousPerson", true); 
             DirtBikePursuit = Ini.ReadBoolean("Callouts", "DirtBikePursuit", true);
             AtvPursuit = Ini.ReadBoolean("Callouts", "AtvPursuit", true);
             HighSpeedPursuit = Ini.ReadBoolean("Callouts", "HighSpeedPursuit", true);
             LoggerTruckPursuit = Ini.ReadBoolean("Callouts", "LoggerTruckPursuit", true);
+
 
             //Vehicles
             _normalVehicles = Ini.ReadString("Vehicles", "NormalVehicles", null);

@@ -14,6 +14,7 @@ namespace ForestryCallouts2.Backbone.Functions
         private static Vehicle _acVehicle;
         private static Ped _acPed;
         private static Blip _acBlip;
+        private static GameFiber _fiber;
         
         internal static void CallAnimalControl()
         {
@@ -37,13 +38,13 @@ namespace ForestryCallouts2.Backbone.Functions
                 Logger.DebugLog("ANIMAL CONTROL", "Failed to find dead Animal");
                 return;
             }
-            
+
             //yeah cool stuff man
             Game.DisplayNotification("~b~Dispatch:~w~ Animal Control is in route to your location. ");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudio("OFFICERS_REPORT_03 ASSISTANCE_REQUIRED_02");
 
             //spawnpoint position
-            var startPosition = Game.LocalPlayer.Character.Position.Around(150f, 200f);
+            var startPosition = Game.LocalPlayer.Character.Position.Around(100f, 150f);
             var finalStartPosition = World.GetNextPositionOnStreet(startPosition);
             var animalPos = _animal.Position;
             var aroundAnimalPos = animalPos.Around2D(150f);
@@ -66,6 +67,18 @@ namespace ForestryCallouts2.Backbone.Functions
 
             //warp ac ped into ac vehicle
             _acPed.WarpIntoVehicle(_acVehicle, -1);
+            
+            //fiber
+            _fiber = GameFiber.StartNew(delegate
+            {
+                while (true)
+                {
+                    if (!_acPed || !Game.LocalPlayer.Character.IsAlive)
+                    {
+                        DestroyAnimalControl();
+                    }
+                }
+            });
 
             //Get drive to postion for animal control
             var closeToAnimalPos = animalPos.Around2D(5f);
@@ -97,23 +110,15 @@ namespace ForestryCallouts2.Backbone.Functions
             _acPed.Tasks.CruiseWithVehicle(10f, VehicleDrivingFlags.Normal);
             
             //Dismisses everything
-            destroyAnimalControl();
+            DestroyAnimalControl();
         }
 
-        internal static void destroyAnimalControl()
+        private static void DestroyAnimalControl()
         {
-            if (_acPed.Exists())
-            {
-                _acPed.Dismiss();
-            }
-            if (_acVehicle.Exists())
-            {
-                _acVehicle.Dismiss();
-            }
-            if (_acBlip.Exists())
-            {
-                _acBlip.Delete();
-            }
+            if (_acPed) _acPed.Dismiss();
+            if (_acVehicle) _acVehicle.Dismiss();
+            if (_acBlip) _acBlip.Delete();
+            _fiber.Abort();
         }
     }
 }

@@ -57,16 +57,16 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
         internal static void CalloutSpawnSorter()
         {
             //North paleto bay forest
-            if (_closestChunk == ChunkLoader.PaletoBayForest) NPaletoBayForest(in _curcall);
+            if (_closestChunk == ChunkLoader.PaletoBayForest) PaletoBayForest(in _curcall);
             /*if (closestChunk == ChunkLoader.chunk2) Chunk2(in curcall);
             if (closestChunk == ChunkLoader.chunk3) Chunk3(in curcall);
             if (closestChunk == ChunkLoader.chunk4) Chunk4(in curcall);
             if (closestChunk == ChunkLoader.chunk5) Chunk5(in curcall); */ 
         }
 
-        private static void NPaletoBayForest(in string currentCallout)
+        private static void PaletoBayForest(in string currentCallout)
         {
-            if (currentCallout is "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit") 
+            if (currentCallout is "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit" or "DangerousPerson") 
                 Common.PaletoBayForest(out FinalSpawnpoint, out FinalHeading);
             if (currentCallout is "LoggerTruckPursuit")
                 LoggerTruckSpawns.PaletoBayForest(out FinalSpawnpoint, out FinalHeading);
