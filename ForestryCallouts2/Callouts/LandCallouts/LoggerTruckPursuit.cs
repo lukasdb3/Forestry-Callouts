@@ -123,6 +123,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             _suspect.WarpIntoVehicle(_susVehicle, -1);
             _suspectBlip = _suspect.AttachBlip();
             _suspectBlip.EnableRoute(Color.Yellow);
+            _suspect.Tasks.CruiseWithVehicle(_susVehicle, -1, VehicleDrivingFlags.Emergency);
             return base.OnCalloutAccepted();
         }
 

@@ -9,7 +9,6 @@ using RAGENativeUI.Elements;
 //ForestryCallouts2
 using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
-using ForestryCallouts2.AmbientEvents;
 #endregion
 
 namespace ForestryCallouts2.Backbone.Menu
@@ -24,19 +23,16 @@ namespace ForestryCallouts2.Backbone.Menu
         private static UIMenu _optionsMenu = new("", "");
         private static UIMenu _calloutMenu = new("", "");
         private static UIMenu _settingsMenu = new("", "");
-        internal static UIMenu EventsMenu = new("", "");
 
         // Interaction Menu
         private static UIMenuItem _callAnimalControl;
         private static UIMenuItem _endCallout;
-        private static UIMenuItem _endEvent;
         private static UIMenuItem _options;
 
         // Options Menu
         private static UIMenuItem _startCallout;
         private static UIMenuItem _settings;
-        private static UIMenuItem _ambientEvents;
-        
+
         // Settings Menu
         //Main
         internal static UIMenuListItem DebugLogs;
@@ -47,16 +43,18 @@ namespace ForestryCallouts2.Backbone.Menu
         //Binoculars
         internal static UIMenuListItem EnableBinoculars;
         internal static UIMenuNumericScrollerItem<int> BinocularsSense;
-        //AmbientEvents
-        internal static UIMenuListItem AmbientEventsEnabled;
-        internal static UIMenuNumericScrollerItem<int> MinimumWaitTimeBetweenEvents;
-        internal static UIMenuNumericScrollerItem<int> MaximumWaitTimeBetweenEvents;
         //Callouts
-        internal static UIMenuListItem IntoxicatedPerson;
-        internal static UIMenuListItem RegularPursuit;
         internal static UIMenuListItem AnimalAttack;
-        internal static UIMenuListItem DirtBikePursuit;
         internal static UIMenuListItem AtvPursuit;
+        internal static UIMenuListItem DangerousPerson;
+        internal static UIMenuListItem DeadAnimalOnRoadway;
+        internal static UIMenuListItem DirtBikePursuit;
+        internal static UIMenuListItem HighSpeedPursuit;
+        internal static UIMenuListItem IntoxicatedPerson;
+        internal static UIMenuListItem LoggerTruckPursuit;
+        internal static UIMenuListItem RegularPursuit;
+        
+        
 
 
         private static UIMenuItem _saveSettings;
@@ -71,9 +69,8 @@ namespace ForestryCallouts2.Backbone.Menu
             
             _callAnimalControl = new("Animal Control", "Call Animal Control To Pick Up Dead Animal");
             _endCallout = new("End Callout", "End Current Callout");
-            _endEvent = new("End Event", "End Current Event");
             _options = new("Options", "");
-            InteractionMenu.AddItems(_callAnimalControl,_endCallout,_endEvent,_options);
+            InteractionMenu.AddItems(_callAnimalControl,_endCallout,_options);
             InteractionMenu.RefreshIndex();
             InteractionMenu.OnItemSelect += OnInteractionMenuItemSelected;
             Main.pool.Add(InteractionMenu);
@@ -84,9 +81,8 @@ namespace ForestryCallouts2.Backbone.Menu
             _optionsMenu.MouseControlsEnabled = false;
 
             _startCallout = new("Callouts", "");
-            _ambientEvents = new("Ambient Events", "");
             _settings = new("Settings", "");
-            _optionsMenu.AddItems(_startCallout, _ambientEvents, _settings);
+            _optionsMenu.AddItems(_startCallout, _settings);
             InteractionMenu.BindMenuToItem(_optionsMenu, _options);
             _optionsMenu.RefreshIndex();
             _optionsMenu.OnItemSelect += OnOptionsMenuItemSelected;
@@ -107,18 +103,6 @@ namespace ForestryCallouts2.Backbone.Menu
             _calloutMenu.OnItemSelect += OnCalloutMenuItemSelected;
             Main.pool.Add(_calloutMenu);
 
-            //Create events menu
-            EventsMenu = new("Forestry Callouts", "~b~Ambient Events Menu ~g~| ~y~v" + Version);
-            EventsMenu.SetBannerType(Color.ForestGreen);
-            EventsMenu.MouseControlsEnabled = false;
-            
-            //We add the events to the menu in AmbientEvents.Main.RegisterEvent()
-            
-            _optionsMenu.BindMenuToItem(EventsMenu, _ambientEvents);
-            EventsMenu.RefreshIndex();
-            EventsMenu.OnItemSelect += OnEventMenuItemSelected;
-            Main.pool.Add(EventsMenu);
-            
             // Create Settings Menu
             _settingsMenu = new UIMenu("Forestry Callouts", "~b~Settings Menu ~g~| ~y~v" + Version);
             _settingsMenu.SetBannerType(Color.ForestGreen);
@@ -136,23 +120,21 @@ namespace ForestryCallouts2.Backbone.Menu
             EnableBinoculars = new UIMenuListItem("EnableBinoculars", "If true Binoculars are Enabled", IniSettings.BinocularsEnabled.ToString().ToLower(), (IniSettings.BinocularsEnabled) ? "false" : "true");
             BinocularsSense = new UIMenuNumericScrollerItem<int>("BinocularsSensitivity", "How fast the Binoculars move left and right",1, 10, 1);
             BinocularsSense.Value = IniSettings.BinocularsSensitivity;
-            //AmbientEvents
-            AmbientEventsEnabled = new UIMenuListItem("AmbientEventsEnabled", "If False Ambient Events Are Disabled", IniSettings.AmbientEventsEnabled.ToString().ToLower(), (IniSettings.AmbientEventsEnabled) ? "false" : "true");
-            MinimumWaitTimeBetweenEvents = new UIMenuNumericScrollerItem<int>("MinWaitTimeEvents", "Minimum Wait Time Between Events", 3, IniSettings.MaximumWaitTime - 1, 1);
-            MinimumWaitTimeBetweenEvents.Value = IniSettings.MinimumWaitTime;
-            MaximumWaitTimeBetweenEvents = new UIMenuNumericScrollerItem<int>("MaxWaitTimeEvents", "Maximum Wait Time Between Events", IniSettings.MinimumWaitTime + 1, 20, 1);
-            MaximumWaitTimeBetweenEvents.Value = IniSettings.MaximumWaitTime;
             //Callouts
-            IntoxicatedPerson = new UIMenuListItem("IntoxicatedPerson", "",IniSettings.IntoxPerson.ToString().ToLower(), (IniSettings.IntoxPerson) ? "false" : "true");
-            RegularPursuit = new UIMenuListItem("RegularPursuit", "",IniSettings.RegularPursuit.ToString().ToLower(), (IniSettings.RegularPursuit) ? "false" : "true");
             AnimalAttack = new UIMenuListItem("AnimalAttack", "",IniSettings.AnimalAttack.ToString().ToLower(), (IniSettings.AnimalAttack) ? "false" : "true");
-            DirtBikePursuit = new UIMenuListItem("DirtBikePursuit", "",IniSettings.DirtBikePursuit.ToString().ToLower(), (IniSettings.DirtBikePursuit) ? "false" : "true");
             AtvPursuit = new UIMenuListItem("AtvPursuit", "", IniSettings.AtvPursuit.ToString().ToLower(), (IniSettings.AtvPursuit) ? "false" : "true");
+            DangerousPerson = new UIMenuListItem("DangerousPerson", "", IniSettings.DangerousPerson.ToString().ToLower(), (IniSettings.DangerousPerson) ? "false" : "true");
+            DeadAnimalOnRoadway = new UIMenuListItem("DeadAnimalRoadway", "", IniSettings.DeadAnimalOnRoadway.ToString().ToLower(), (IniSettings.DeadAnimalOnRoadway) ? "false" : "true");
+            DirtBikePursuit = new UIMenuListItem("DirtBikePursuit", "",IniSettings.DirtBikePursuit.ToString().ToLower(), (IniSettings.DirtBikePursuit) ? "false" : "true");
+            HighSpeedPursuit = new UIMenuListItem("HighSpeedPursuit", "", IniSettings.HighSpeedPursuit.ToString().ToLower(), (IniSettings.HighSpeedPursuit) ? "false" : "true");
+            IntoxicatedPerson = new UIMenuListItem("IntoxicatedPerson", "",IniSettings.IntoxPerson.ToString().ToLower(), (IniSettings.IntoxPerson) ? "false" : "true");
+            LoggerTruckPursuit = new UIMenuListItem("LoggerTruckPursuit", "", IniSettings.LoggerTruckPursuit.ToString().ToLower(), (IniSettings.LoggerTruckPursuit) ? "false" : "true");
+            RegularPursuit = new UIMenuListItem("RegularPursuit", "",IniSettings.RegularPursuit.ToString().ToLower(), (IniSettings.RegularPursuit) ? "false" : "true");
             //Buttons for saving and reloading Ini
             _saveSettings = new UIMenuItem("~g~Save Settings", "~r~Required To Press If Settings Were Just Changed");
             _reload = new UIMenuItem("~b~Reload", "Reloads Forestry Callouts Settings and AmbientEvents");
-            
-            _settingsMenu.AddItems(DebugLogs, SearchAreaBlipsMax, MaxDistance, MinCalloutDistance, EnableBinoculars, BinocularsSense, AmbientEventsEnabled, MinimumWaitTimeBetweenEvents, MaximumWaitTimeBetweenEvents, IntoxicatedPerson, RegularPursuit, AnimalAttack, DirtBikePursuit, AtvPursuit, _saveSettings, _reload);
+            _settingsMenu.AddItems(DebugLogs, SearchAreaBlipsMax, MaxDistance, MinCalloutDistance, EnableBinoculars, BinocularsSense, IntoxicatedPerson, AnimalAttack, AtvPursuit, DangerousPerson, DeadAnimalOnRoadway,
+                DirtBikePursuit, HighSpeedPursuit, IntoxicatedPerson, LoggerTruckPursuit, RegularPursuit, _saveSettings, _reload);
             _optionsMenu.BindMenuToItem(_settingsMenu, _settings);
             _settingsMenu.RefreshIndex();
             _settingsMenu.OnItemSelect += OnSettingsMenuItemSelected;
@@ -179,20 +161,6 @@ namespace ForestryCallouts2.Backbone.Menu
                 }
                 Game.DisplayNotification("~g~There Is No Callout Running");
                 Logger.DebugLog("INTERACTION MENU", "There is no callout to end");
-            }
-
-            if (selecteditem == _endEvent)
-            {
-                if (AmbientEvents.Main.IsAnyEventRunning)
-                {
-                    AmbientEvent currentEvent = AmbientEvents.Main.currentEvent;
-                    currentEvent.End();
-                }
-                else
-                {
-                    Logger.DebugLog("INTERACTION MENU", "There is no active event");
-                    Game.DisplayNotification("~g~There Is No Active Event");
-                }
             }
         }
         
@@ -221,18 +189,6 @@ namespace ForestryCallouts2.Backbone.Menu
         private static void OnAmbientEventsOptionsMenuItemSelected(UIMenu sender, UIMenuItem selcteditem, int index)
         {
         }
-        
-        private static void OnEventMenuItemSelected(UIMenu sender, UIMenuItem selecteditem, int index)
-        {
-            Logger.DebugLog("INTERACTION MENU", "Ambient Event Item " + selecteditem.Text + " was selected!");
-            foreach (var ae in AmbientEvents.Main.EventNamesList)
-            {
-                if (ae == selecteditem.Text)
-                {
-                    AmbientEvents.Main.StartEvent(ae);
-                }
-            }
-        }
 
         private static void OnSettingsMenuItemSelected(UIMenu sender, UIMenuItem selecteditem, int index)
         {
@@ -247,14 +203,7 @@ namespace ForestryCallouts2.Backbone.Menu
             {
                 IniSettings.LoadSettings();
                 Game.DisplayNotification("~g~Forestry Callouts Settings Reloaded");
-                AmbientEvents.Main.CleanUp();
-                Game.DisplayNotification("~g~Forestry Callouts Events Cleaned Up");
                 GameFiber.Wait(1000);
-                if (IniSettings.AmbientEventsEnabled)
-                {
-                    Game.DisplayNotification("~g~Forestry Callouts Events Reloaded");
-                    AmbientEvents.Main.RegisterEvents();
-                }
                 Logger.DebugLog("INTERACTION MENU", "Forestry Callouts Reloaded");
             }
         }

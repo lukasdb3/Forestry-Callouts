@@ -7,7 +7,6 @@ using LSPD_First_Response.Mod.Callouts;
 //ForestryCallouts2
 using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.Menu;
-using ForestryCallouts2.AmbientEvents;
 using ForestryCallouts2.Backbone.SpawnSystem;
 
 #endregion
@@ -70,8 +69,6 @@ namespace ForestryCallouts2.Backbone
             Game.Console.Print("Loading needed chunks...");
             ChunkLoader.Main();
             Game.AddConsoleCommands(new[]{typeof(CCommands)});
-            if (IniSettings.AmbientEventsEnabled) Game.Console.Print("Registering AmbientEvents");
-            AmbientEvents.Main.RegisterEvents();
             Game.Console.Print("Registering Callouts..");
             Main.RegisterCallouts();
             Game.Console.Print("=============== FORESTRY CALLOUTS ===============");

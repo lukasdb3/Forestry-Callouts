@@ -22,7 +22,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
     {
         #region Variables
         
-        internal readonly string CurCall = "AnimalAttack";
+        internal readonly string CurCall = "DeadAnimalOnRoadway";
         
         //animal
         private Vector3 _animalSpawn;

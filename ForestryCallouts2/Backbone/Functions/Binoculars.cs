@@ -14,6 +14,7 @@ namespace ForestryCallouts2.Backbone.Functions
     {
         private static Texture _binoTexture = Game.CreateTextureFromFile(@"plugins\lspdfr\ForestryCallouts2\Binoculars.png");
         internal static bool IsRendering = false;
+        internal static bool BinoKeyEnabled = true;
         private static Object _binoculars;
         private static Camera _binoCamera;
 
@@ -21,6 +22,8 @@ namespace ForestryCallouts2.Backbone.Functions
         {
             GameFiber.StartNew(delegate
             {
+                BinoKeyEnabled = false;
+                
                 // Create binoculars and attach to players right hand and play binocular animation
                 _binoculars = new Rage.Object("prop_binoc_01", Game.LocalPlayer.Character.Position);
                 _binoculars.AttachTo(Game.LocalPlayer.Character, Game.LocalPlayer.Character.GetBoneIndex(PedBoneId.RightPhHand), Vector3.Zero, Rotator.Zero);
@@ -80,7 +83,8 @@ namespace ForestryCallouts2.Backbone.Functions
                         NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 17, true);
                         NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 27, true);
                         IsRendering = false;
-                        GameFiber.Wait(10000);
+                        GameFiber.Wait(3000);
+                        BinoKeyEnabled = true;
                         break;
                     }
                 }

@@ -34,12 +34,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static bool BinocularsEnabled;
         internal static Keys BinocularsKey;
         internal static int BinocularsSensitivity;
-        
-        //AmbientEvents
-        internal static bool AmbientEventsEnabled;
-        internal static int MinimumWaitTime;
-        internal static int MaximumWaitTime;
-        
+
         //Callouts
         internal static bool IntoxPerson;
         internal static bool RegularPursuit;
@@ -116,18 +111,13 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             //Binoculars
             BinocularsEnabled = Ini.ReadBoolean("Binoculars", "EnableBinoculars", true);
             BinocularsSensitivity = Ini.ReadInt32("Binoculars", "BinocularsSensitivity", 3);
-            
-            //AmbientEvents
-            AmbientEventsEnabled = Ini.ReadBoolean("AmbientEvents", "AmbientEventsEnabled", true);
-            MinimumWaitTime = Ini.ReadInt32("AmbientEvents", "MinimumWaitTimeBetweenEvents", 5);
-            MaximumWaitTime = Ini.ReadInt32("AmbientEvents", "MaximumWaitTimeBetweenEvents", 10);
 
             //Callouts
             IntoxPerson = Ini.ReadBoolean("Callouts", "IntoxicatedPerson", true);
             RegularPursuit = Ini.ReadBoolean("Callouts", "Pursuit", true);
             AnimalAttack = Ini.ReadBoolean("Callouts", "AnimalAttack", true);
-            DeadAnimalOnRoadway = Ini.ReadBoolean("Callouts", "DeadAnimalOnRoadway", true);
             DangerousPerson = Ini.ReadBoolean("Callouts", "DangerousPerson", true); 
+            DeadAnimalOnRoadway = Ini.ReadBoolean("Callouts", "DeadAnimalOnRoadway", true);
             DirtBikePursuit = Ini.ReadBoolean("Callouts", "DirtBikePursuit", true);
             AtvPursuit = Ini.ReadBoolean("Callouts", "AtvPursuit", true);
             HighSpeedPursuit = Ini.ReadBoolean("Callouts", "HighSpeedPursuit", true);
@@ -140,7 +130,6 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             _offRoadVehicles = Ini.ReadString("Vehicles", "OffRoadVehicles", null);
             OffRoadVehicles = _offRoadVehicles.Split(':');
             _offRoadFastVehicles = Ini.ReadString("Vehicles", "OffRoadFastVehicles", null);
-            Game.Console.Print(_offRoadFastVehicles);
             OffRoadFastVehicles = _offRoadFastVehicles.Split(':');
             _animalControlVehicles = Ini.ReadString("Vehicles", "AnimalControlVehicles", null);
             AnimalControlVehicles = _animalControlVehicles.Split(':');
@@ -171,16 +160,15 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             //Binoculars
             Ini.Write("Binoculars", "EnableBinoculars", Menu.Create.EnableBinoculars.SelectedValue);
             Ini.Write("Binoculars", "BinocularsSensitivity", Menu.Create.BinocularsSense.Value);
-            //AmbientEvents
-            Ini.Write("AmbientEvents", "AmbientEventsEnabled", Menu.Create.AmbientEventsEnabled.SelectedValue);
-            Ini.Write("AmbientEvents", "MinimumWaitTimeBetweenEvents", Menu.Create.MinimumWaitTimeBetweenEvents.Value);
-            Ini.Write("AmbientEvents", "MaximumWaitTimeBetweenEvents", Menu.Create.MaximumWaitTimeBetweenEvents.Value);
             //Callouts
+            Ini.Write("Callouts", "AnimalAttack", Menu.Create.AnimalAttack.SelectedValue);
+            Ini.Write("Callouts", "AtvPursuit", Menu.Create.AtvPursuit.SelectedValue);
+            Ini.Write("Callouts", "DangerousPerson", Menu.Create.DangerousPerson.SelectedValue);
+            Ini.Write("Callouts", "DeadAnimalOnRoadway", Menu.Create.DeadAnimalOnRoadway.SelectedValue);            
+            Ini.Write("Callouts", "DirtBikePursuit", Menu.Create.DirtBikePursuit.SelectedValue);
+            Ini.Write("Callouts", "HighSpeedPursuit", Menu.Create.HighSpeedPursuit.SelectedValue);
             Ini.Write("Callouts", "IntoxicatedPerson", Menu.Create.IntoxicatedPerson.SelectedValue);
             Ini.Write("Callouts", "RegularPursuit", Menu.Create.RegularPursuit.SelectedValue);
-            Ini.Write("Callouts", "AnimalAttack", Menu.Create.AnimalAttack.SelectedValue);
-            Ini.Write("Callouts", "DirtBikePursuit", Menu.Create.DirtBikePursuit.SelectedValue);
-            Ini.Write("Callouts", "AtvPursuit", Menu.Create.AtvPursuit.SelectedValue);
             Game.DisplayNotification("~g~Settings Saved To ForestryCallouts2.ini\n" +
                                      "~r~If you changed any Callouts to True or False, LSPDFR will have to be reloaded for changes to be made!");
         }

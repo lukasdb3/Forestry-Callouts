@@ -32,7 +32,6 @@ namespace ForestryCallouts2
         {
             Create.CleanUp();
             _mainFiber.Abort();
-            if (IniSettings.AmbientEventsEnabled) AmbientEvents.Main.CleanUp();
             Game.LogTrivial("ForestryCallouts2 has been cleaned up.");
         }
 
@@ -78,7 +77,7 @@ namespace ForestryCallouts2
                     }
 
                     //Binoculars Hotkey
-                    if (Game.IsKeyDown(IniSettings.BinocularsKey) && IniSettings.BinocularsEnabled && !Binoculars.IsRendering && Game.LocalPlayer.Character.IsOnFoot)
+                    if (Game.IsKeyDown(IniSettings.BinocularsKey) && IniSettings.BinocularsEnabled && !Binoculars.IsRendering && Game.LocalPlayer.Character.IsOnFoot && Binoculars.BinoKeyEnabled)
                     {
                         Binoculars.Enable();
                     }

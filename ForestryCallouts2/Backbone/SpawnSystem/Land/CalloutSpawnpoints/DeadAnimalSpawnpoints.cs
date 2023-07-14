@@ -15,7 +15,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
             Logger.DebugLog("LOGGERTRUCK SPAWNPOINT CHOOSER", "Choosing spawnpoint in Paleto Forest chunk");
             spawnpoint = default;
             heading = 0f;
-            int var = new Random().Next(1, 10);
+            int var = new Random().Next(1, 3);
             Logger.DebugLog("CASE", ""+var+"");
             switch (var)
             {

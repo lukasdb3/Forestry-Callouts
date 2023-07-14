@@ -17,7 +17,7 @@ using ForestryCallouts2.Backbone.SpawnSystem.Land;
 
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
-    [CalloutInfo("AnimalAttack", CalloutProbability.Medium)]
+    [CalloutInfo("DangerousPerson", CalloutProbability.Medium)]
     
     internal class DangerousPerson : Callout
     {
@@ -28,7 +28,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         //victim variables
         private Ped _suspect;
         private Vector3 _suspectSpawn;
-        private float _suspectHeading;
         private Blip _suspectBlip;
 
         //timer variables
@@ -59,18 +58,17 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             //Gets spawnpoints from closest chunk
             ChunkChooser.Main(in CurCall);
             _suspectSpawn = ChunkChooser.FinalSpawnpoint;
-            _suspectHeading = ChunkChooser.FinalHeading;
-            
+
             //Normal callout details
             ShowCalloutAreaBlipBeforeAccepting(_suspectSpawn, 30f);
-            CalloutMessage = ("~g~Dangerous Person Reported");
+            CalloutMessage = ("~g~Dangerous Individual Reported");
             CalloutPosition = _suspectSpawn; 
             AddMinimumDistanceCheck(IniSettings.MinCalloutDistance, CalloutPosition);
             _scenario = _rand.Next(1, 5);
-            if (_scenario == 1) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous person reported with a ~r~Automatic Rifle~w~. Respond code 3");
-            if (_scenario == 2) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous person reported with a ~r~Pistol~w~. Respond code 3");
-            if (_scenario == 3) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous person reported with a ~r~Shotgun~w~. Respond code 3");
-            if (_scenario == 4) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous person reported with a ~r~Melee Weapon~w~. Respond code 3");
+            if (_scenario == 1) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous individual reported with a automatic rifle. Respond code 3");
+            if (_scenario == 2) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous individual reported with a pistol. Respond code 3");
+            if (_scenario == 3) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous individual reported with a shotgun. Respond code 3");
+            if (_scenario == 4) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous individual reported with a melee weapon. Respond code 3");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", _suspectSpawn);
             return base.OnBeforeCalloutDisplayed();
         }
@@ -173,7 +171,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                             if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 300f && !_pursuitStarted)
                             {
                                 if (_suspectBlip) _suspectBlip.Delete();
-                                _suspect.Tasks.Wander();
+                                _suspect.PlayAmbientSpeech("GENERIC_CURSE_MED");
                                 _pursuit = Functions.CreatePursuit();
                                 Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
                                 Functions.AddPedToPursuit(_pursuit, _suspect);
