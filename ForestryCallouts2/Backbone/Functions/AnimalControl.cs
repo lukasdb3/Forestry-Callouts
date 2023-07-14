@@ -18,7 +18,7 @@ namespace ForestryCallouts2.Backbone.Functions
         private static Blip _acBlip;
         private static GameFiber _fiber;
 
-        private static bool _acOnScene;
+        private static int timer = 0;
         
         internal static void CallAnimalControl()
         {
@@ -74,7 +74,7 @@ namespace ForestryCallouts2.Backbone.Functions
             var closeToAnimalPos = animalPos.Around2D(5f);
             var closeToFinalPos  = World.GetNextPositionOnStreet(closeToAnimalPos);
 
-            Game.DisplayHelp("Press ~y~Backspace~w~ To Spawn The ~g~Animal Control~w~ Closer.");
+            Game.DisplayHelp("Press ~y~Backspace~w~ To Spawn The ~g~Animal Control~w~ Closer");
             //fiber
             _fiber = GameFiber.StartNew(delegate
             {
@@ -83,12 +83,17 @@ namespace ForestryCallouts2.Backbone.Functions
                     GameFiber.Yield();
                     if (Game.IsKeyDown(IniSettings.EndCalloutKey) || !_acPed.IsAlive || !Game.LocalPlayer.Character.IsAlive)
                     {
+                        _acPed.Tasks.Clear();
                         DestroyAnimalControl();
                         return;
                     }
 
+                    if (!Game.IsKeyDown(Keys.Back) && timer != 0) timer = 0;
+
                     if (Game.IsKeyDown(Keys.Back))
                     {
+                        timer++;
+                        if (timer == 5);
                         _acVehicle.Position = closeToFinalPos;   
                     }
                 }

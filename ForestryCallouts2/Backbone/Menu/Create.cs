@@ -54,9 +54,6 @@ namespace ForestryCallouts2.Backbone.Menu
         internal static UIMenuListItem LoggerTruckPursuit;
         internal static UIMenuListItem RegularPursuit;
         
-        
-
-
         private static UIMenuItem _saveSettings;
         private static UIMenuItem _reload;
 
@@ -108,17 +105,17 @@ namespace ForestryCallouts2.Backbone.Menu
             _settingsMenu.SetBannerType(Color.ForestGreen);
             _settingsMenu.MouseControlsEnabled = false;
             //Main
-            DebugLogs = new UIMenuListItem("DebugsLogs", "For Debugging ForestryCallouts Crashes", IniSettings.DebugLogs.ToString().ToLower(), (IniSettings.DebugLogs) ? "false" : "true");
-            SearchAreaBlipsMax = new UIMenuNumericScrollerItem<int>("SearchAreaBlipsMax", "Amount of Search Areas sent out before object is Blipped", 5, 15, 1);
+            DebugLogs = new UIMenuListItem("DebugsLogs", "For Debugging Forestry Callouts Crashes", IniSettings.DebugLogs.ToString().ToLower(), (IniSettings.DebugLogs) ? "false" : "true");
+            SearchAreaBlipsMax = new UIMenuNumericScrollerItem<int>("SearchAreaBlipsMax", "Amount of Search Areas Sent Before Object is Blipped", 5, 15, 1);
             SearchAreaBlipsMax.Value = IniSettings.SearchAreaNotifications;
-            EnableDistanceChecker = new UIMenuListItem("EnableDistanceChecker", "If true Distance Checker is enabled", IniSettings.EnableDistanceChecker, (IniSettings.EnableDistanceChecker) ? "false" : "true");
-            MaxDistance = new UIMenuNumericScrollerItem<double>("MaxDistance", "Max Distance a Callout will spawn away from you in meters", 1000, 10000, 100);
+            EnableDistanceChecker = new UIMenuListItem("EnableDistanceChecker", "Disables And Enables Distance Checker", IniSettings.EnableDistanceChecker, (IniSettings.EnableDistanceChecker) ? "false" : "true");
+            MaxDistance = new UIMenuNumericScrollerItem<double>("MaxDistance", "The Max Distance A Callout Will Spawn Away From You (meters)", 1000, 10000, 100);
             MaxDistance.Value = IniSettings.MaxDistance;
-            MinCalloutDistance = new UIMenuNumericScrollerItem<int>("MinimumCalloutSpawnDistance", "Minimum distance a callout can spawn from you", 30, 300, 1);
+            MinCalloutDistance = new UIMenuNumericScrollerItem<int>("MinimumCalloutSpawnDistance", "The Minimum Distance A Callout Will Spawn Away From You (meters)", 30, 300, 1);
             MinCalloutDistance.Value = IniSettings.MinCalloutDistance;
             //Binoculars
-            EnableBinoculars = new UIMenuListItem("EnableBinoculars", "If true Binoculars are Enabled", IniSettings.BinocularsEnabled.ToString().ToLower(), (IniSettings.BinocularsEnabled) ? "false" : "true");
-            BinocularsSense = new UIMenuNumericScrollerItem<int>("BinocularsSensitivity", "How fast the Binoculars move left and right",1, 10, 1);
+            EnableBinoculars = new UIMenuListItem("EnableBinoculars", "Disables And Enables Binoculars", IniSettings.BinocularsEnabled.ToString().ToLower(), (IniSettings.BinocularsEnabled) ? "false" : "true");
+            BinocularsSense = new UIMenuNumericScrollerItem<int>("BinocularsSensitivity", "Binoculars Horizontal Sensitivity",1, 10, 1);
             BinocularsSense.Value = IniSettings.BinocularsSensitivity;
             //Callouts
             AnimalAttack = new UIMenuListItem("AnimalAttack", "",IniSettings.AnimalAttack.ToString().ToLower(), (IniSettings.AnimalAttack) ? "false" : "true");
