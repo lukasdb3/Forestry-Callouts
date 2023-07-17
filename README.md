@@ -5,5 +5,3 @@ Credits
 - [SuperPyroManiac](https://github.com/SuperPyroManiac) - Helping me learn, shared code, and ideas.
 - [alexguirre](https://github.com/alexguirre) - Public Code on GitHub. Some code is used from WildernessCallouts.
 
-Do not redistribute or claim as your own.
-
