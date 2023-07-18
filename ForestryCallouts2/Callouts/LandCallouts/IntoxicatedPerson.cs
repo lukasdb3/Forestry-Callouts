@@ -61,7 +61,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private bool _askedPedToTalk;
         private string _gender;
         private int _counter = 0;
-        private int _rnd;
         private bool _dialoguePhase1Complete = false;
 
         private MenuPool _pool = new();
@@ -80,7 +79,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             
             //Normal callout details
             ShowCalloutAreaBlipBeforeAccepting(_suspectSpawn, 30f);
-            CalloutMessage = ("~g~Intoxicated Person Reported");
+            CalloutMessage = ("~g~Intoxicated Person");
             CalloutPosition = _suspectSpawn; 
             AddMinimumDistanceCheck(IniSettings.MinCalloutDistance, CalloutPosition);
             CalloutAdvisory = ("~b~Dispatch:~w~ Intoxicated Person reported, Respond Code 2");
@@ -196,7 +195,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                         }
 
                         //Goes to Dialogue when player presses key again.
-                        if (Game.IsKeyDown(IniSettings.DialogueKey) && Game.LocalPlayer.Character.IsOnFoot)
+                        if (CFunctions.IsKeyAndModifierDown(IniSettings.DialogueKey, IniSettings.DialogueKeyModifier) && Game.LocalPlayer.Character.IsOnFoot)
                         {
                             if (!_askedPedToTalk)
                             {
@@ -234,7 +233,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
 
             //End Callout
-            if (Game.IsKeyDown(IniSettings.EndCalloutKey)) //If player presses "End" it will forcefully clean the callout up
+            if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
                 Logger.CallDebugLog(this, "Callout was force ended by player");
                 End();

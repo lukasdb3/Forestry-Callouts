@@ -61,7 +61,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
             //Normal callout details
             ShowCalloutAreaBlipBeforeAccepting(_suspectSpawn, 30f);
-            CalloutMessage = ("~g~Dangerous Individual Reported");
+            CalloutMessage = ("~g~Dangerous Individual");
             CalloutPosition = _suspectSpawn; 
             AddMinimumDistanceCheck(IniSettings.MinCalloutDistance, CalloutPosition);
             _scenario = _rand.Next(1, 5);
@@ -163,7 +163,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
                 if (_suspectFound)
                 {
-                    _scenario2 = _rand.Next(1, 3);
+                    _scenario2 = 2;
                     if (_scenario2 == 1)
                     {
                         if (!_pursuitStarted)
@@ -188,7 +188,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     }
                 }
 
-                if (Game.IsKeyDown(IniSettings.EndCalloutKey)) //If player presses "End" it will forcefully clean the callout up
+                if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
                 {
                     Logger.CallDebugLog(this, "Callout was force ended by player");
                     End();
@@ -212,8 +212,8 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _suspectSpawn);
-                Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Animal Attack Code 4", "");
-                if (PluginChecker.CalloutInterface) CFunctions.CISendMessage(this, "Animal Attack Code 4");
+                Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dangerous Individual Reported Code 4", "");
+                if (PluginChecker.CalloutInterface) CFunctions.CISendMessage(this, "Dangerous Individual Reported Code 4");
             }
             Logger.CallDebugLog(this, "Callout ended");
             base.End();

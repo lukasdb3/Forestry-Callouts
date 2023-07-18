@@ -1,6 +1,7 @@
 ﻿#region Refrences
 //Rage
 using System;
+using ForestryCallouts2.Backbone.Functions;
 using Rage;
 //LSPDFR
 using LSPD_First_Response.Mod.Callouts;
@@ -67,7 +68,9 @@ namespace ForestryCallouts2.Backbone
                 Game.Console.Print();
             }
             Game.Console.Print("Loading needed chunks...");
-            ChunkLoader.Main();
+            if (!IniSettings.WaterCallouts) ChunkLoader.Land();
+            else ChunkLoader.Water();
+            GrabPed.Main();
             Game.AddConsoleCommands(new[]{typeof(CCommands)});
             Game.Console.Print("Registering Callouts..");
             Main.RegisterCallouts();

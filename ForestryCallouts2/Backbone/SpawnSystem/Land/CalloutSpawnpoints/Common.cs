@@ -12,7 +12,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
     {
         internal static void PaletoBayForest(out Vector3 spawnpoint, out float heading)
         {
-            Logger.DebugLog("COMMON SPAWNPOINT CHOOSER", "Choosing spawnpoint in Paleto Forest chunk");
+            Logger.DebugLog("COMMON SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayForest chunk");
             spawnpoint = default;
             heading = 0f;
             int var = new Random().Next(1, 28);
@@ -126,6 +126,118 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
                 case 27:
                     spawnpoint = new Vector3(-581.1310f, 5878.3813f, 27.5133f);
                     heading = 247.9840f;
+                    break;
+            }
+        }
+        
+        internal static void AltruistCampArea(out Vector3 spawnpoint, out float heading)
+        {
+            Logger.DebugLog("COMMON SPAWNPOINT CHOOSER", "Choosing spawnpoint in AltruistCampArea chunk");
+            spawnpoint = default;
+            heading = 0f;
+            int var = new Random().Next(1, 13);
+            Logger.DebugLog("CASE", ""+var+"");
+            switch (var)
+            {
+                case 1:
+                    spawnpoint = new Vector3(-720.2902f, 5087.2236f, 137.4306f);
+                    heading = 78.66f;
+                    break;
+                case 2:
+                    spawnpoint = new Vector3(-876.6685f, 5145.0625f, 151.113f);
+                    heading = 64.92f;
+                    break;
+                case 3:
+                    spawnpoint = new Vector3(-970.8989f, 5136.76f, 161.8114f);
+                    heading = 139.04f;
+                    break;
+                case 4:
+                    spawnpoint = new Vector3(-973.03f, 4984.72f, 186.34f);
+                    heading = 130.1298f;
+                    break;
+                case 5:
+                    spawnpoint = new Vector3(-1048.082f, 5091.8604f, 153.9168f);
+                    heading = 291.8707f;
+                    break;
+                case 6:
+                    spawnpoint = new Vector3(-1291.540f, 4944.9541f, 151.3696f);
+                    heading = 185.35f;
+                    break;
+                case 7:
+                    spawnpoint = new Vector3(-1295.164f, 4843.7021f, 147.7894f);
+                    heading = 247.6328f;
+                    break;
+                case 8:
+                    spawnpoint = new Vector3(-1145.292f, 4852.0522f, 197.9272f);
+                    heading = 260.0583f;
+                    break;
+                case 9:
+                    spawnpoint = new Vector3(-1045.259f, 4750.6011f, 235.5020f);
+                    heading = 207.3455f;
+                    break;
+                case 10:
+                    spawnpoint = new Vector3(-901.6344f, 4768.0234f, 294.38f);
+                    heading = 290.81f;
+                    break;
+                case 11:
+                    spawnpoint = new Vector3(-790.3932f, 4859.45f, 254.3329f);
+                    heading = 209.1f;
+                    break;
+                case 12:
+                    spawnpoint = new Vector3(-701.6447f, 4766.82f, 223.6215f);
+                    heading = 215.2f;
+                    break;
+            }
+        }
+        
+        internal static void RatonCanyon(out Vector3 spawnpoint, out float heading)
+        {
+            Logger.DebugLog("COMMON SPAWNPOINT CHOOSER", "Choosing spawnpoint in RatonCanyon chunk");
+            spawnpoint = default;
+            heading = 0f;
+            int var = new Random().Next(1, 2);
+            Logger.DebugLog("CASE", ""+var+"");
+            switch (var)
+            {
+                case 1:
+                    spawnpoint = new Vector3(-1523.593f, 4916.0933f, 66.5021f);
+                    heading = 141.6875f;
+                    break;
+                case 2:
+                    spawnpoint = new Vector3();
+                    heading = 0f;
+                    break;
+                case 3:
+                    spawnpoint = new Vector3();
+                    heading = 0f;
+                    break;
+                case 4:
+                    spawnpoint = new Vector3();
+                    heading = 0f;
+                    break;
+                case 5:
+                    spawnpoint = new Vector3();
+                    heading = 0f;
+                    break;
+                case 6:
+                    spawnpoint = new Vector3();
+                    heading = 0f;
+                    break;
+                case 7:
+                    spawnpoint = new Vector3();
+                    heading = 0f;
+                    break;
+                case 8:
+                    spawnpoint = new Vector3();
+                    heading = 0f;
+                    break;
+                case 9:
+                    spawnpoint = new Vector3();
+                    heading = 0f;
+                    break;
+                case 10:
+                    spawnpoint = new Vector3();
+                    heading = 0f;
                     break;
             }
         }

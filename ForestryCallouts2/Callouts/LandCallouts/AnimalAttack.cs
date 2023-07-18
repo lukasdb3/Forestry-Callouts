@@ -1,6 +1,7 @@
 ﻿#region Refrences
 //System
 using System.Drawing;
+using System.Windows.Forms;
 //Rage
 using Rage;
 //LSPDFR
@@ -60,7 +61,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             
             //Normal callout details
             ShowCalloutAreaBlipBeforeAccepting(_victimSpawn, 30f);
-            CalloutMessage = ("~g~Animal Attack Reported");
+            CalloutMessage = ("~g~Animal Attack");
             CalloutPosition = _victimSpawn; 
             AddMinimumDistanceCheck(IniSettings.MinCalloutDistance, CalloutPosition);
             CalloutAdvisory = ("~b~Dispatch:~w~ Animal attacking person reported. Respond code 3");
@@ -166,7 +167,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 }   
             }
 
-            if (Game.IsKeyDown(IniSettings.EndCalloutKey)) //If player presses "End" it will forcefully clean the callout up
+            if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
                 Logger.CallDebugLog(this, "Callout was force ended by player");
                 End();
@@ -184,6 +185,8 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_victim) _victim.Dismiss();
             if (_victimBlip) _victimBlip.Delete();
             if (_animal) _animal.Dismiss();
+            if (_animalBlip) _animal.Delete();
+            if (_animalAreaBlip) _animalAreaBlip.Delete();
             if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _victimSpawn);

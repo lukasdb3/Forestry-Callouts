@@ -3,29 +3,25 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-//Rage
-using Rage;
-//LSPDFR
-using LSPD_First_Response.Mod.API;
-using LSPD_First_Response.Mod.Callouts;
-//ForestryCallouts2
 using ForestryCallouts2.Backbone;
 using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.SpawnSystem;
-using ForestryCallouts2.Backbone.SpawnSystem.Land;
+using LSPD_First_Response.Mod.API;
+using LSPD_First_Response.Mod.Callouts;
+using Rage;
+
 #endregion
 
-namespace ForestryCallouts2.Callouts.LandCallouts
+namespace ForestryCallouts2.Callouts.WaterCallouts
 {
-    
-    [CalloutInfo("HighSpeedPursuit", CalloutProbability.Medium)]
-    
-    internal class HighSpeedPursuit : Callout
+    [CalloutInfo("BoatPursuit", CalloutProbability.Medium)]
+     
+    internal class BoatPursuit : Callout
     {
         #region Variables
 
-        internal readonly string CurCall = "HighSpeedPursuit";
+        internal readonly string CurCall = "BoatPursuit";
         
         //suspect variables
         private Ped _suspect;
@@ -33,16 +29,15 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private Vector3 _suspectSpawn;
         private float _suspectHeading;
         private Vehicle _susVehicle;
-        //passenger variables
-        private GameFiber _fiber;
-        private List<Ped> _passengerList = new();
         //callout variables
         private LHandle _pursuit;
         private bool _pursuitStarted;
         private Random _rand = new();
+        private GameFiber _fiber;
+        private List<Ped> _passengerList = new();
         #endregion
-
-        public override bool OnBeforeCalloutDisplayed()
+        
+         public override bool OnBeforeCalloutDisplayed()
         {
             //Gets spawnpoints from closest chunk
             ChunkChooser.Main(in CurCall);
@@ -51,10 +46,10 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
             //Normal callout details
             ShowCalloutAreaBlipBeforeAccepting(_suspectSpawn, 30f);
-            CalloutMessage = ("~g~High Speed Offroad Pursuit In Progress");
-            CalloutPosition = _suspectSpawn;
+            CalloutMessage = ("~g~Boat Pursuit In Progress");
+            CalloutPosition = _suspectSpawn; 
             AddMinimumDistanceCheck(IniSettings.MinCalloutDistance, CalloutPosition);
-            CalloutAdvisory = ("~b~Dispatch:~w~ We need backup for a high speed pursuit in progress. Respond code 3.");
+            CalloutAdvisory = ("~b~Dispatch:~w~ We need backup for a boat pursuit in progress. Respond code 3.");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_02 CRIME_SUSPECT_ON_THE_RUN_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", _suspectSpawn);
             return base.OnBeforeCalloutDisplayed();
         }
@@ -77,9 +72,9 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         {
             Logger.CallDebugLog(this, "Callout accepted");
             //Spawn Suspect and car
-            CFunctions.SpawnCountryPed(out _suspect, _suspectSpawn, _suspectHeading);
-            Vector3 vehicleSpawn = World.GetNextPositionOnStreet(_suspectSpawn);
-            CFunctions.SpawnFastOffroadCar(out _susVehicle, vehicleSpawn, _suspectHeading);
+            CFunctions.SpawnBoat(out _susVehicle, _suspectSpawn, _suspectHeading);
+            var aboveBoat = new Vector3(_suspectSpawn.X, _suspectSpawn.Y, _suspectSpawn.Z + 5f);
+            CFunctions.SpawnCountryPed(out _suspect, aboveBoat, _suspectHeading);
             //Spawn possible passenger
             var pChoice = _rand.Next(1, 3);
             if (pChoice == 1)
@@ -98,12 +93,12 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                             GameFiber.Yield();
                             var cped = new Ped();
                             Logger.CallDebugLog(this, "Creating Passenger..");
-                            CFunctions.SpawnCountryPed(out cped, _suspectSpawn, 0);
+                            CFunctions.SpawnCountryPed(out cped, aboveBoat, 0);
                             cped.WarpIntoVehicle(_susVehicle, i);
                             _passengerList.Add(cped);
                             i += 1;   
                         }
-                        Logger.CallDebugLog(this, "There is " + _passengerList.Count.ToString() + " passengers");
+                        Logger.CallDebugLog(this, "There is " + _passengerList.Count + " passengers");
                         Logger.CallDebugLog(this, "Aborting passenger fiber");
                         _fiber.Abort();
                     });
@@ -134,11 +129,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     _pursuit = Functions.CreatePursuit();
                     Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
                     Functions.AddPedToPursuit(_pursuit, _suspect);
-                    foreach (Ped passenger in _passengerList)
-                    {
-                        Logger.CallDebugLog(this, "passenger added to pursuit");
-                        Functions.AddPedToPursuit(_pursuit, passenger);
-                    }
                     Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
                     _pursuitStarted = true;
                 }
@@ -162,16 +152,12 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_suspect) _suspect.Dismiss();
             if (_suspectBlip) _suspectBlip.Delete();
             if (_susVehicle) _susVehicle.Dismiss();
-            foreach (Ped passenger in _passengerList)
-            {
-                if (passenger) passenger.Dismiss();
-            }
-            if (Functions.IsPursuitStillRunning(_pursuit) && _pursuitStarted) Functions.ForceEndPursuit(_pursuit);
+            if (Functions.IsPursuitStillRunning(_pursuit)) Functions.ForceEndPursuit(_pursuit);
             if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _suspectSpawn);
-                Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Hgih Speed Pursuit Code 4", "");
-                if (PluginChecker.CalloutInterface) CFunctions.CISendMessage(this, "High Speed Pursuit Code 4");
+                Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Boat Pursuit Code 4", "");
+                if (PluginChecker.CalloutInterface) CFunctions.CISendMessage(this, "Boat Pursuit Code 4");
             }
             Logger.CallDebugLog(this, "Callout ended");
             base.End();

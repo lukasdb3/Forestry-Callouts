@@ -48,7 +48,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             CalloutPosition = _animalSpawn; 
             AddMinimumDistanceCheck(IniSettings.MinCalloutDistance, CalloutPosition);
             CalloutAdvisory = ("~b~Dispatch:~w~ A dead animal has been reported on a roadway, requesting assistance on removing the hazard.");
-            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", _animalSpawn);
+            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_02_01", _animalSpawn);
             return base.OnBeforeCalloutDisplayed();
         }
 
@@ -80,11 +80,25 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         public override void Process()
         {
-            if (Game.LocalPlayer.Character.DistanceTo(_animal) <= 30f && !_onScene)
+            if (_animal)
             {
-                _onScene = true;
-                _animalBlip.IsRouteEnabled = false;
-                Game.DisplayHelp("~g~Call ~y~Animal Control ~g~ to take care of the Animal.");
+                if (Game.LocalPlayer.Character.DistanceTo(_animal) <= 30f && !_onScene)
+                {
+                    _onScene = true;
+                    _animalBlip.IsRouteEnabled = false;
+                    Game.DisplayHelp("~g~Call ~y~Animal Control ~g~ to take care of the Animal.");
+                }
+            }
+            
+            if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
+            {
+                Logger.CallDebugLog(this, "Callout was force ended by player");
+                End();
+            }
+            if (Game.LocalPlayer.Character.IsDead)
+            {
+                Logger.CallDebugLog(this, "Player died callout ending");
+                End();
             }
             base.Process();
         }

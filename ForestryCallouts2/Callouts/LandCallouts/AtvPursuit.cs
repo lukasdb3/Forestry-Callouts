@@ -99,7 +99,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             }
             
             //End Callout
-            if (Game.IsKeyDown(IniSettings.EndCalloutKey)) //If player presses "End" it will forcefully clean the callout up
+            if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
                 Logger.CallDebugLog(this, "Callout was force ended by player");
                 End();

@@ -69,7 +69,7 @@ namespace ForestryCallouts2.Backbone.Functions
                         }
                     }
                     
-                    if (Game.IsKeyDown(IniSettings.BinocularsKey))
+                    if (CFunctions.IsKeyAndModifierDown(IniSettings.BinocularsKey, IniSettings.BinocularsKeyModifier))
                     {
                         _binoCamera.Delete();
                         _binoculars.Delete();
@@ -83,7 +83,7 @@ namespace ForestryCallouts2.Backbone.Functions
                         NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 17, true);
                         NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 27, true);
                         IsRendering = false;
-                        GameFiber.Wait(3000);
+                        GameFiber.Wait(2000);
                         BinoKeyEnabled = true;
                         break;
                     }

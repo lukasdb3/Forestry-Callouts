@@ -450,19 +450,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\benderl\\.nuget\\packages\\": {}
+    "C:\\Users\\admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\benderl\\Documents\\GitHub\\Forestry-Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\Documents\\GitHub\\Forestry-Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj",
       "projectName": "ForestryCallouts2",
-      "projectPath": "C:\\Users\\benderl\\Documents\\GitHub\\Forestry-Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj",
-      "packagesPath": "C:\\Users\\benderl\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\benderl\\Documents\\GitHub\\Forestry-Callouts\\ForestryCallouts2\\obj\\",
+      "projectPath": "C:\\Users\\admin\\Documents\\GitHub\\Forestry-Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj",
+      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\admin\\Documents\\GitHub\\Forestry-Callouts\\ForestryCallouts2\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\benderl\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net48"
@@ -497,7 +497,7 @@
             "version": "[1.98.0, )"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.305\\RuntimeIdentifierGraph.json"
       }
     }
   }

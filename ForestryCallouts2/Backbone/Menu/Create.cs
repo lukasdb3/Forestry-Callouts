@@ -36,6 +36,7 @@ namespace ForestryCallouts2.Backbone.Menu
         // Settings Menu
         //Main
         internal static UIMenuListItem DebugLogs;
+        internal static UIMenuListItem WaterCallouts;
         internal static UIMenuNumericScrollerItem<int> SearchAreaBlipsMax;
         internal static UIMenuListItem EnableDistanceChecker;
         internal static UIMenuNumericScrollerItem<double> MaxDistance;
@@ -53,6 +54,9 @@ namespace ForestryCallouts2.Backbone.Menu
         internal static UIMenuListItem IntoxicatedPerson;
         internal static UIMenuListItem LoggerTruckPursuit;
         internal static UIMenuListItem RegularPursuit;
+
+        internal static UIMenuListItem DeadBodyWater;
+        internal static UIMenuListItem BoatPursuit;
         
         private static UIMenuItem _saveSettings;
         private static UIMenuItem _reload;
@@ -90,9 +94,20 @@ namespace ForestryCallouts2.Backbone.Menu
             _calloutMenu.SetBannerType(Color.ForestGreen);
             _calloutMenu.MouseControlsEnabled = false;
 
-            foreach (var callout in CalloutsGetter.ForestryCalloutsCalls)
+            if (!IniSettings.WaterCallouts)
             {
-                if (IniSettings.Ini.ReadBoolean("Callouts", callout)) _calloutMenu.AddItem(new UIMenuItem(callout));
+                foreach (var callout in CalloutsGetter.ForestryCalloutsCalls)
+                {
+                    if (IniSettings.Ini.ReadBoolean("Callouts", callout)) _calloutMenu.AddItem(new UIMenuItem(callout));
+                }
+            }
+            else
+            {
+                foreach (var callout in CalloutsGetter.ForestryCalloutsWaterCalls)
+                {
+                    Game.Console.Print(callout);
+                    if (IniSettings.Ini.ReadBoolean("Callouts", callout)) _calloutMenu.AddItem(new UIMenuItem(callout));
+                }
             }
             
             _optionsMenu.BindMenuToItem(_calloutMenu, _startCallout);
@@ -106,6 +121,7 @@ namespace ForestryCallouts2.Backbone.Menu
             _settingsMenu.MouseControlsEnabled = false;
             //Main
             DebugLogs = new UIMenuListItem("DebugsLogs", "For Debugging Forestry Callouts Crashes", IniSettings.DebugLogs.ToString().ToLower(), (IniSettings.DebugLogs) ? "false" : "true");
+            WaterCallouts = new UIMenuListItem("WaterCallouts", "Disables And Enables Water Callouts", IniSettings.WaterCallouts.ToString().ToLower(), (IniSettings.WaterCallouts) ? "false" : "true");
             SearchAreaBlipsMax = new UIMenuNumericScrollerItem<int>("SearchAreaBlipsMax", "Amount of Search Areas Sent Before Object is Blipped", 5, 15, 1);
             SearchAreaBlipsMax.Value = IniSettings.SearchAreaNotifications;
             EnableDistanceChecker = new UIMenuListItem("EnableDistanceChecker", "Disables And Enables Distance Checker", IniSettings.EnableDistanceChecker, (IniSettings.EnableDistanceChecker) ? "false" : "true");
@@ -127,11 +143,14 @@ namespace ForestryCallouts2.Backbone.Menu
             IntoxicatedPerson = new UIMenuListItem("IntoxicatedPerson", "",IniSettings.IntoxPerson.ToString().ToLower(), (IniSettings.IntoxPerson) ? "false" : "true");
             LoggerTruckPursuit = new UIMenuListItem("LoggerTruckPursuit", "", IniSettings.LoggerTruckPursuit.ToString().ToLower(), (IniSettings.LoggerTruckPursuit) ? "false" : "true");
             RegularPursuit = new UIMenuListItem("RegularPursuit", "",IniSettings.RegularPursuit.ToString().ToLower(), (IniSettings.RegularPursuit) ? "false" : "true");
+
+            DeadBodyWater = new UIMenuListItem("DeadBodyWater", "", IniSettings.DeadBodyWater.ToString().ToLower(), (IniSettings.DeadBodyWater) ? "false" : "true");
+            BoatPursuit = new UIMenuListItem("BoatPursuit", "", IniSettings.BoatPursuit.ToString().ToLower(), (IniSettings.BoatPursuit) ? "false" : "true");
             //Buttons for saving and reloading Ini
             _saveSettings = new UIMenuItem("~g~Save Settings", "~r~Required To Press If Settings Were Just Changed");
             _reload = new UIMenuItem("~b~Reload", "Reloads Forestry Callouts Settings and AmbientEvents");
-            _settingsMenu.AddItems(DebugLogs, SearchAreaBlipsMax, MaxDistance, MinCalloutDistance, EnableBinoculars, BinocularsSense, IntoxicatedPerson, AnimalAttack, AtvPursuit, DangerousPerson, DeadAnimalOnRoadway,
-                DirtBikePursuit, HighSpeedPursuit, IntoxicatedPerson, LoggerTruckPursuit, RegularPursuit, _saveSettings, _reload);
+            _settingsMenu.AddItems(DebugLogs, WaterCallouts ,SearchAreaBlipsMax, MaxDistance, MinCalloutDistance, EnableBinoculars, BinocularsSense, IntoxicatedPerson, AnimalAttack, AtvPursuit, DangerousPerson, DeadAnimalOnRoadway,
+                DirtBikePursuit, HighSpeedPursuit, IntoxicatedPerson, LoggerTruckPursuit, RegularPursuit, DeadBodyWater, BoatPursuit, _saveSettings, _reload);
             _optionsMenu.BindMenuToItem(_settingsMenu, _settings);
             _settingsMenu.RefreshIndex();
             _settingsMenu.OnItemSelect += OnSettingsMenuItemSelected;

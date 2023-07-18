@@ -30,6 +30,8 @@ namespace ForestryCallouts2
         
         public override void Finally()
         {
+            if (IniSettings.WaterCallouts) GrabPed.Fiber.Abort();
+            if (AnimalControl.AnimalControlActive) AnimalControl.DestroyAnimalControl();
             Create.CleanUp();
             _mainFiber.Abort();
             Game.LogTrivial("ForestryCallouts2 has been cleaned up.");
@@ -48,15 +50,23 @@ namespace ForestryCallouts2
         //Registers all callouts
         internal static void RegisterCallouts()
         {
-            if (IniSettings.IntoxPerson)  Functions.RegisterCallout(typeof(Callouts.LandCallouts.IntoxicatedPerson));
-            if (IniSettings.RegularPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.RegularPursuit));
-            if (IniSettings.AnimalAttack) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AnimalAttack));
-            if (IniSettings.DeadAnimalOnRoadway) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DeadAnimalOnRoadway));
-            if (IniSettings.DangerousPerson) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DangerousPerson));
-            if (IniSettings.DirtBikePursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DirtBikePursuit));
-            if (IniSettings.AtvPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AtvPursuit));
-            if (IniSettings.HighSpeedPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.HighSpeedPursuit));
-            if (IniSettings.LoggerTruckPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.LoggerTruckPursuit));
+            if (!IniSettings.WaterCallouts)
+            {
+                if (IniSettings.IntoxPerson) Functions.RegisterCallout(typeof(Callouts.LandCallouts.IntoxicatedPerson));
+                if (IniSettings.RegularPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.RegularPursuit));
+                if (IniSettings.AnimalAttack) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AnimalAttack));
+                if (IniSettings.DeadAnimalOnRoadway) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DeadAnimalOnRoadway));
+                if (IniSettings.DangerousPerson) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DangerousPerson));
+                if (IniSettings.DirtBikePursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DirtBikePursuit));
+                if (IniSettings.AtvPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AtvPursuit));
+                if (IniSettings.HighSpeedPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.HighSpeedPursuit));
+                if (IniSettings.LoggerTruckPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.LoggerTruckPursuit));
+            }
+            else
+            {
+                if (IniSettings.DeadBodyWater) Functions.RegisterCallout(typeof(Callouts.WaterCallouts.DeadBodyWater));
+                if (IniSettings.BoatPursuit) Functions.RegisterCallout(typeof(Callouts.WaterCallouts.BoatPursuit));
+            }
         }
         
         //GameFiber that runs constantly for interaction menu and binoculars
@@ -68,16 +78,17 @@ namespace ForestryCallouts2
                 {
                     GameFiber.Yield();
                     
+
                     //Menu
                     pool.ProcessMenus();
-                    if (Game.IsKeyDown(IniSettings.InteractionMenuKey) && !Binoculars.IsRendering)
+                    if (CFunctions.IsKeyAndModifierDown(IniSettings.InteractionMenuKey, IniSettings.InteractionMenuKeyModifier) && !Binoculars.IsRendering)
                     {
                         if (Create.InteractionMenu.Visible) Create.InteractionMenu.Visible = false;
                         else Create.InteractionMenu.Visible = true;
                     }
 
                     //Binoculars Hotkey
-                    if (Game.IsKeyDown(IniSettings.BinocularsKey) && IniSettings.BinocularsEnabled && !Binoculars.IsRendering && Game.LocalPlayer.Character.IsOnFoot && Binoculars.BinoKeyEnabled)
+                    if (CFunctions.IsKeyAndModifierDown(IniSettings.BinocularsKey, IniSettings.BinocularsKeyModifier) && IniSettings.BinocularsEnabled && !Binoculars.IsRendering && Game.LocalPlayer.Character.IsOnFoot && Binoculars.BinoKeyEnabled)
                     {
                         Binoculars.Enable();
                     }

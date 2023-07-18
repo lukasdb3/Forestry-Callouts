@@ -1,7 +1,10 @@
 ﻿#region Refrences
 //System
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 //Rage
 using Rage;
 using Rage.Native;
@@ -30,10 +33,34 @@ namespace ForestryCallouts2.Backbone.Functions
                 //StopThePed.API.Functions.setPedAlcoholOverLimit(Bad, true);
             });
         }
-        
+
         public static string RemoveIntegers(this string input)
         {
             return Regex.Replace(input, @"[\d-]", string.Empty);
+        }
+
+        internal static List<Ped> GetValidPedsNearby(int max)
+        {
+            //get all peds
+            var allPeds = World.GetAllPeds();
+            //get peds <= 30 from the player
+            var pedsInRange = new List<Ped>{};
+            foreach (var ped in allPeds)
+            {
+                if (ped != Game.LocalPlayer.Character && Game.LocalPlayer.Character.DistanceTo(ped) <= 30f) pedsInRange.Add(ped);
+            }
+            //sort the peds closest from farthest from player, if there are peds nearby.
+            var closePeds = new List<Ped>();
+            if (!pedsInRange.Any()) return closePeds;
+            var sortedPeds = pedsInRange.OrderBy(x => x.DistanceTo(Game.LocalPlayer.Character));
+            closePeds = sortedPeds.Count() > 10 ? sortedPeds.Take(10).ToList() : sortedPeds.ToList();
+            return closePeds;
+        }
+        
+
+        internal static bool IsKeyAndModifierDown(Keys key, Keys modifier)
+        {
+            return Game.IsKeyDown(key) && Control.ModifierKeys == modifier;
         }
 
         //Spawn Peds
@@ -44,16 +71,23 @@ namespace ForestryCallouts2.Backbone.Functions
             cPed.IsPersistent = true;
             cPed.BlockPermanentEvents = true;
         }
-        internal static void SpawnCountryPed(out Ped cPed, Vector3 Spawnpoint, float heading) //this dont work mann
+        internal static void SpawnCountryPed(out Ped cPed, Vector3 Spawnpoint, float heading) 
         {
             Model[] pedModels = { "a_m_m_hillbilly_01", "a_m_m_hillbilly_02", "u_m_y_hippie_01", "a_f_y_hippie_01", "a_m_y_hippy_01" };
             cPed = new Ped(pedModels[new Random().Next(pedModels.Length)], Spawnpoint, heading);
             cPed.IsPersistent = true;
             cPed.BlockPermanentEvents = true;
         }
-        internal static void SpawnAnimal(out Ped cPed, Vector3 Spawnpoint, float heading) //this dont work mann
+        internal static void SpawnAnimal(out Ped cPed, Vector3 Spawnpoint, float heading) 
         {
             Model[] pedModels = { "a_c_boar", "a_c_coyote", "a_c_deer", "a_c_mtlion" };
+            cPed = new Ped(pedModels[new Random().Next(pedModels.Length)], Spawnpoint, heading);
+            cPed.IsPersistent = true;
+            cPed.BlockPermanentEvents = true;
+        }
+        internal static void SpawnBeachPed(out Ped cPed, Vector3 Spawnpoint, float heading) 
+        {
+            Model[] pedModels = { "a_f_m_beach_01", "a_f_y_beach_01", "a_m_m_beach_01", "a_m_m_beach_02" };
             cPed = new Ped(pedModels[new Random().Next(pedModels.Length)], Spawnpoint, heading);
             cPed.IsPersistent = true;
             cPed.BlockPermanentEvents = true;
@@ -99,6 +133,12 @@ namespace ForestryCallouts2.Backbone.Functions
         internal static void SpawnSemiTrucks(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
         {
             string[] vehicleModels = IniSettings.SemiTrucks;
+            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
+            cVehicle.IsPersistent = true;
+        }
+        internal static void SpawnBoat(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
+        {
+            string[] vehicleModels = IniSettings.Boats;
             cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }

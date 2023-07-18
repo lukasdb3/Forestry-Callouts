@@ -19,6 +19,7 @@ namespace ForestryCallouts2.Backbone
     {
         private static readonly List<string> RandomCalloutCache = new();
         internal static readonly List<string> ForestryCalloutsCalls = new();
+        internal static readonly List<string> ForestryCalloutsWaterCalls = new();
         private static int _callCount;
 
         internal static bool IsCalloutEnabledInIni(string assemName, string callout)
@@ -77,10 +78,10 @@ namespace ForestryCallouts2.Backbone
                     {
                         foreach (Type callout in assemCallouts)
                         {
-                            object[] calloutAttributes =
+                            var calloutAttributes =
                                 callout.GetCustomAttributes(typeof(CalloutInfoAttribute), true);
 
-                            if (calloutAttributes.Count() > 0)
+                            if (calloutAttributes.Any())
                             {
                                 CalloutInfoAttribute calloutAttribute =
                                     (CalloutInfoAttribute) (from a in calloutAttributes select a).FirstOrDefault();
@@ -101,7 +102,11 @@ namespace ForestryCallouts2.Backbone
 
                                 if (calloutAttribute != null && assemName == "ForestryCallouts2")
                                 {
-                                    ForestryCalloutsCalls.Add(calloutAttribute.Name);
+                                    if (calloutAttribute.Name is "DeadBodyWater")
+                                    {
+                                        ForestryCalloutsWaterCalls.Add(calloutAttribute.Name);
+                                    }
+                                    else ForestryCalloutsCalls.Add(calloutAttribute.Name);
                                 }
                             }
                         }
