@@ -2,6 +2,7 @@
 //System
 using System;
 using System.Windows.Forms;
+using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Callouts.LandCallouts;
 //Rage
 using Rage;
@@ -33,6 +34,8 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static Keys DialogueKeyModifier;
         internal static Keys EndCalloutKeyModifier;
         internal static Keys InteractionMenuKeyModifier;
+        internal static Keys GrabPedKey;
+        internal static Keys GrabPedKeyModifier;
 
         //Binoculars
         internal static bool BinocularsEnabled;
@@ -111,7 +114,9 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
                 InteractionMenuKey = Ini.ReadEnum("Keys", "InteractionMenuKey", Keys.I);
                 InteractionMenuKeyModifier = Ini.ReadEnum("Keys", "InteractionMenuKeyModifier", Keys.None);
                 BinocularsKey = Ini.ReadEnum("Keys", "BinocularsKey", Keys.O);
-                BinocularsKeyModifier = Ini.ReadEnum("Keys", "BinocularsKeyModifier", Keys.O);
+                BinocularsKeyModifier = Ini.ReadEnum("Keys", "BinocularsKeyModifier", Keys.None);
+                GrabPedKey = Ini.ReadEnum("Keys", "GrabPedKey", Keys.U);
+                GrabPedKeyModifier = Ini.ReadEnum("Keys", "GrabPedKeyModifier", Keys.Control);
             }
             catch (Exception e)
             {

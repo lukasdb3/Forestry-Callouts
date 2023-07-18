@@ -24,7 +24,7 @@ internal static class GrabPed
             while (true)
             {
                 GameFiber.Yield();
-                if (Game.IsKeyDown(Keys.T) && Game.LocalPlayer.Character.IsOnFoot && !_pedAttached)
+                if (CFunctions.IsKeyAndModifierDown(IniSettings.GrabPedKey, IniSettings.GrabPedKeyModifier) && Game.LocalPlayer.Character.IsOnFoot && !_pedAttached)
                 {
                     _cPeds = CFunctions.GetValidPedsNearby(10);
                     if (_cPeds == null) return;
@@ -40,7 +40,7 @@ internal static class GrabPed
                     _pedAttached = true;
                     GameFiber.Sleep(1000);
                 }
-                if (Game.IsKeyDown(Keys.T) && _pedAttached)
+                if (CFunctions.IsKeyAndModifierDown(IniSettings.GrabPedKey, IniSettings.GrabPedKeyModifier) && _pedAttached)
                 {
                     _cPed.Detach();
                     _cPed.Tasks.Clear();
