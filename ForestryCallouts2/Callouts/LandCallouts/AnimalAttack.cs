@@ -40,13 +40,13 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private bool _pauseTimer;
         
         //search area variables
-        private Blip _animalAreaBlip;
+        private Blip _areaBlip;
         private Vector3 _searchArea;
-        private bool _animalFound;
+        private bool _victimFound;
         private bool _maxNotfiSent;
         private bool _firstBlip;
         private int _notfiSentCount;
-        
+
         //callout variables
         private bool _onScene;
         #endregion
@@ -102,70 +102,61 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         public override void Process()
         {
-            if (_animal)
+            //If the player is 100 or closer delete route and blip
+            if (_victim)
             {
-                if (!_animal.IsDead)
-                { 
-                    //If the player is 200 or closer delete route and blip
-                    if (_victim)
-                    {
-                        if (Game.LocalPlayer.Character.DistanceTo(_victim) <= 20f && !_onScene)
-                        {
-                            Logger.CallDebugLog(this, "Process started");
-                            Game.DisplayHelp("~g~Tend to the ~y~injured person~g~ and eliminate the ~r~animal");
-                            _onScene = true;
-                            if (_victimBlip) _victimBlip.Delete();
-                            _firstBlip = true;
-                        }   
-                    }
-
-                    //If suspect isn't found initialize the search area
-                    if (!_animalFound && _onScene)
-                    {
-                        if (!_pauseTimer) _timer++;
-
-                        if (_firstBlip && _timer >= 1 || _timer >= 1250)
-                        {
-                            if (_animalAreaBlip) _animalAreaBlip.Delete();
-                            var position = _animal.Position;
-                            _searchArea = position.Around2D(10f, 50f);
-                            _animalAreaBlip = new Blip(_searchArea, 65f) {Color = Color.Yellow, Alpha = .5f};
-                            _notfiSentCount++;
-                            Logger.CallDebugLog(this, "Search areas sent: " + _notfiSentCount + "");
-                            _firstBlip = false;
-                            _timer = 0;
-                        }
-
-                        //we delete the search area, and blip the suspect because the player is taking to long to find the suspect
-                        if (_notfiSentCount == IniSettings.SearchAreaNotifications && !_maxNotfiSent)
-                        {
-                            //Pause the timer so search blips dont keep coming in
-                            Logger.CallDebugLog(this, "Blipped animal because player took to long to find them.");
-                            _pauseTimer = true;
-                            if (_animalAreaBlip) _animalAreaBlip.Delete();
-                            _animalBlip = _animal.AttachBlip();
-                            _animalBlip.Color = Color.Red;
-                            _animalBlip.IsRouteEnabled = true;
-                            _maxNotfiSent = true;
-                        }
-                    }
-            
-                    //player found the animal
-                    if (!_animalFound && Game.LocalPlayer.Character.DistanceTo(_animal) <= 20f && Game.LocalPlayer.Character.IsOnFoot)
-                    {
-                        Logger.CallDebugLog(this, "Suspect found!");
-                        _animalBlip = _animal.AttachBlip();
-                        _animalBlip.Color = Color.Red;
-                        if (_animalAreaBlip) _animalAreaBlip.Delete();
-                        _animal.Tasks.FightAgainst(Game.LocalPlayer.Character);
-                        _animalFound = true;
-                    }
-                }
-                else
+                if (Game.LocalPlayer.Character.DistanceTo(_victim) <= 100f && !_onScene)
                 {
-                    if (_animalBlip) _animalBlip.Delete();
+                    Logger.CallDebugLog(this, "Process started");
+                    _onScene = true;
+                    if (_victimBlip) _victimBlip.Delete();
+                    _firstBlip = true;
                 }   
             }
+
+            //If suspect isn't found initialize the search area
+            if (!_victimFound && _onScene)
+            {
+                if (!_pauseTimer) _timer++;
+
+                if (_firstBlip && _timer >= 1 || _timer >= 1250)
+                {
+                    if (_areaBlip) _areaBlip.Delete();
+                    var position = _victim.Position;
+                    _searchArea = position.Around2D(10f, 50f);
+                    _areaBlip = new Blip(_searchArea, 65f) {Color = Color.LawnGreen, Alpha = .5f};
+                    _notfiSentCount++;
+                    Logger.CallDebugLog(this, "Search areas sent: " + _notfiSentCount + "");
+                    _firstBlip = false;
+                    _timer = 0;
+                }
+
+                //we delete the search area, and blip the suspect because the player is taking to long to find the suspect
+                if (_notfiSentCount == IniSettings.SearchAreaNotifications && !_maxNotfiSent)
+                {
+                    //Pause the timer so search blips dont keep coming in
+                    Logger.CallDebugLog(this, "Blipped animal because player took to long to find them.");
+                    _pauseTimer = true;
+                    if (_areaBlip) _areaBlip.Delete();
+                    _victimBlip = _victim.AttachBlip();
+                    _victimBlip.Color = Color.LimeGreen;
+                    _victimBlip.Scale = .7f;
+                    _victimBlip.IsRouteEnabled = true;
+                    _maxNotfiSent = true;
+                }
+            }
+            
+            //player found the animal
+            if (!_victimFound && Game.LocalPlayer.Character.DistanceTo(_victim) <= 10f && Game.LocalPlayer.Character.IsOnFoot)
+            {
+                Logger.CallDebugLog(this, "Suspect found!");
+                _victimBlip = _victim.AttachBlip();
+                _victimBlip.Color = Color.LimeGreen;
+                _victimBlip.Scale = .7f;
+                if (_areaBlip) _areaBlip.Delete();
+                _victimFound = true;
+            }
+            
 
             if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
@@ -186,7 +177,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_victimBlip) _victimBlip.Delete();
             if (_animal) _animal.Dismiss();
             if (_animalBlip) _animal.Delete();
-            if (_animalAreaBlip) _animalAreaBlip.Delete();
+            if (_areaBlip) _areaBlip.Delete();
             if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _victimSpawn);

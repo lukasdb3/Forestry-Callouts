@@ -1,6 +1,8 @@
 ﻿#region Refrences
 //System
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using ForestryCallouts2.Backbone.IniConfiguration;
 //Rage
@@ -14,7 +16,7 @@ namespace ForestryCallouts2.Backbone.Functions
         internal static bool AnimalControlActive = false;
         
         private static Ped _animal;
-        private static Ped[] _allPeds;
+        private static List<Ped> _allPeds;
         private static Vehicle _acVehicle;
         private static Ped _acPed;
         private static Blip _acBlip;
@@ -26,24 +28,21 @@ namespace ForestryCallouts2.Backbone.Functions
         {
             Logger.DebugLog("ANIMAL CONTROL", "Animal Control has been called");
             Logger.DebugLog("ANIMAL CONTROL", "Finding closest dead animal");
-            _allPeds = World.GetAllPeds();
-            
-            foreach (var ped in _allPeds)
-            {
-                if (Game.LocalPlayer.Character.DistanceTo(ped) <= 10f && !ped.IsHuman && ped.IsDead)
-                {
-                    Logger.DebugLog("ANIMAL CONTROL", ped.Model.Name);
-                    _animal = ped;
-                    break;
-                }
-            }
+            _allPeds = CFunctions.GetValidPedsNearby(10);
             
             //return if animal is null
-            if (_animal == null)
+            if (!_allPeds.Any())
             {
                 Game.DisplayNotification("~g~Could Not Find Dead Animal");
                 Logger.DebugLog("ANIMAL CONTROL", "Failed to find dead Animal");
                 return;
+            }
+            
+            foreach (var ped in _allPeds.Where(ped => Game.LocalPlayer.Character.DistanceTo(ped) <= 10f && !ped.IsHuman && ped.IsDead))
+            {
+                Logger.DebugLog("ANIMAL CONTROL", ped.Model.Name);
+                _animal = ped;
+                break;
             }
 
             AnimalControlActive = true;
