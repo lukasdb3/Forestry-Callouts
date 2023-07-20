@@ -18,7 +18,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
         internal static Vector3 AltruistCampArea = new Vector3(-1019.696f, 4949.0752f, 198.2460f);
         internal static Vector3 RatonCanyon = new Vector3(-1365.854f, 4375.6421f, 40.04f);
         internal static Vector3 RatonCanyonUpper = new Vector3(-713.2326f, 4425.2168f, 16.2168f);
-        internal static Vector3 chunk5 = new Vector3(-532.092f, 5322.865f, 91.310f);
+        internal static Vector3 RatonCanyonLower = new Vector3(-1681.533f, 4601.8101f, 49.4104f);
 
         internal static Vector3 PaletoBayCoast = new Vector3(-369.7004f, 6527.3716f, 1f);
         internal static void Land()
@@ -28,7 +28,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
             chunklist.Add(AltruistCampArea);
             chunklist.Add(RatonCanyon);
             chunklist.Add(RatonCanyonUpper);
-            chunklist.Add(chunk5);
+            chunklist.Add(RatonCanyonLower);
         }
 
         internal static void Water()

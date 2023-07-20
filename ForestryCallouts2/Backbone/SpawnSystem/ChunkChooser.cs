@@ -62,7 +62,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
             {
                 if (_closestChunk == ChunkLoader.PaletoBayForest) PaletoBayForest(in _curcall);
                 if (_closestChunk == ChunkLoader.AltruistCampArea) AltruistCampArea(in _curcall);
-                if (_closestChunk == ChunkLoader.RatonCanyon || _closestChunk == ChunkLoader.RatonCanyonUpper) RatonCanyon(in _curcall);
+                if (_closestChunk == ChunkLoader.RatonCanyon || _closestChunk == ChunkLoader.RatonCanyonUpper || _closestChunk == ChunkLoader.RatonCanyonLower) RatonCanyon(in _curcall);
                 /*if (closestChunk == ChunkLoader.chunk4) Chunk4(in curcall);
                 if (closestChunk == ChunkLoader.chunk5) Chunk5(in curcall); */
             }

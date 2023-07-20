@@ -42,18 +42,28 @@ namespace ForestryCallouts2.Backbone.Functions
         internal static List<Ped> GetValidPedsNearby(int max)
         {
             //get all peds
+            Logger.DebugLog("GetValidPedsNearby", "Getting all peds in the world");
             var allPeds = World.GetAllPeds();
+            Logger.DebugLog("GetValidPedsNearby", "All Peds Count = " + allPeds.Length);
             //get peds <= 30 from the player
             var pedsInRange = new List<Ped>{};
+            Logger.DebugLog("GetValidPedsNearby", "Getting peds in range of player");
             foreach (var ped in allPeds)
             {
-                if (ped != Game.LocalPlayer.Character && Game.LocalPlayer.Character.DistanceTo(ped) <= 30f) pedsInRange.Add(ped);
+                if (ped != Game.LocalPlayer.Character && Game.LocalPlayer.Character.DistanceTo(ped) <= 30f)
+                {
+                    pedsInRange.Add(ped);
+                    Logger.DebugLog("GetValidPedsNearby", "Added " +ped.Model.Name+ " to list");
+                }
             }
             //sort the peds closest from farthest from player, if there are peds nearby.
             var closePeds = new List<Ped>();
             if (!pedsInRange.Any()) return closePeds;
+            Logger.DebugLog("GetValidPedsNearby", "Ordering peds from closest to farthest");
             var sortedPeds = pedsInRange.OrderBy(x => x.DistanceTo(Game.LocalPlayer.Character));
+            Logger.DebugLog("GetValidPedsNearby", "Figuring out if we are taking max peds or the whole list");
             closePeds = sortedPeds.Count() > 10 ? sortedPeds.Take(10).ToList() : sortedPeds.ToList();
+            Logger.DebugLog("GetValidPedsNearby", "Returning list!");
             return closePeds;
         }
         

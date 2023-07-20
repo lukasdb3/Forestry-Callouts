@@ -102,7 +102,7 @@ namespace ForestryCallouts2.Backbone
 
                                 if (calloutAttribute != null && assemName == "ForestryCallouts2")
                                 {
-                                    if (calloutAttribute.Name is "DeadBodyWater")
+                                    if (calloutAttribute.Name is "DeadBodyWater" or "BoatPursuit")
                                     {
                                         ForestryCalloutsWaterCalls.Add(calloutAttribute.Name);
                                     }

@@ -33,8 +33,8 @@ namespace ForestryCallouts2.Backbone.Functions
             //return if animal is null
             if (!_allPeds.Any())
             {
-                Game.DisplayNotification("~g~Could Not Find Dead Animal");
-                Logger.DebugLog("ANIMAL CONTROL", "Failed to find dead Animal");
+                Game.DisplayNotification("~g~No Peds Nearby");
+                Logger.DebugLog("ANIMAL CONTROL", "No peds in range of player");
                 return;
             }
             
@@ -43,6 +43,13 @@ namespace ForestryCallouts2.Backbone.Functions
                 Logger.DebugLog("ANIMAL CONTROL", ped.Model.Name);
                 _animal = ped;
                 break;
+            }
+            
+            if (_animal == null)
+            {
+                Game.DisplayNotification("~g~No Dead Animal Found");
+                Logger.DebugLog("ANIMAL CONTROL", "No dead animal was found near player");
+                return;
             }
 
             AnimalControlActive = true;

@@ -195,7 +195,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
             Logger.DebugLog("COMMON SPAWNPOINT CHOOSER", "Choosing spawnpoint in RatonCanyon chunk");
             spawnpoint = default;
             heading = 0f;
-            int var = new Random().Next(1, 2);
+            int var = new Random().Next(1, 27);
             Logger.DebugLog("CASE", ""+var+"");
             switch (var)
             {
@@ -204,40 +204,104 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
                     heading = 141.6875f;
                     break;
                 case 2:
-                    spawnpoint = new Vector3();
-                    heading = 0f;
+                    spawnpoint = new Vector3(-1571.367f, 4854.7915f, 60.5037f);
+                    heading = 141.9138f;
                     break;
                 case 3:
-                    spawnpoint = new Vector3();
-                    heading = 0f;
+                    spawnpoint = new Vector3(-1614.450f, 4757.6499f, 51.6670f);
+                    heading = 132.1212f;
                     break;
                 case 4:
-                    spawnpoint = new Vector3();
-                    heading = 0f;
+                    spawnpoint = new Vector3(-1598.899f, 4718.8940f, 44.4060f);
+                    heading = 116.3642f;
                     break;
                 case 5:
-                    spawnpoint = new Vector3();
-                    heading = 0f;
+                    spawnpoint = new Vector3(-1675.775f, 4667.3501f, 25.80f);
+                    heading = 104.2275f;
                     break;
                 case 6:
-                    spawnpoint = new Vector3();
-                    heading = 0f;
+                    spawnpoint = new Vector3(-1534.897f, 4699.0107f, 42.8364f);
+                    heading = 224.7848f;
                     break;
                 case 7:
-                    spawnpoint = new Vector3();
-                    heading = 0f;
+                    spawnpoint = new Vector3(-1534.897f, 4699.0107f, 42.8364f);
+                    heading = 224.7848f;
                     break;
                 case 8:
-                    spawnpoint = new Vector3();
-                    heading = 0f;
+                    spawnpoint = new Vector3(-1562.165f, 4601.1558f, 20.002f);
+                    heading = 177.45f;
                     break;
                 case 9:
-                    spawnpoint = new Vector3();
-                    heading = 0f;
+                    spawnpoint = new Vector3(-1563.534f, 4498.6548f, 20.8687f);
+                    heading = 198.2139f;
                     break;
                 case 10:
-                    spawnpoint = new Vector3();
-                    heading = 0f;
+                    spawnpoint = new Vector3(-1479.290f, 4471.8745f, 16.7065f);
+                    heading = 277.2596f;
+                    break;
+                case 11:
+                    spawnpoint = new Vector3(-1375.560f, 4469.5747f, 24.4321f);
+                    heading = 261.03f;
+                    break;
+                case 12:
+                    spawnpoint = new Vector3(-1292.802f, 4494.3145f, 20.4162f);
+                    heading = 292.88f;
+                    break;
+                case 13:
+                    spawnpoint = new Vector3(-1220.317f, 4475.1748f, 29.4546f);
+                    heading = 270f;
+                    break;
+                case 14:
+                    spawnpoint = new Vector3(-1145.082f, 4430.7109f, 14.7120f);
+                    heading = 237.9264f;
+                    break;
+                case 15:
+                    spawnpoint = new Vector3(-1010.702f, 4418.1162f, 22.5273f);
+                    heading = 266.81f;
+                    break;
+                case 16:
+                    spawnpoint = new Vector3(-915.0539f, 4419.5005f, 17.5092f);
+                    heading = 282.0385f;
+                    break;
+                case 17:
+                    spawnpoint = new Vector3(-829.9634f, 4411.7505f, 19.7351f);
+                    heading = 275.91f;
+                    break;
+                case 18:
+                    spawnpoint = new Vector3(-722.2566f, 4405.8315f, 21.0128f);
+                    heading = 243.999f;
+                    break;
+                case 19:
+                    spawnpoint = new Vector3(-618.8926f, 4371.38f, 42.37f);
+                    heading = 252.94f;
+                    break;
+                case 20:
+                    spawnpoint = new Vector3(-470.4809f, 4335.3853f, 61.5911f);
+                    heading = 233.2231f;
+                    break;
+                case 21:
+                    spawnpoint = new Vector3(-919.4883f, 4369.044f, 14.7787f);
+                    heading = 120.5109f;
+                    break;
+                case 22:
+                    spawnpoint = new Vector3(-1022.015f, 4360.3584f, 11.2534f);
+                    heading = 69.1234f;
+                    break;
+                case 23:
+                    spawnpoint = new Vector3(-1080.793f, 4368.4429f, 12.6370f);
+                    heading = 246.4679f;
+                    break;
+                case 24:
+                    spawnpoint = new Vector3(-1198.985f, 4366.1606f, 6.26f);
+                    heading = 86.8461f;
+                    break;
+                case 25:
+                    spawnpoint = new Vector3(-1388.440f, 4301.6934f, 3.4854f);
+                    heading = 79.3800f;
+                    break;
+                case 26:
+                    spawnpoint = new Vector3(-1556.321f, 4328.9180f, 3.5556f);
+                    heading = 65.8617f;
                     break;
             }
         }

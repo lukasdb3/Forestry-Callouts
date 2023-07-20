@@ -186,8 +186,8 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 if (_suspectFound)
                 {
                     //Dialogue scenario
-                    _scenario = _rand.Next(1, 3);
-                    if (_scenario == 1)
+                    _scenario = _rand.Next(1, 5);
+                    if (_scenario < 4)
                     {
                         if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 5f && !_askedPedToTalk && Game.LocalPlayer.Character.IsOnFoot)
                         {
@@ -214,11 +214,11 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     }
 
                     //Drunk Ped starts foot pursuit
-                    if (_scenario == 2)
+                    if (_scenario == 4)
                     {
                         if (!_pursuitStarted)
                         {
-                            Game.DisplaySubtitle("~r~Suspect:~w~ NOO IM NOT DRUNK LEAVE ME ALONE!");
+                            Game.DisplaySubtitle("~r~Suspect:~w~ LEAVE ME ALONE!");
                             _suspect.Tasks.Wander();
                             _pursuit = Functions.CreatePursuit();
                             Functions.SetPursuitIsActiveForPlayer(_pursuit, true);

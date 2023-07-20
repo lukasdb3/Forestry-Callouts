@@ -1,5 +1,6 @@
 ﻿#region Refrences
 //System
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 //Rage
@@ -18,7 +19,6 @@ using ForestryCallouts2.Backbone.SpawnSystem.Land;
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
     [CalloutInfo("AnimalAttack", CalloutProbability.Medium)]
-    
     internal class AnimalAttack : Callout
     {
         #region Variables
@@ -34,6 +34,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         //animal variables
         private Ped _animal;
         private Blip _animalBlip;
+        private Random _rand = new();
         
         //timer variables
         private int _timer = 0;
@@ -43,12 +44,14 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private Blip _areaBlip;
         private Vector3 _searchArea;
         private bool _victimFound;
+        private bool _animalFound;
         private bool _maxNotfiSent;
         private bool _firstBlip;
         private int _notfiSentCount;
 
         //callout variables
         private bool _onScene;
+        private bool _playerCloseToAnimal;
         #endregion
         
         
@@ -93,7 +96,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             _victimBlip.EnableRoute(Color.Yellow);
             _victim.Health = 10;
             //Spawn animal
-            _animal = new Ped("a_c_mtlion", World.GetNextPositionOnStreet(_victimSpawn.Around(30, 60f)), 0f);
+            _animal = new Ped("a_c_mtlion", World.GetNextPositionOnStreet(_victimSpawn.Around(40f, 60f)), _rand.Next(1, 361));
             _animal.IsPersistent = true;
             _animal.BlockPermanentEvents = true;
             _animal.Tasks.Wander();
@@ -105,7 +108,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             //If the player is 100 or closer delete route and blip
             if (_victim)
             {
-                if (Game.LocalPlayer.Character.DistanceTo(_victim) <= 100f && !_onScene)
+                if (Game.LocalPlayer.Character.DistanceTo(_victim) <= 200f && !_onScene)
                 {
                     Logger.CallDebugLog(this, "Process started");
                     _onScene = true;
@@ -114,28 +117,32 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 }   
             }
 
-            //If suspect isn't found initialize the search area
+            if (!_pauseTimer)
+            {
+                _timer++;
+            }
+
+            //If victim isn't found initialize the search area
             if (!_victimFound && _onScene)
             {
-                if (!_pauseTimer) _timer++;
 
                 if (_firstBlip && _timer >= 1 || _timer >= 1250)
                 {
                     if (_areaBlip) _areaBlip.Delete();
                     var position = _victim.Position;
-                    _searchArea = position.Around2D(10f, 50f);
-                    _areaBlip = new Blip(_searchArea, 65f) {Color = Color.LawnGreen, Alpha = .5f};
+                    _searchArea = position.Around2D(10f, 20f);
+                    _areaBlip = new Blip(_searchArea, 35f) {Color = Color.Yellow, Alpha = .5f};
                     _notfiSentCount++;
                     Logger.CallDebugLog(this, "Search areas sent: " + _notfiSentCount + "");
                     _firstBlip = false;
                     _timer = 0;
                 }
 
-                //we delete the search area, and blip the suspect because the player is taking to long to find the suspect
+                //we delete the search area, and blip the victim because the player is taking to long to find the victim
                 if (_notfiSentCount == IniSettings.SearchAreaNotifications && !_maxNotfiSent)
                 {
                     //Pause the timer so search blips dont keep coming in
-                    Logger.CallDebugLog(this, "Blipped animal because player took to long to find them.");
+                    Logger.CallDebugLog(this, "Blipped victim because player took to long to find them.");
                     _pauseTimer = true;
                     if (_areaBlip) _areaBlip.Delete();
                     _victimBlip = _victim.AttachBlip();
@@ -146,15 +153,86 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 }
             }
             
-            //player found the animal
-            if (!_victimFound && Game.LocalPlayer.Character.DistanceTo(_victim) <= 10f && Game.LocalPlayer.Character.IsOnFoot)
+            //player found the victim
+            if (!_victimFound && Game.LocalPlayer.Character.DistanceTo(_victim) <= 10f)
             {
-                Logger.CallDebugLog(this, "Suspect found!");
+                Logger.CallDebugLog(this, "Victim found!");
                 _victimBlip = _victim.AttachBlip();
                 _victimBlip.Color = Color.LimeGreen;
                 _victimBlip.Scale = .7f;
                 if (_areaBlip) _areaBlip.Delete();
                 _victimFound = true;
+                //reset
+                if (_animal.IsAlive)
+                {
+                    _timer = 0;
+                    _pauseTimer = false;
+                    _maxNotfiSent = false;
+                    _notfiSentCount = 0;
+                    _firstBlip = true;
+                }
+                else _pauseTimer = true;
+            }
+
+            if (_victimFound)
+            {
+                if (_animal.IsAlive)
+                {
+                    if (!_animalFound)
+                    {
+                        if (_firstBlip && _timer >= 1 || _timer >= 1250)
+                        {
+                            if (_areaBlip) _areaBlip.Delete();
+                            var position = _animal.Position;
+                            _searchArea = position.Around2D(10f, 20f);
+                            _areaBlip = new Blip(_searchArea, 35f) {Color = Color.Red, Alpha = .5f};
+                            _notfiSentCount++;
+                            Logger.CallDebugLog(this, "Search areas sent: " + _notfiSentCount + "");
+                            _firstBlip = false;
+                            _timer = 0;
+                        }
+
+                        //we delete the search area, and blip the animal because the player is taking to long to find the animal
+                        if (_notfiSentCount == IniSettings.SearchAreaNotifications && !_maxNotfiSent)
+                        {
+                            //Pause the timer so search blips dont keep coming in
+                            Logger.CallDebugLog(this, "Blipped animal because player took to long to find them.");
+                            _pauseTimer = true;
+                            if (_areaBlip) _areaBlip.Delete();
+                            _animalBlip = _animal.AttachBlip();
+                            _animalBlip.Color = Color.Red;
+                            _animalBlip.Scale = .7f;
+                            _animalBlip.IsRouteEnabled = true;
+                            _maxNotfiSent = true;
+                        }
+                    }
+                    
+                    if (!_animalFound && Game.LocalPlayer.Character.DistanceTo(_animal) <= 10f)
+                    {
+                        Logger.CallDebugLog(this, "Animal found!");
+                        _animalBlip = _animal.AttachBlip();
+                        _animalBlip.Color = Color.Red;
+                        _animalBlip.Scale = .7f;
+                        if (_areaBlip) _areaBlip.Delete();
+                        _animalFound = true;
+                        _pauseTimer = true;
+                    }
+
+                    if (_animalFound && Game.LocalPlayer.Character.IsOnFoot && Game.LocalPlayer.Character.DistanceTo(_animal) <= 5f && !_playerCloseToAnimal)
+                    {
+                        _playerCloseToAnimal = true;
+                        _animal.RelationshipGroup.SetRelationshipWith(RelationshipGroup.SecurityGuard, Relationship.Neutral);
+                        _animal.Tasks.Clear();
+                        Rage.Native.NativeFunction.Natives.SET_PLAYER_ANGRY(_animal, true);
+                        _animal.Tasks.FightAgainst(Game.LocalPlayer.Character, -1);
+                        Logger.CallDebugLog(this, "Animal fighting player");
+                    }
+                        
+                }
+                else
+                {
+                    if (_animalBlip) _animalBlip.Delete();
+                }
             }
             
 

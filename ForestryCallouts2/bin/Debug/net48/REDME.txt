@@ -1,0 +1,19 @@
+Install Instructions
+
+- Drag and Drop "ForestryCallouts2.dll", "ForestryCallouts2.ini", and "ForestryCallouts2" folder to your GTA5\Plugins\LSPDFR. You may then from there configure settings in the INI file if you wish to do so.
+
+Notes:
+
+- Water Callouts are in Forestry Callouts 2 but purposely disabled. You may see water related callouts in CalloutInterface Menu like "BoatPursuit". They won't start.
+- Please keep DebugLogs set to "true" while testing BETA versions.
+- Everything Needs Tested!
+- If you do find a bug please send your RagePluginHook.log with what you find. Also a semi detailed message would be greatly appreciated!
+- Thank you for testing!
+
+Do not redistribute BETA versions! If you have someone that would like to help test please refer them to my dms!
+
+ChangeLog
+
+BETA v1.0.1
+
+- Changed Animal Attack
