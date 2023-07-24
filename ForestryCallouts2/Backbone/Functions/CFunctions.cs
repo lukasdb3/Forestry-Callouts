@@ -28,9 +28,9 @@ namespace ForestryCallouts2.Backbone.Functions
                 Bad.Metadata.stpAlcoholDetected = isDrunk;
                 var drunkAnimset = new AnimationSet("move_m@drunk@verydrunk");
                 drunkAnimset.LoadAndWait();
-                Bad.MovementAnimationSet = drunkAnimset;
+                Bad.MovementAnimationSet = drunkAnimset; 
                 Rage.Native.NativeFunction.Natives.SET_PED_IS_DRUNK(Bad, isDrunk);
-                //StopThePed.API.Functions.setPedAlcoholOverLimit(Bad, true);
+                StopThePed.API.Functions.setPedAlcoholOverLimit(Bad, true);
             });
         }
 
@@ -90,7 +90,7 @@ namespace ForestryCallouts2.Backbone.Functions
         }
         internal static void SpawnAnimal(out Ped cPed, Vector3 Spawnpoint, float heading) 
         {
-            Model[] pedModels = { "a_c_boar", "a_c_coyote", "a_c_deer", "a_c_mtlion" };
+            Model[] pedModels = { "a_c_boar", "a_c_coyote", "a_c_deer", "a_c_rabbit_01"};
             cPed = new Ped(pedModels[new Random().Next(pedModels.Length)], Spawnpoint, heading);
             cPed.IsPersistent = true;
             cPed.BlockPermanentEvents = true;
@@ -184,35 +184,6 @@ namespace ForestryCallouts2.Backbone.Functions
             WeaponDescriptor cWeapon = weaponModels[new Random().Next(weaponModels.Length)];
 
             cPed.Inventory.GiveNewWeapon(cWeapon, ammo, isNow);
-        }
-        
-        
-        
-        //Callout Interface Functions
-        public static void CISendCalloutDetails(LSPD_First_Response.Mod.Callouts.Callout sender, string priority, string agency)
-        {
-            try
-            {
-                CalloutInterface.API.Functions.SendCalloutDetails(sender, priority, agency);
-            }
-            catch (Exception ex)
-            {
-                Game.LogTrivial("-!!- Forestry Callouts ERROR - |SendCalloutDetails| - There was en error sending callout details with Callout Interface please send this log to https://dsc.gg/ulss -!!-");
-                Game.LogTrivial(ex.Message);
-            }
-        }
-        
-        public static void CISendMessage(LSPD_First_Response.Mod.Callouts.Callout sender, string message)
-        {
-            try
-            {
-                CalloutInterface.API.Functions.SendMessage(sender, message);
-            }
-            catch (Exception ex)
-            {
-                Game.LogTrivial("-!!- Forestry Callouts ERROR - |SendMessage| - There was en error sending a MDT message with Callout Interface please send this log to https://dsc.gg/ulss -!!-");
-                Game.LogTrivial(ex.Message);
-            }
         }
     }
 }

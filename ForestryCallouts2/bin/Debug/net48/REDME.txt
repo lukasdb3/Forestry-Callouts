@@ -1,19 +1,40 @@
 Install Instructions
 
-- Drag and Drop "ForestryCallouts2.dll", "ForestryCallouts2.ini", and "ForestryCallouts2" folder to your GTA5\Plugins\LSPDFR. You may then from there configure settings in the INI file if you wish to do so.
+- Drag and Drop "ForestryCallouts2.dll", "ForestryCallouts2.ini", and "ForestryCallouts2" folder to your GTA5\Plugins\LSPDFR. You may then from there configure 
+settings in the INI file if you wish to do so.
+
+Additional Instructions
+
+- Drag and Drop "CalloutInterfaceAPI" into your main grand theft auto v directory.
 
 Notes:
 
-- Water Callouts are in Forestry Callouts 2 but purposely disabled. You may see water related callouts in CalloutInterface Menu like "BoatPursuit". They won't start.
+- Water Callouts are in Forestry Callouts 2 but purposely disabled. You may see water related callouts in Callout Interface Menu like "BoatPursuit". They won't start.
 - Please keep DebugLogs set to "true" while testing BETA versions.
 - Everything Needs Tested!
-- If you do find a bug please send your RagePluginHook.log with what you find. Also a semi detailed message would be greatly appreciated!
+- If you do find a bug please send your RagePluginHook.log with what you find to my dms. Also a semi detailed message would be greatly appreciated!
 - Thank you for testing!
+
+This mod requires grammar police for audio.
+
+This mod should be used with, but not required:
+- Callout Interface
+- Ultimate Backup
+- Stop The Ped
 
 Do not redistribute BETA versions! If you have someone that would like to help test please refer them to my dms!
 
-ChangeLog
+------------------------------------------------------------------------ ChangeLog -------------------------------------------------------------------------------------------
 
 BETA v1.0.1
 
 - Changed Animal Attack
+- Removed Callout Menu as Callout Interface should be used now
+- Fully intergrated with the new CalloutInterfaceAPI
+
+BETA v1.0.2
+
+- Added Animal On Roadway Callout
+
+- Changed Version Checker to detect beta versions - Sugestion by Michael21107
+- Fixed End Callout Audio

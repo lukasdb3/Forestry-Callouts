@@ -16,11 +16,15 @@ using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.SpawnSystem;
 using ForestryCallouts2.Backbone.SpawnSystem.Land;
+//CalloutInterface
+using CalloutInterfaceAPI;
+using Functions = LSPD_First_Response.Mod.API.Functions;
+
 #endregion
 
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
-    [CalloutInfo("IntoxicatedPerson", CalloutProbability.Medium)]
+    [CalloutInterface("Intoxicated Person", CalloutProbability.Medium, "Disturbance", "Code 2", "SASP")]
 
     internal class IntoxicatedPerson : Callout
     {
@@ -86,19 +90,10 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_02 CRIME_DISTURBING_THE_PEACE_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_02_02", _suspectSpawn);
             return base.OnBeforeCalloutDisplayed();
         }
-
-        public override void OnCalloutDisplayed()
-        {
-            //Send callout info to Callout Interface
-            if (PluginChecker.CalloutInterface) CFunctions.CISendCalloutDetails(this, "CODE 2", "SASP");
-            Logger.CallDebugLog(this, "Callout displayed");
-            base.OnCalloutDisplayed();
-        }
         
         public override void OnCalloutNotAccepted()
         {
-            if (PluginChecker.CalloutInterface) Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
-
+            Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
             base.OnCalloutNotAccepted();
         }
 
@@ -200,8 +195,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                             if (!_askedPedToTalk)
                             {
                                 Game.DisplaySubtitle("~b~You:~w~ Can I talk to you, " + _gender + ".");
-                                CFunctions.CISendMessage(this, "Suspect as been found");
-                                CFunctions.CISendMessage(this, "Talking with suspect");
                             }
                             _suspect.Tasks.Clear();
                             _suspect.Tasks.StandStill(-1);
@@ -255,7 +248,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _suspectSpawn);
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Intoxicated Person Code 4", "");
-                if (PluginChecker.CalloutInterface) CFunctions.CISendMessage(this, "Intoxicated Person Code 4");
+                CalloutInterfaceAPI.Functions.SendMessage(this, "Intoxicated Person Code 4");
             }
             Logger.CallDebugLog(this, "Callout ended");
             base.End();

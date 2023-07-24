@@ -48,6 +48,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static bool RegularPursuit;
         internal static bool AnimalAttack;
         internal static bool DeadAnimalOnRoadway;
+        internal static bool AnimalOnRoadway;
         internal static bool DangerousPerson;
         internal static bool DirtBikePursuit;
         internal static bool AtvPursuit;
@@ -136,6 +137,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             AnimalAttack = Ini.ReadBoolean("Callouts", "AnimalAttack", true);
             DangerousPerson = Ini.ReadBoolean("Callouts", "DangerousPerson", true); 
             DeadAnimalOnRoadway = Ini.ReadBoolean("Callouts", "DeadAnimalOnRoadway", true);
+            AnimalOnRoadway = Ini.ReadBoolean("Callouts", "AnimalOnRoadway", true);
             DirtBikePursuit = Ini.ReadBoolean("Callouts", "DirtBikePursuit", true);
             AtvPursuit = Ini.ReadBoolean("Callouts", "AtvPursuit", true);
             HighSpeedPursuit = Ini.ReadBoolean("Callouts", "HighSpeedPursuit", true);
@@ -186,7 +188,8 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             Ini.Write("Callouts", "AnimalAttack", Menu.Create.AnimalAttack.SelectedValue);
             Ini.Write("Callouts", "AtvPursuit", Menu.Create.AtvPursuit.SelectedValue);
             Ini.Write("Callouts", "DangerousPerson", Menu.Create.DangerousPerson.SelectedValue);
-            Ini.Write("Callouts", "DeadAnimalOnRoadway", Menu.Create.DeadAnimalOnRoadway.SelectedValue);            
+            Ini.Write("Callouts", "DeadAnimalOnRoadway", Menu.Create.DeadAnimalOnRoadway.SelectedValue);
+            Ini.Write("Callouts", "AnimalOnRoadway", Menu.Create.AnimalOnRoadway.SelectedValue);
             Ini.Write("Callouts", "DirtBikePursuit", Menu.Create.DirtBikePursuit.SelectedValue);
             Ini.Write("Callouts", "HighSpeedPursuit", Menu.Create.HighSpeedPursuit.SelectedValue);
             Ini.Write("Callouts", "IntoxicatedPerson", Menu.Create.IntoxicatedPerson.SelectedValue);

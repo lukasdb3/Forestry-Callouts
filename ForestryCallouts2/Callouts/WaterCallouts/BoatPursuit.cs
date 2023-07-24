@@ -3,19 +3,26 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+//Rage
+using Rage;
+//LSPDFR
+using LSPD_First_Response.Mod.API;
+using LSPD_First_Response.Mod.Callouts;
+//ForestryCallouts2
 using ForestryCallouts2.Backbone;
 using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.SpawnSystem;
-using LSPD_First_Response.Mod.API;
-using LSPD_First_Response.Mod.Callouts;
-using Rage;
+using ForestryCallouts2.Backbone.SpawnSystem.Land;
+//CalloutInterface
+using CalloutInterfaceAPI;
+using Functions = LSPD_First_Response.Mod.API.Functions;
 
 #endregion
 
 namespace ForestryCallouts2.Callouts.WaterCallouts
 {
-    [CalloutInfo("BoatPursuit", CalloutProbability.Medium)]
+    [CalloutInterface("Boat Pursuit", CalloutProbability.Medium, "Pursuit", "Code 3", "SASP")]
      
     internal class BoatPursuit : Callout
     {
@@ -54,18 +61,9 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
             return base.OnBeforeCalloutDisplayed();
         }
 
-        public override void OnCalloutDisplayed()
+         public override void OnCalloutNotAccepted()
         {
-            //Send info to callout interface
-            if (PluginChecker.CalloutInterface) CFunctions.CISendCalloutDetails(this, "CODE 3", "SASP");
-            Logger.CallDebugLog(this, "Callout displayed");
-            base.OnCalloutDisplayed();
-        }
-
-        public override void OnCalloutNotAccepted()
-        {
-            if (PluginChecker.CalloutInterface) Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
-
+            Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
             base.OnCalloutNotAccepted();
         }
         public override bool OnCalloutAccepted()
@@ -157,7 +155,7 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _suspectSpawn);
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Boat Pursuit Code 4", "");
-                if (PluginChecker.CalloutInterface) CFunctions.CISendMessage(this, "Boat Pursuit Code 4");
+                CalloutInterfaceAPI.Functions.SendMessage(this, "Boat Pursuit Code 4");
             }
             Logger.CallDebugLog(this, "Callout ended");
             base.End();

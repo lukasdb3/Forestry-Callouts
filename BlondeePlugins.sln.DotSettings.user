@@ -2,6 +2,7 @@
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=A_003A_005CSteamLibrary_005Csteamapps_005Ccommon_005CGrand_0020Theft_0020Auto_0020V_0020L_005CPlugins_005CLSPD_0020First_0020Response_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=A_003A_005CSteamLibrary_005Csteamapps_005Ccommon_005CGrand_0020Theft_0020Auto_0020V_005CPlugins_005Clspdfr_005CCalloutInterface_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=A_003A_005CSteamLibrary_005Csteamapps_005Ccommon_005CGrand_0020Theft_0020Auto_0020V_005CPlugins_005Clspdfr_005CUltimateBackup_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Cadmin_005CDocuments_005CCodingCrap_005CRefrences_005CCalloutInterfaceAPI_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Cadmin_005CDocuments_005CCodingCrap_005CRefrences_005CCalloutInterface_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Cadmin_005CDocuments_005CCodingCrap_005CRefrences_005CLSPD_0020First_0020Response_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Cadmin_005CDocuments_005CCodingCrap_005CRefrences_005CRAGENativeUI_002Edll/@EntryIndexedValue">True</s:Boolean>
@@ -42,6 +43,7 @@
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CWindows_005CMicrosoft_002ENET_005CFramework64_005Cv4_002E0_002E30319_005CSystem_002EWindows_002EForms_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Windows.Forms.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\admin\Documents\CodingCrap\Refrences\CalloutInterfaceAPI.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=a10a8dc2_002Dd2e0_002D4027_002D86fd_002D38f5bb3d1890_0023ForestryCallouts/@EntryIndexedValue">True</s:Boolean>
 	

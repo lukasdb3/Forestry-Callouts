@@ -18,6 +18,14 @@ namespace ForestryCallouts2.Backbone
         {
             var curVersion = IniSettings.CurV;
 
+            if (curVersion == "2.0.0.0")
+            {
+                Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~FORESTRY CALLOUTS WARNING",
+                    "~g~BETA VERSION", 
+                    "This is a BETA version of Forestry Callouts 2, Thank you for testing!");
+                return false;
+            }
+
             var latestVersionUri =
                 new Uri(
                     "https://www.lcpdfr.com/applications/downloadsng/interface/api.php?do=checkForUpdates&fileId=34663&textOnly=1");

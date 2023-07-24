@@ -13,11 +13,15 @@ using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.SpawnSystem;
 using ForestryCallouts2.Backbone.SpawnSystem.Land;
+//CalloutInterface
+using CalloutInterfaceAPI;
+using Functions = LSPD_First_Response.Mod.API.Functions;
+
 #endregion
 
 namespace ForestryCallouts2.Callouts.WaterCallouts
 {
-    [CalloutInfo("DeadBodyWater", CalloutProbability.Low)]
+    [CalloutInterface("Dead Body In Water", CalloutProbability.Low, "Deceased Victim", "Code 3", "SASP")]
     
     internal class DeadBodyWater : Callout
     {
@@ -65,17 +69,9 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
             return base.OnBeforeCalloutDisplayed();
         }
 
-        public override void OnCalloutDisplayed()
-        {
-            //Send callout info to Callout Interface
-            if (PluginChecker.CalloutInterface) CFunctions.CISendCalloutDetails(this, "CODE 3", "SASP");
-            Logger.CallDebugLog(this, "Callout displayed");
-            base.OnCalloutDisplayed();
-        }
-
         public override void OnCalloutNotAccepted()
         {
-            if (PluginChecker.CalloutInterface) Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+            Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
             base.OnCalloutNotAccepted();
         }
 
@@ -174,7 +170,7 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _victimSpawn);
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dead Body Code 4", "");
-                if (PluginChecker.CalloutInterface) CFunctions.CISendMessage(this, "Dead Body Code 4");
+                CalloutInterfaceAPI.Functions.SendMessage(this, "Dead Body Code 4");
             }
             Logger.CallDebugLog(this, "Callout ended");
             

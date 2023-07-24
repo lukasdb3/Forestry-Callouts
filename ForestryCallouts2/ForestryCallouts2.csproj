@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-        <FileVersion>2.0.0.0</FileVersion>
+        <AssemblyVersion>BETA 1.0.1</AssemblyVersion>
+        <FileVersion>BETA 1.0.1</FileVersion>
         <Title>ForestryCallouts2</Title>
         <Authors>lukasdb3</Authors>
         <Description>Callout plugin for LSPDFR</Description>
@@ -11,8 +11,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Reference Include="CalloutInterface">
-        <HintPath>..\..\..\CodingCrap\Refrences\CalloutInterface.dll</HintPath>
+      <Reference Include="CalloutInterfaceAPI">
+        <HintPath>..\..\..\CodingCrap\Refrences\CalloutInterfaceAPI.dll</HintPath>
       </Reference>
       <Reference Include="LSPD First Response">
         <HintPath>..\..\..\CodingCrap\Refrences\LSPD First Response.dll</HintPath>

@@ -15,7 +15,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
             Logger.DebugLog("DEAD ANIMAL SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayForest chunk");
             spawnpoint = default;
             heading = 0f;
-            int var = new Random().Next(1, 3);
+            int var = new Random().Next(1, 13);
             Logger.DebugLog("CASE", ""+var+"");
             switch (var)
             {

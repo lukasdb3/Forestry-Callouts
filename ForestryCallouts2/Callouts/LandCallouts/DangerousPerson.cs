@@ -13,11 +13,15 @@ using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.SpawnSystem;
 using ForestryCallouts2.Backbone.SpawnSystem.Land;
+//CalloutInterface
+using CalloutInterfaceAPI;
+using Functions = LSPD_First_Response.Mod.API.Functions;
+
 #endregion
 
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
-    [CalloutInfo("DangerousPerson", CalloutProbability.Medium)]
+    [CalloutInterface("Dangerous Person", CalloutProbability.Low, "Dangerous Individual", "Code 3", "SASP")]
     
     internal class DangerousPerson : Callout
     {
@@ -61,30 +65,21 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
             //Normal callout details
             ShowCalloutAreaBlipBeforeAccepting(_suspectSpawn, 30f);
-            CalloutMessage = ("~g~Dangerous Individual");
+            CalloutMessage = ("~g~Dangerous Person");
             CalloutPosition = _suspectSpawn; 
             AddMinimumDistanceCheck(IniSettings.MinCalloutDistance, CalloutPosition);
             _scenario = _rand.Next(1, 5);
-            if (_scenario == 1) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous individual reported with a automatic rifle. Respond code 3");
-            if (_scenario == 2) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous individual reported with a pistol. Respond code 3");
-            if (_scenario == 3) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous individual reported with a shotgun. Respond code 3");
-            if (_scenario == 4) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous individual reported with a melee weapon. Respond code 3");
+            if (_scenario == 1) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous person reported with a automatic rifle. Respond code 3");
+            if (_scenario == 2) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous person reported with a pistol. Respond code 3");
+            if (_scenario == 3) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous person reported with a shotgun. Respond code 3");
+            if (_scenario == 4) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous person reported with a melee weapon. Respond code 3");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", _suspectSpawn);
             return base.OnBeforeCalloutDisplayed();
         }
 
-        public override void OnCalloutDisplayed()
-        {
-            //Send callout info to Callout Interface
-            if (PluginChecker.CalloutInterface) CFunctions.CISendCalloutDetails(this, "CODE 3", "SASP");
-            Logger.CallDebugLog(this, "Callout displayed");
-            base.OnCalloutDisplayed();
-        }
-
         public override void OnCalloutNotAccepted()
         {
-            if (PluginChecker.CalloutInterface) Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
-
+            Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
             base.OnCalloutNotAccepted();
         }
 
@@ -212,8 +207,8 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _suspectSpawn);
-                Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dangerous Individual Reported Code 4", "");
-                if (PluginChecker.CalloutInterface) CFunctions.CISendMessage(this, "Dangerous Individual Reported Code 4");
+                Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dangerous Person Reported Code 4", "");
+               CalloutInterfaceAPI.Functions.SendMessage(this, "Dangerous Person Reported Code 4");
             }
             Logger.CallDebugLog(this, "Callout ended");
             base.End();

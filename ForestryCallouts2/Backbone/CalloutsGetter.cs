@@ -100,14 +100,12 @@ namespace ForestryCallouts2.Backbone
                                         
                                 }
 
-                                if (calloutAttribute != null && assemName == "ForestryCallouts2")
+                                if (calloutAttribute == null || assemName != "ForestryCallouts2") continue;
+                                if (calloutAttribute.Name is "DeadBodyWater" or "BoatPursuit")
                                 {
-                                    if (calloutAttribute.Name is "DeadBodyWater" or "BoatPursuit")
-                                    {
-                                        ForestryCalloutsWaterCalls.Add(calloutAttribute.Name);
-                                    }
-                                    else ForestryCalloutsCalls.Add(calloutAttribute.Name);
+                                    ForestryCalloutsWaterCalls.Add(calloutAttribute.Name);
                                 }
+                                else ForestryCalloutsCalls.Add(calloutAttribute.Name);
                             }
                         }
                     }

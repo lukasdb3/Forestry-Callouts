@@ -3,10 +3,10 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using CalloutInterfaceAPI;
 //Rage
 using Rage;
 //LSPDFR
-using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 //ForestryCallouts2
 using ForestryCallouts2.Backbone;
@@ -14,11 +14,13 @@ using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.SpawnSystem;
 using ForestryCallouts2.Backbone.SpawnSystem.Land;
+using Functions = LSPD_First_Response.Mod.API.Functions;
+
 #endregion
 
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
-    [CalloutInfo("AnimalAttack", CalloutProbability.Medium)]
+    [CalloutInterface("Animal Attack", CalloutProbability.Medium, "Domestic Animal Attack", "Code 3", "SASP")]
     internal class AnimalAttack : Callout
     {
         #region Variables
@@ -71,20 +73,11 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", _victimSpawn);
             return base.OnBeforeCalloutDisplayed();
         }
-
-        public override void OnCalloutDisplayed()
-        {
-            //Send callout info to Callout Interface
-            if (PluginChecker.CalloutInterface) CFunctions.CISendCalloutDetails(this, "CODE 3", "SASP");
-            Logger.CallDebugLog(this, "Callout displayed");
-            base.OnCalloutDisplayed();
-        }
-
+        
         public override void OnCalloutNotAccepted()
         {
-            if (PluginChecker.CalloutInterface) Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
-
-            base.OnCalloutNotAccepted();
+           Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
+           base.OnCalloutNotAccepted();
         }
 
         public override bool OnCalloutAccepted()
@@ -260,7 +253,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _victimSpawn);
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Animal Attack Code 4", "");
-                if (PluginChecker.CalloutInterface) CFunctions.CISendMessage(this, "Animal Attack Code 4");
+                CalloutInterfaceAPI.Functions.SendMessage(this, "Animal Attack Code 4");
             }
             Logger.CallDebugLog(this, "Callout ended");
             base.End();

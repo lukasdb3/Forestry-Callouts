@@ -12,11 +12,15 @@ using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.SpawnSystem;
 using ForestryCallouts2.Backbone.SpawnSystem.Land;
+//CalloutInterface
+using CalloutInterfaceAPI;
+using Functions = LSPD_First_Response.Mod.API.Functions;
+
 #endregion
 
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
-    [CalloutInfo("AtvPursuit", CalloutProbability.Medium)]
+    [CalloutInterface("ATV Pursuit", CalloutProbability.Medium, "Pursuit", "Code 3", "SASP")]
      
     internal class AtvPursuit : Callout
     {
@@ -44,7 +48,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
             //Normal callout details
             ShowCalloutAreaBlipBeforeAccepting(_suspectSpawn, 30f);
-            CalloutMessage = ("~g~ATV Pursuit In Progress");
+            CalloutMessage = ("~g~ATV Pursuit");
             CalloutPosition = _suspectSpawn; 
             AddMinimumDistanceCheck(IniSettings.MinCalloutDistance, CalloutPosition);
             CalloutAdvisory = ("~b~Dispatch:~w~ We need backup for a ATV pursuit in progress. Respond code 3.");
@@ -52,18 +56,9 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             return base.OnBeforeCalloutDisplayed();
         }
 
-        public override void OnCalloutDisplayed()
+         public override void OnCalloutNotAccepted()
         {
-            //Send info to callout interface
-            if (PluginChecker.CalloutInterface) CFunctions.CISendCalloutDetails(this, "CODE 3", "SASP");
-            Logger.CallDebugLog(this, "Callout displayed");
-            base.OnCalloutDisplayed();
-        }
-
-        public override void OnCalloutNotAccepted()
-        {
-            if (PluginChecker.CalloutInterface) Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
-
+            Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
             base.OnCalloutNotAccepted();
         }
         public override bool OnCalloutAccepted()
@@ -121,7 +116,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _suspectSpawn);
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~ATV Pursuit Code 4", "");
-                if (PluginChecker.CalloutInterface) CFunctions.CISendMessage(this, "ATV Pursuit Code 4");
+                CalloutInterfaceAPI.Functions.SendMessage(this, "ATV Pursuit Code 4");
             }
             Logger.CallDebugLog(this, "Callout ended");
             base.End();

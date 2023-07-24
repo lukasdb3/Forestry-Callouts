@@ -25,6 +25,10 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
         internal static float FinalHeading;
         #endregion
 
+        #region AnimalOnRoadwayCall
+        internal static Vector3 SafeOffroadPos;
+        #endregion
+
         internal static void Main(in string currentCallout)
         {
             _curcall = currentCallout;
@@ -80,6 +84,8 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
                 LoggerTruckSpawns.PaletoBayForest(out FinalSpawnpoint, out FinalHeading);
             if (currentCallout is "DeadAnimalOnRoadway")
                 DeadAnimalSpawnpoints.PaletoBayForest(out FinalSpawnpoint, out FinalHeading);
+            if (currentCallout is "AnimalOnRoadway")
+                AnimalOnRoadwaySpawnpoints.PaletoBayForest(out FinalSpawnpoint, out FinalHeading, out SafeOffroadPos);
         }
         
         private static void AltruistCampArea(in string currentCallout)
@@ -90,6 +96,8 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
                 LoggerTruckSpawns.AltruistCampArea(out FinalSpawnpoint, out FinalHeading);
             if (currentCallout is "DeadAnimalOnRoadway")
                 DeadAnimalSpawnpoints.AltruistCampArea(out FinalSpawnpoint, out FinalHeading);
+            if (currentCallout is "AnimalOnRoadway")
+                AnimalOnRoadwaySpawnpoints.AltruistCampArea(out FinalSpawnpoint, out FinalHeading, out SafeOffroadPos);
         }
         
         private static void RatonCanyon(in string currentCallout)
@@ -100,6 +108,8 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
                 LoggerTruckSpawns.RatonCanyon(out FinalSpawnpoint, out FinalHeading);
             if (currentCallout is "DeadAnimalOnRoadway")
                 DeadAnimalSpawnpoints.RatonCanyon(out FinalSpawnpoint, out FinalHeading);
+            if (currentCallout is "AnimalOnRoadway")
+                AnimalOnRoadwaySpawnpoints.RatonCanyon(out FinalSpawnpoint, out FinalHeading, out SafeOffroadPos);
         }
         
         /*private static void Chunk4(in string currentCallout)
