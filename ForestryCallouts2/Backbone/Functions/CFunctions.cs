@@ -66,18 +66,17 @@ namespace ForestryCallouts2.Backbone.Functions
             Logger.DebugLog("GetValidPedsNearby", "Returning list!");
             return closePeds;
         }
-        
+
         internal static bool IsKeyAndModifierDown(Keys key, Keys modifier)
         {
             return Game.IsKeyDown(key) && Control.ModifierKeys == modifier;
         }
 
-        internal static String TranslateCallsignToAudio()
+        internal static string TranslateCallsignToAudio(this string callsign)
         {
-            string[] divs = { "GP_DIVISION_1","GP_DIVISION_2","GP_DIVISION_3","GP_DIVISION_4","GP_DIVISION_5","GP_DIVISION_6","GP_DIVISION_7","GP_DIVISION_8","GP_DIVISION_9","GP_DIVISION_10"};
-            string[] unitTypes = { "GP_UT_ADAM", "GP_UT_BOY", "GP_UT_CHARLES", "GP_UT_DAVID", "GP_UT_EDWARD", "GP_UT_FRANK", "GP_UT_GEORGE", "GP_UT_HENRY", "GP_UT_HUNDRED", "GP_UT_IDA", "GP_UT_JOHN", "GP_UT_KING", "GP_UT_LINCOLN", "GP_UT_MARY", "GP_UT_NORA", "GP_UT_OCEAN", "GP_UT_OH", "GP_UT_PAUL", "GP_UT_QUEEN", "GP_UT_ROBERT", "GP_UT_SAM", "GP_UT_TOM", "GP_UT_UNION", "GP_UT_VICTOR", "GP_UT_WILLIAM", "GP_UT_XRAY", "GP_UT_YOUNG", "GP_UT_ZEBRA"};
-            string[] beats = { "GP_BEAT_1", "GP_BEAT_2", "GP_BEAT_3", "GP_BEAT_4", "GP_BEAT_5", "GP_BEAT_6", "GP_BEAT_7", "GP_BEAT_8", "GP_BEAT_9", "GP_BEAT_10", "GP_BEAT_11", "GP_BEAT_12","GP_BEAT_13", "GP_BEAT_14", "GP_BEAT_15", "GP_BEAT_16", "GP_BEAT_17", "GP_BEAT_18","GP_BEAT_19", "GP_BEAT_20", "GP_BEAT_21", "GP_BEAT_22", "GP_BEAT_23", "GP_BEAT_24","GP_BEAT_30", "", "", "", "", "","", "", "", "", "", "","", "", "", "", "", "" };
-            var callsign = IniSettings.Callsign.ToUpper();
+            string[] divs = { "1","2","3","4","5","6","7","8","9","10"};
+            string[] unitTypes = { "ADAM", "BOY", "CHARLES", "DAVID", "EDWARD", "FRANK", "GEORGE", "HENRY", "HUNDRED", "IDA", "JOHN", "KING", "LINCOLN", "MARY", "NORA", "OCEAN", "OH", "PAUL", "QUEEN", "ROBERT", "SAM", "TOM", "UNION", "VICTOR", "WILLIAM", "XRAY", "YOUNG", "ZEBRA"};
+            string[] beats = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12","13", "14", "15", "16", "17", "18","19", "20", "21", "22", "23", "24","30", "40", "50", "60", "70", "80","90", "100"};
             var split = callsign.Split('-');
 
             try
@@ -85,15 +84,22 @@ namespace ForestryCallouts2.Backbone.Functions
                 var division = split[1];
                 var unitType = split[2];
                 var beat = split[3];
-                
+                if (divs.TakeWhile(div => div != division).Any()) throw new ArgumentException("division is not valid");
+                if (unitTypes.TakeWhile(unit => unit != unitType).Any()) throw new ArgumentException("unit not valid");
+                if (beats.TakeWhile(beet => beet != beat).Any()) throw new ArgumentException("beat is invalid");
+                return "GP_DIVISION_"+division+" GP_UT_"+unitType+" GP_BEAT_"+beat;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                return callsign;
+                Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~FORESTRY CALLOUTS WARNING",
+                    "~g~CALLSIGN INVALID", 
+                    "One or more of the following is invalid, division, unitType, beat. Please check rage log for more info!");
+                Game.Console.Print("!!! ERROR !!! - Forestry Callouts Callsign Error");
+                Game.Console.Print("A part of, or all, of your callsign is invalid. Please check the readme on how to configure the callsign!");
+                Game.Console.Print("ERROR ~ "+e);
+                Game.Console.Print("Callsign set to 1-LINCOLN-18");
+                return "GP_DIVISION_1 GP_UT_LINCOLN GP_BEAT_18";
             }
-            
-            return callsign;
         }
 
         //Spawn Peds

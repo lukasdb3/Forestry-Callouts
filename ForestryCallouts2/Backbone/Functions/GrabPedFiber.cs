@@ -11,7 +11,7 @@ using Rage;
 
 namespace ForestryCallouts2.Backbone.Functions;
 
-internal static class GrabPed
+internal static class GrabPedFiber
 {
     internal static GameFiber Fiber;
     private static List<Ped> _cPeds;

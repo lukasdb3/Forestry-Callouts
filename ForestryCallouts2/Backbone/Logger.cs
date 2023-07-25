@@ -48,14 +48,16 @@ namespace ForestryCallouts2.Backbone
             Game.Console.Print("=============== FORESTRY CALLOUTS ===============");
             Game.Console.Print("Loading settings..");
             IniSettings.LoadSettings();
+            Main.CallsignAudioString = IniSettings.Callsign.TranslateCallsignToAudio();
             Game.Console.Print("Checking Forestry Callouts version..");
             Game.Console.Print("Forestry Callouts update available: "+VersionChecker.IsUpdateAvailable()+"");
             Game.Console.Print("Version: "+VersionChecker.ReceivedData+"");
             Game.Console.Print("Running Plugin Checks...");
             Game.Console.Print("Caching players callouts..");
             CalloutsGetter.CacheCallouts();
-            Game.Console.Print("Initializing Interaction Menu..");
-            Create.Initialize();
+            Game.Console.Print("Initializing menus..");
+            MainMenu.Initialize();
+            StopPedMenu.Initialize();
             Game.Console.Print("Starting Main Loop..");
             Main.RunLoop();
             if (PluginChecker.ForestryCallouts)
@@ -70,7 +72,8 @@ namespace ForestryCallouts2.Backbone
             Game.Console.Print("Loading needed chunks...");
             if (!IniSettings.WaterCallouts) ChunkLoader.Land();
             else ChunkLoader.Water();
-            GrabPed.Main();
+            GrabPedFiber.Main();
+            StopPedFiber.Main();
             Game.AddConsoleCommands(new[]{typeof(CCommands)});
             Game.Console.Print("Registering Callouts..");
             Main.RegisterCallouts();

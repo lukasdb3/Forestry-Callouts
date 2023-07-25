@@ -60,7 +60,7 @@ namespace ForestryCallouts2.Backbone.Functions
                     _binoCamera.Rotation = new Rotator(_binoCamera.Rotation.Pitch - upDown, _binoCamera.Rotation.Roll, _binoCamera.Rotation.Yaw - leftRight);
                     
                     //Zooming in and out
-                    if (Game.IsKeyDown(Keys.MButton))
+                    if (CFunctions.IsKeyAndModifierDown(IniSettings.BinocularsZoom, IniSettings.BinocularsZoomModifier))
                     {
                         _binoCamera.FOV -= 10;
                         if (_binoCamera.FOV <= 15)

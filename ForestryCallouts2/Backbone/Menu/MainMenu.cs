@@ -13,7 +13,7 @@ using ForestryCallouts2.Backbone.IniConfiguration;
 
 namespace ForestryCallouts2.Backbone.Menu
 {
-    public class Create
+    public static class MainMenu
     {
         // Version
         private static readonly string Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -69,7 +69,7 @@ namespace ForestryCallouts2.Backbone.Menu
             InteractionMenu.AddItems(_callAnimalControl,_endCallout,_settings);
             InteractionMenu.RefreshIndex();
             InteractionMenu.OnItemSelect += OnInteractionMenuItemSelected;
-            Main.pool.Add(InteractionMenu);
+            Main.Pool.Add(InteractionMenu);
 
             // Create Settings Menu
             _settingsMenu = new UIMenu("Forestry Callouts", "~b~Settings Menu ~g~| ~y~v" + Version);
@@ -111,19 +111,13 @@ namespace ForestryCallouts2.Backbone.Menu
             InteractionMenu.BindMenuToItem(_settingsMenu, _settings);
             _settingsMenu.RefreshIndex();
             _settingsMenu.OnItemSelect += OnSettingsMenuItemSelected;
-            Main.pool.Add(_settingsMenu);
+            Main.Pool.Add(_settingsMenu);
         }
 
         private static void OnInteractionMenuItemSelected(UIMenu sender, UIMenuItem selecteditem, int index)
         {
             Logger.DebugLog("INTERACTION MENU", "Item " + selecteditem.Text + " was selected!");
-            if (selecteditem == _callAnimalControl)
-            {
-                GameFiber.StartNew(delegate
-                {
-                    AnimalControl.CallAnimalControl();
-                });
-            }
+            if (selecteditem == _callAnimalControl) AnimalControl.CallAnimalControl();
 
             if (selecteditem == _endCallout)
             {

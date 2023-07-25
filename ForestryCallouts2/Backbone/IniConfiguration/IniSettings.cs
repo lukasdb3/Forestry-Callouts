@@ -35,13 +35,17 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static Keys DialogueKeyModifier;
         internal static Keys EndCalloutKeyModifier;
         internal static Keys InteractionMenuKeyModifier;
+        internal static Keys BinocularsKey;
+        internal static Keys BinocularsKeyModifier;
+        internal static Keys BinocularsZoom;
+        internal static Keys BinocularsZoomModifier;
+        internal static Keys StopPedKey;
+        internal static Keys StopPedKeyModifier;
         internal static Keys GrabPedKey;
         internal static Keys GrabPedKeyModifier;
 
         //Binoculars
         internal static bool BinocularsEnabled;
-        internal static Keys BinocularsKey;
-        internal static Keys BinocularsKeyModifier;
         internal static int BinocularsSensitivity;
 
         //Callouts
@@ -58,6 +62,13 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
 
         internal static bool DeadBodyWater;
         internal static bool BoatPursuit;
+        
+        //LicensesPercents
+        internal static int ResidentLicense;
+        internal static int NonResidentLicense;
+        internal static int OneDayLicense;
+        internal static int TwoDayLicense;
+        internal static int NoLicense;
 
         //Vehicles
         private static string _normalVehicles;
@@ -118,6 +129,10 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
                 InteractionMenuKeyModifier = Ini.ReadEnum("Keys", "InteractionMenuKeyModifier", Keys.None);
                 BinocularsKey = Ini.ReadEnum("Keys", "BinocularsKey", Keys.O);
                 BinocularsKeyModifier = Ini.ReadEnum("Keys", "BinocularsKeyModifier", Keys.None);
+                BinocularsZoom = Ini.ReadEnum("Keys", "BinocularsZoom", Keys.MButton);
+                BinocularsZoomModifier = Ini.ReadEnum("Keys", "BinocularsZoomModifier", Keys.None);
+                StopPedKey = Ini.ReadEnum("Keys", "StopPedKey", Keys.E);
+                StopPedKeyModifier = Ini.ReadEnum("Keys", "StopPedKeyModifier", Keys.None);
                 GrabPedKey = Ini.ReadEnum("Keys", "GrabPedKey", Keys.U);
                 GrabPedKeyModifier = Ini.ReadEnum("Keys", "GrabPedKeyModifier", Keys.Control);
             }
@@ -147,6 +162,14 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
 
             DeadBodyWater = Ini.ReadBoolean("Callouts", "DeadBodyWater", true);
             BoatPursuit = Ini.ReadBoolean("Callouts", "BoatPursuit", true);
+            
+            //LicensesPercents
+            ResidentLicense = Ini.ReadInt32("LicensePercentage", "ResidentialFishing", 30);
+            NonResidentLicense = Ini.ReadInt32("LicensePercentage", "NonResidentialFishing", 30);
+            OneDayLicense = Ini.ReadInt32("LicensePercentage", "OneDayFishing", 10);
+            TwoDayLicense = Ini.ReadInt32("LicensePercentage", "TwoDayFishing", 10);
+            NoLicense = Ini.ReadInt32("LicensePercentage", "NoLicense", 20);
+            
             //Vehicles
             _normalVehicles = Ini.ReadString("Vehicles", "NormalVehicles", null);
             NormalVehicles = _normalVehicles.Split(':');
@@ -177,28 +200,28 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static void SaveNewSettings()
         {
             //Main
-            Ini.Write("Main", "DebugLogs", Menu.Create.DebugLogs.SelectedValue);
-            Ini.Write("Main", "WaterCallouts", Menu.Create.WaterCallouts.SelectedValue);
-            Ini.Write("Main", "SearchAreaBlipsMax", Menu.Create.SearchAreaBlipsMax.Value);
-            Ini.Write("Main", "MaxDistance", Menu.Create.MaxDistance.Value);
-            Ini.Write("Main", "EnableDistanceChecker", Menu.Create.EnableDistanceChecker.SelectedValue);
-            Ini.Write("Main", "MinimumCalloutSpawnDistance", Menu.Create.MinCalloutDistance.Value);
+            Ini.Write("Main", "DebugLogs", Menu.MainMenu.DebugLogs.SelectedValue);
+            Ini.Write("Main", "WaterCallouts", Menu.MainMenu.WaterCallouts.SelectedValue);
+            Ini.Write("Main", "SearchAreaBlipsMax", Menu.MainMenu.SearchAreaBlipsMax.Value);
+            Ini.Write("Main", "MaxDistance", Menu.MainMenu.MaxDistance.Value);
+            Ini.Write("Main", "EnableDistanceChecker", Menu.MainMenu.EnableDistanceChecker.SelectedValue);
+            Ini.Write("Main", "MinimumCalloutSpawnDistance", Menu.MainMenu.MinCalloutDistance.Value);
             //Binoculars
-            Ini.Write("Binoculars", "EnableBinoculars", Menu.Create.EnableBinoculars.SelectedValue);
-            Ini.Write("Binoculars", "BinocularsSensitivity", Menu.Create.BinocularsSense.Value);
+            Ini.Write("Binoculars", "EnableBinoculars", Menu.MainMenu.EnableBinoculars.SelectedValue);
+            Ini.Write("Binoculars", "BinocularsSensitivity", Menu.MainMenu.BinocularsSense.Value);
             //Callouts
-            Ini.Write("Callouts", "AnimalAttack", Menu.Create.AnimalAttack.SelectedValue);
-            Ini.Write("Callouts", "AtvPursuit", Menu.Create.AtvPursuit.SelectedValue);
-            Ini.Write("Callouts", "DangerousPerson", Menu.Create.DangerousPerson.SelectedValue);
-            Ini.Write("Callouts", "DeadAnimalOnRoadway", Menu.Create.DeadAnimalOnRoadway.SelectedValue);
-            Ini.Write("Callouts", "AnimalOnRoadway", Menu.Create.AnimalOnRoadway.SelectedValue);
-            Ini.Write("Callouts", "DirtBikePursuit", Menu.Create.DirtBikePursuit.SelectedValue);
-            Ini.Write("Callouts", "HighSpeedPursuit", Menu.Create.HighSpeedPursuit.SelectedValue);
-            Ini.Write("Callouts", "IntoxicatedPerson", Menu.Create.IntoxicatedPerson.SelectedValue);
-            Ini.Write("Callouts", "RegularPursuit", Menu.Create.RegularPursuit.SelectedValue);
+            Ini.Write("Callouts", "AnimalAttack", Menu.MainMenu.AnimalAttack.SelectedValue);
+            Ini.Write("Callouts", "AtvPursuit", Menu.MainMenu.AtvPursuit.SelectedValue);
+            Ini.Write("Callouts", "DangerousPerson", Menu.MainMenu.DangerousPerson.SelectedValue);
+            Ini.Write("Callouts", "DeadAnimalOnRoadway", Menu.MainMenu.DeadAnimalOnRoadway.SelectedValue);
+            Ini.Write("Callouts", "AnimalOnRoadway", Menu.MainMenu.AnimalOnRoadway.SelectedValue);
+            Ini.Write("Callouts", "DirtBikePursuit", Menu.MainMenu.DirtBikePursuit.SelectedValue);
+            Ini.Write("Callouts", "HighSpeedPursuit", Menu.MainMenu.HighSpeedPursuit.SelectedValue);
+            Ini.Write("Callouts", "IntoxicatedPerson", Menu.MainMenu.IntoxicatedPerson.SelectedValue);
+            Ini.Write("Callouts", "RegularPursuit", Menu.MainMenu.RegularPursuit.SelectedValue);
             
-            Ini.Write("Callouts", "DeadBodyWater", Menu.Create.DeadBodyWater.SelectedValue);
-            Ini.Write("Callouts", "BoatPursuit", Menu.Create.BoatPursuit.SelectedValue);
+            Ini.Write("Callouts", "DeadBodyWater", Menu.MainMenu.DeadBodyWater.SelectedValue);
+            Ini.Write("Callouts", "BoatPursuit", Menu.MainMenu.BoatPursuit.SelectedValue);
             Game.DisplayNotification("~g~Settings Saved To ForestryCallouts2.ini\n" +
                                      "~r~If you changed any Callouts to True or False, LSPDFR will have to be reloaded for changes to be made!");
         }

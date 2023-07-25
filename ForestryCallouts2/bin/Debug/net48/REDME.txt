@@ -7,6 +7,21 @@ Additional Instructions
 
 - Drag and Drop "CalloutInterfaceAPI" into your main grand theft auto v directory.
 
+Editing Callsign
+
+1-LINCOLN-18
+ * 1 is the division
+ * LINCOLN is the unit type
+ * 18 is the beat
+
+Division can be 1-10
+Unit Type can be: "ADAM", "BOY", "CHARLES", "DAVID", "EDWARD", "FRANK", "GEORGE", "HENRY", "HUNDRED", "IDA", "JOHN", "KING", "LINCOLN", "MARY", "NORA", "OCEAN", "OH", "PAUL", "QUEEN", "ROBERT", "SAM", "TOM", "UNION", 
+"VICTOR", "WILLIAM", "XRAY", "YOUNG", "ZEBRA"
+Beat can be: 1-24, 30, 40, 50, 60, 70, 80, 90, 100
+
+The above can all be edited in the INI file.
+If there is a callsign error callsign will default to 1-LINCOLN-18.
+
 Notes:
 
 - Water Callouts are in Forestry Callouts 2 but purposely disabled. You may see water related callouts in Callout Interface Menu like "BoatPursuit". They won't start.
@@ -15,7 +30,7 @@ Notes:
 - If you do find a bug please send your RagePluginHook.log with what you find to my dms. Also a semi detailed message would be greatly appreciated!
 - Thank you for testing!
 
-This mod requires grammar police for audio.
+THIS MOD REQUIRES GRAMMAR POLICE!!
 
 This mod should be used with, but not required:
 - Callout Interface
@@ -34,7 +49,17 @@ BETA v1.0.1
 
 BETA v1.0.2
 
+Callouts
 - Added Animal On Roadway Callout
-
-- Changed Version Checker to detect beta versions - Sugestion by Michael21107
 - Fixed End Callout Audio
+New Features
+- Added Callsign ~ Can be changed in INI read about it above!
+- Started Implementing GrammarPolice Audio
+- Stated Adding Callout Interface MDT Messages
+- Peds can now be stopped
+- Added Licenses & Menu
+INI Changes
+- Added Key For Binocular Zoom
+- Added Key For Stopping Peds
+Misc
+- Changed Version Checker to detect beta versions - Sugestion by Michael21107

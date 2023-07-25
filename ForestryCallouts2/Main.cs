@@ -12,6 +12,8 @@ using ForestryCallouts2.Backbone;
 using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.Menu;
 using ForestryCallouts2.Backbone.Functions;
+using MainMenu = ForestryCallouts2.Backbone.Menu.MainMenu;
+
 #endregion
 
 namespace ForestryCallouts2
@@ -19,8 +21,9 @@ namespace ForestryCallouts2
     internal class Main : Plugin
     {
         internal static Random Rnd = new Random();
-        internal static MenuPool pool = new();
+        internal static MenuPool Pool = new();
         private static GameFiber _mainFiber;
+        internal static string CallsignAudioString;
         public override void Initialize()
         {
             Functions.OnOnDutyStateChanged += OnOnDutyStateChangedHandler;
@@ -30,9 +33,10 @@ namespace ForestryCallouts2
         
         public override void Finally()
         {
-            if (IniSettings.WaterCallouts) GrabPed.Fiber.Abort();
+            StopPedFiber.Fiber.Abort();
+            GrabPedFiber.Fiber.Abort();
             if (AnimalControl.AnimalControlActive) AnimalControl.DestroyAnimalControl();
-            Create.CleanUp();
+            MainMenu.CleanUp();
             _mainFiber.Abort();
             Game.LogTrivial("ForestryCallouts2 has been cleaned up.");
         }
@@ -81,11 +85,11 @@ namespace ForestryCallouts2
                     
 
                     //Menu
-                    pool.ProcessMenus();
+                    Pool.ProcessMenus();
                     if (CFunctions.IsKeyAndModifierDown(IniSettings.InteractionMenuKey, IniSettings.InteractionMenuKeyModifier) && !Binoculars.IsRendering)
                     {
-                        if (Create.InteractionMenu.Visible) Create.InteractionMenu.Visible = false;
-                        else Create.InteractionMenu.Visible = true;
+                        if (MainMenu.InteractionMenu.Visible) MainMenu.InteractionMenu.Visible = false;
+                        else MainMenu.InteractionMenu.Visible = true;
                     }
 
                     //Binoculars Hotkey
