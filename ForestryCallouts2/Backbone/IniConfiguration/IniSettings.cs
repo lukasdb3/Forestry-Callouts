@@ -18,7 +18,8 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static InitializationFile Ini;
         private static bool _iniError;
         internal static string CurV;
-
+        
+        internal static string Callsign;
         internal static bool DebugLogs;
         internal static bool WaterCallouts;
         internal static bool EnableDistanceChecker;
@@ -92,6 +93,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             CurV = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             
             //Main
+            Callsign = Ini.ReadString("Main", "Callsign", "1-LINCOLN-18");
             DebugLogs = Ini.ReadBoolean("Main", "DebugLogs", false);
             WaterCallouts = Ini.ReadBoolean("Main", "WaterCallouts", false);
             EnableDistanceChecker = Ini.ReadBoolean("Main", "EnableDistanceChecker", true);

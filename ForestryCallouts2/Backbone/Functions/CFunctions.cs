@@ -67,10 +67,33 @@ namespace ForestryCallouts2.Backbone.Functions
             return closePeds;
         }
         
-
         internal static bool IsKeyAndModifierDown(Keys key, Keys modifier)
         {
             return Game.IsKeyDown(key) && Control.ModifierKeys == modifier;
+        }
+
+        internal static String TranslateCallsignToAudio()
+        {
+            string[] divs = { "GP_DIVISION_1","GP_DIVISION_2","GP_DIVISION_3","GP_DIVISION_4","GP_DIVISION_5","GP_DIVISION_6","GP_DIVISION_7","GP_DIVISION_8","GP_DIVISION_9","GP_DIVISION_10"};
+            string[] unitTypes = { "GP_UT_ADAM", "GP_UT_BOY", "GP_UT_CHARLES", "GP_UT_DAVID", "GP_UT_EDWARD", "GP_UT_FRANK", "GP_UT_GEORGE", "GP_UT_HENRY", "GP_UT_HUNDRED", "GP_UT_IDA", "GP_UT_JOHN", "GP_UT_KING", "GP_UT_LINCOLN", "GP_UT_MARY", "GP_UT_NORA", "GP_UT_OCEAN", "GP_UT_OH", "GP_UT_PAUL", "GP_UT_QUEEN", "GP_UT_ROBERT", "GP_UT_SAM", "GP_UT_TOM", "GP_UT_UNION", "GP_UT_VICTOR", "GP_UT_WILLIAM", "GP_UT_XRAY", "GP_UT_YOUNG", "GP_UT_ZEBRA"};
+            string[] beats = { "GP_BEAT_1", "GP_BEAT_2", "GP_BEAT_3", "GP_BEAT_4", "GP_BEAT_5", "GP_BEAT_6", "GP_BEAT_7", "GP_BEAT_8", "GP_BEAT_9", "GP_BEAT_10", "GP_BEAT_11", "GP_BEAT_12","GP_BEAT_13", "GP_BEAT_14", "GP_BEAT_15", "GP_BEAT_16", "GP_BEAT_17", "GP_BEAT_18","GP_BEAT_19", "GP_BEAT_20", "GP_BEAT_21", "GP_BEAT_22", "GP_BEAT_23", "GP_BEAT_24","GP_BEAT_30", "", "", "", "", "","", "", "", "", "", "","", "", "", "", "", "" };
+            var callsign = IniSettings.Callsign.ToUpper();
+            var split = callsign.Split('-');
+
+            try
+            {
+                var division = split[1];
+                var unitType = split[2];
+                var beat = split[3];
+                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return callsign;
+            }
+            
+            return callsign;
         }
 
         //Spawn Peds

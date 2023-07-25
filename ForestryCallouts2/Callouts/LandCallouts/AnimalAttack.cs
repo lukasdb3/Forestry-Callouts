@@ -103,6 +103,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             {
                 if (Game.LocalPlayer.Character.DistanceTo(_victim) <= 200f && !_onScene)
                 {
+                    Functions.PlayScannerAudio("GP_ATTENTION_UNIT GP_DIVISION_1 GP_UT_LINCOLN GP_BEAT_18 GP_CAUTION_02");
                     Logger.CallDebugLog(this, "Process started");
                     _onScene = true;
                     if (_victimBlip) _victimBlip.Delete();
@@ -139,7 +140,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     _pauseTimer = true;
                     if (_areaBlip) _areaBlip.Delete();
                     _victimBlip = _victim.AttachBlip();
-                    _victimBlip.Color = Color.LimeGreen;
+                    _victimBlip.Color = Color.ForestGreen;
                     _victimBlip.Scale = .7f;
                     _victimBlip.IsRouteEnabled = true;
                     _maxNotfiSent = true;
@@ -151,7 +152,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             {
                 Logger.CallDebugLog(this, "Victim found!");
                 _victimBlip = _victim.AttachBlip();
-                _victimBlip.Color = Color.LimeGreen;
+                _victimBlip.Color = Color.ForestGreen;
                 _victimBlip.Scale = .7f;
                 if (_areaBlip) _areaBlip.Delete();
                 _victimFound = true;
@@ -251,7 +252,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_areaBlip) _areaBlip.Delete();
             if (!ChunkChooser.StoppingCurrentCall)
             {
-                Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _victimSpawn);
+                Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _victimSpawn);
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Animal Attack Code 4", "");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Animal Attack Code 4");
             }
