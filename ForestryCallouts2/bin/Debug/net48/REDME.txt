@@ -57,7 +57,7 @@ New Features
 - Started Implementing GrammarPolice Audio
 - Stated Adding Callout Interface MDT Messages
 - Peds can now be stopped
-- Added Licenses & Menu
+- Added Fishing Licenses & Menu
 INI Changes
 - Added Key For Binocular Zoom
 - Added Key For Stopping Peds

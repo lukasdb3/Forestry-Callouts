@@ -164,9 +164,9 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (Functions.IsPursuitStillRunning(_pursuit) && _pursuitStarted) Functions.ForceEndPursuit(_pursuit);
             if (!ChunkChooser.StoppingCurrentCall)
             {
-                Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _suspectSpawn);
-                Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Hgih Speed Pursuit Code 4", "");
-                CalloutInterfaceAPI.Functions.SendMessage(this, "High Speed Pursuit Code 4");
+                Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _suspectSpawn);
+                Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~High Speed Pursuit Code 4", "");
+                CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting High Speed Pursuit code 4");
             }
             Logger.CallDebugLog(this, "Callout ended");
             base.End();

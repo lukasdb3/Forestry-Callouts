@@ -102,9 +102,9 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_animalBlip) _animalBlip.Delete();
             if (!ChunkChooser.StoppingCurrentCall)
             {
-                Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 OP_CODE OP_4", _animalSpawn);
+                Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _animalSpawn);
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dead Animal On Roadway Code 4", "");
-                CalloutInterfaceAPI.Functions.SendMessage(this, "Dead Animal On Roadway Code 4");
+                CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Dead Animal On Roadway code 4");
             }
             Logger.CallDebugLog(this, "Callout ended");
             base.End();

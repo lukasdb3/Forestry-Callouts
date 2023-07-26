@@ -17,10 +17,10 @@ namespace ForestryCallouts2.Backbone.Functions;
 internal static class StopPedFiber
 {
     internal static GameFiber Fiber;
-    internal static Ped _cPed;
-    internal static Persona _persona;
+    private static Ped _cPed;
+    private static Persona _persona;
     private static Random _rand;
-    
+
     internal static void Main()
     {
         Fiber = GameFiber.StartNew(delegate
@@ -48,9 +48,18 @@ internal static class StopPedFiber
 
     internal static void OnAskForFishingLicence()
     {
-        var pedsLicense = LicenseStuff.ChooseTypeOfLicense();
-        //Ped does not have license
-        if (pedsLicense.Type == "null") Game.DisplayNotification("~g~" + _persona.FullName + " ~w~does ~r~not~w~ have a fishing license");
+        var pedsLicense = License.ChooseTypeOfLicense();
+        if (pedsLicense.Type != "null")
+        {
+            pedsLicense = License.CreateLicence(_persona, pedsLicense);
+        }
+        else
+        {
+            Game.DisplayNotification("Ped does not have a fishing license.");
+            return;
+        }
+        License.DisplayLicenceInfo(pedsLicense);
+        
     }
 
     internal static void OnAskForHuntingLicence()

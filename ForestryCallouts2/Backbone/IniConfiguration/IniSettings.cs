@@ -69,6 +69,9 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static int OneDayLicense;
         internal static int TwoDayLicense;
         internal static int NoLicense;
+        //LicenseStatus
+        internal static int Expired;
+        internal static int Valid;
 
         //Vehicles
         private static string _normalVehicles;
@@ -164,12 +167,15 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             BoatPursuit = Ini.ReadBoolean("Callouts", "BoatPursuit", true);
             
             //LicensesPercents
-            ResidentLicense = Ini.ReadInt32("LicensePercentage", "ResidentialFishing", 30);
-            NonResidentLicense = Ini.ReadInt32("LicensePercentage", "NonResidentialFishing", 30);
-            OneDayLicense = Ini.ReadInt32("LicensePercentage", "OneDayFishing", 10);
-            TwoDayLicense = Ini.ReadInt32("LicensePercentage", "TwoDayFishing", 10);
-            NoLicense = Ini.ReadInt32("LicensePercentage", "NoLicense", 20);
-            
+            ResidentLicense = Ini.ReadInt32("Licenses", "ResidentialFishing", 30);
+            NonResidentLicense = Ini.ReadInt32("Licenses", "NonResidentialFishing", 30);
+            OneDayLicense = Ini.ReadInt32("Licenses", "OneDayFishing", 10);
+            TwoDayLicense = Ini.ReadInt32("Licenses", "TwoDayFishing", 10);
+            NoLicense = Ini.ReadInt32("Licenses", "NoLicense", 20);
+            //LicenseStatuses
+            Expired = Ini.ReadInt32("Licenses", "Expired", 30);
+            Valid = Ini.ReadInt32("Licenses", "Valid", 70);
+
             //Vehicles
             _normalVehicles = Ini.ReadString("Vehicles", "NormalVehicles", null);
             NormalVehicles = _normalVehicles.Split(':');

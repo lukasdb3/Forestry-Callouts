@@ -166,7 +166,10 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     _notfiSentCount = 0;
                     _firstBlip = true;
                 }
-                else _pauseTimer = true;
+                else
+                {
+                    _pauseTimer = true;
+                }
             }
             
             if (!_animalFound && Game.LocalPlayer.Character.DistanceTo(_animal) <= 10f)

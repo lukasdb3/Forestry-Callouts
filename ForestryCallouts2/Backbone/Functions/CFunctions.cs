@@ -93,10 +93,12 @@ namespace ForestryCallouts2.Backbone.Functions
                 Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~FORESTRY CALLOUTS WARNING",
                     "~g~CALLSIGN INVALID", 
                     "One or more of the following is invalid, division, unitType, beat. Please check rage log for more info!");
+                Game.Console.Print("----------------------------------------------------------------------------------------------------------");
                 Game.Console.Print("!!! ERROR !!! - Forestry Callouts Callsign Error");
                 Game.Console.Print("A part of, or all, of your callsign is invalid. Please check the readme on how to configure the callsign!");
                 Game.Console.Print("ERROR ~ "+e);
                 Game.Console.Print("Callsign set to 1-LINCOLN-18");
+                Game.Console.Print("----------------------------------------------------------------------------------------------------------");
                 return "GP_DIVISION_1 GP_UT_LINCOLN GP_BEAT_18";
             }
         }
