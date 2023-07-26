@@ -78,15 +78,14 @@ namespace ForestryCallouts2.Backbone.Functions
             string[] unitTypes = { "ADAM", "BOY", "CHARLES", "DAVID", "EDWARD", "FRANK", "GEORGE", "HENRY", "HUNDRED", "IDA", "JOHN", "KING", "LINCOLN", "MARY", "NORA", "OCEAN", "OH", "PAUL", "QUEEN", "ROBERT", "SAM", "TOM", "UNION", "VICTOR", "WILLIAM", "XRAY", "YOUNG", "ZEBRA"};
             string[] beats = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12","13", "14", "15", "16", "17", "18","19", "20", "21", "22", "23", "24","30", "40", "50", "60", "70", "80","90", "100"};
             var split = callsign.Split('-');
-
             try
             {
-                var division = split[1];
-                var unitType = split[2];
-                var beat = split[3];
-                if (divs.TakeWhile(div => div != division).Any()) throw new ArgumentException("division is not valid");
-                if (unitTypes.TakeWhile(unit => unit != unitType).Any()) throw new ArgumentException("unit not valid");
-                if (beats.TakeWhile(beet => beet != beat).Any()) throw new ArgumentException("beat is invalid");
+                var division = split[0];
+                var unitType = split[1];
+                var beat = split[2];
+                if (!divs.Contains(division)) throw new ArgumentException("division is not valid");
+                if (!unitTypes.Contains(unitType)) throw new ArgumentException("unitType is not valid");
+                if (!beats.Contains(beat)) throw new ArgumentException("beat is not valid");
                 return "GP_DIVISION_"+division+" GP_UT_"+unitType+" GP_BEAT_"+beat;
             }
             catch (Exception e)
