@@ -15,8 +15,7 @@ Editing Callsign
  * 18 is the beat
 
 Division can be 1-10
-Unit Type can be: "ADAM", "BOY", "CHARLES", "DAVID", "EDWARD", "FRANK", "GEORGE", "HENRY", "HUNDRED", "IDA", "JOHN", "KING", "LINCOLN", "MARY", "NORA", "OCEAN", "OH", "PAUL", "QUEEN", "ROBERT", "SAM", "TOM", "UNION", 
-"VICTOR", "WILLIAM", "XRAY", "YOUNG", "ZEBRA"
+Unit Type can be: "ADAM", "BOY", "CHARLES", "DAVID", "EDWARD", "FRANK", "GEORGE", "HENRY", "HUNDRED", "IDA", "JOHN", "KING", "LINCOLN", "MARY", "NORA", "OCEAN", "OH", "PAUL", "QUEEN", "ROBERT", "SAM", "TOM", "UNION", "VICTOR", "WILLIAM", "XRAY", "YOUNG", "ZEBRA"
 Beat can be: 1-24, 30, 40, 50, 60, 70, 80, 90, 100
 
 The above can all be edited in the INI file.

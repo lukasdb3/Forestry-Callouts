@@ -12,14 +12,14 @@
 
     <ItemGroup>
       <Reference Include="CalloutInterfaceAPI">
-        <HintPath>..\..\..\Coding Refrences\CalloutInterfaceAPI.dll</HintPath>
+        <HintPath>..\..\..\CodingCrap\Refrences\CalloutInterfaceAPI.dll</HintPath>
       </Reference>
       <Reference Include="LSPD First Response">
-        <HintPath>..\..\..\Coding Refrences\LSPD First Response.dll</HintPath>
+        <HintPath>..\..\..\CodingCrap\Refrences\LSPD First Response.dll</HintPath>
       </Reference>
       <Reference Include="Microsoft.CSharp" />
       <Reference Include="RAGENativeUI">
-        <HintPath>..\..\..\Coding Refrences\RAGENativeUI.dll</HintPath>
+        <HintPath>..\..\..\CodingCrap\Refrences\RAGENativeUI.dll</HintPath>
       </Reference>
       <Reference Include="RagePluginHookLauncher">
         <HintPath>..\..\..\CodingCrap\Refrences\RAGEPluginHook.exe</HintPath>

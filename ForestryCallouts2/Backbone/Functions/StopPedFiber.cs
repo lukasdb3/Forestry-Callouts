@@ -20,6 +20,7 @@ internal static class StopPedFiber
     private static Ped _cPed;
     private static Persona _persona;
     private static Random _rand;
+    private static License _pedsLicense;
 
     internal static void Main()
     {
@@ -48,17 +49,19 @@ internal static class StopPedFiber
 
     internal static void OnAskForFishingLicence()
     {
-        var pedsLicense = License.ChooseTypeOfLicense();
-        if (pedsLicense.Type != "null")
+        if (License.FishingDict.ContainsKey(_persona.FullName))
         {
-            pedsLicense = License.CreateLicence(_persona, pedsLicense);
+            foreach (var t in License.FishingDict)
+            {
+                if (t.Key == _persona.FullName) _pedsLicense = t.Value;
+            }
         }
         else
         {
-            Game.DisplayNotification("Ped does not have a fishing license.");
-            return;
+            _pedsLicense = License.ChooseTypeOfLicense();
+            _pedsLicense = License.CreateLicence(_persona, _pedsLicense);
         }
-        License.DisplayLicenceInfo(pedsLicense);
+        License.DisplayLicenceInfo(_pedsLicense);
         
     }
 

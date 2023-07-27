@@ -20,7 +20,7 @@ namespace ForestryCallouts2.Backbone;
 
 public class License
 {
-    internal string Type { get; private set; }
+    internal string Type { get; set; }
     private int Chance { get; set; }
     internal string HolderName { get; private set; }
     internal string DateOfBirth { get; private set; }
@@ -30,7 +30,7 @@ public class License
 
     private static Random _rnd = new();
 
-    private static Dictionary<string, License> _fishingDict = new();
+    internal static Dictionary<string, License> FishingDict = new();
 
     internal static License ChooseTypeOfLicense()
     {
@@ -67,25 +67,20 @@ public class License
 
     internal static License CreateLicence(in Persona persona, in License license)
     {
-        if (_fishingDict.ContainsKey(persona.FullName))
+        //Create a new license for the ped
+        license.HolderName = persona.FullName;
+        if (license.Type != "null")
         {
-            // Continue to displaying license, ped already has a license in dictionary
-            return license;
-        }
-        else
-        {
-            //Create a new license for the ped
-            license.HolderName = persona.FullName;
             license.DateOfBirth = persona.Birthday.ToShortDateString();
             license.HolderGender = persona.Gender.ToString();
             license.ExpDate = GetExpirationDate(license);
-
-            //Add ped as key and license as val to dict
-            _fishingDict.Add(license.HolderName, license);
-            return license;
         }
+
+        //Add ped as key and license as val to dict
+        FishingDict.Add(license.HolderName, license);
+        return license;
     }
-    
+
     private static DateTime GetExpirationDate(in License license)
     {
         var rawLicenseStatus = GetLicenseStatus();
@@ -98,7 +93,7 @@ public class License
                 var maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day - 1);
                 return GetRandomDateBetween(minDate, maxDate);
             case "ResidentialFishingLicense" or "NonResidentialFishingLicense":
-                minDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day -1);
+                minDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day);
                 maxDate = new DateTime(sysDate.Year + 1, sysDate.Month, sysDate.Day);
                 return GetRandomDateBetween(minDate, maxDate);
             case "OneDayFishingLicense" when rawLicenseStatus.Status == "Expired":
@@ -171,10 +166,18 @@ public class License
 
     internal static void DisplayLicenceInfo(License license)
     {
-        Game.DisplayNotification("commonmenu", "mp_specitem_coke", GetNiceTypeString(license),
-            "~h~" + license.HolderName.ToUpper() + "",
-            "~y~DOB: ~w~" + license.DateOfBirth + " ~b~SEX: ~o~" + license.HolderGender + " ~g~EXPIRATION DATE:~w~ " +
-            license.ExpDate + "");
+        if (license.Type != "null")
+        {
+            Game.DisplayNotification("commonmenu", "mp_specitem_coke", GetNiceTypeString(license),
+                "~h~" + license.HolderName.ToUpper() + "",
+                "~y~DOB: ~w~" + license.DateOfBirth + " ~b~SEX: ~o~" + license.HolderGender.ToUpper() +
+                " ~g~EXPIRATION DATE:~w~ " +
+                license.ExpDate.ToShortDateString() + "");
+        }
+        else
+        {
+            Game.DisplayNotification(license.HolderName + " does not have a fishing license.");
+        }
     }
     
     private static string GetNiceTypeString(License license)
