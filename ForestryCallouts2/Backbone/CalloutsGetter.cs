@@ -20,6 +20,7 @@ namespace ForestryCallouts2.Backbone
         private static readonly List<string> RandomCalloutCache = new();
         internal static readonly List<string> ForestryCalloutsCalls = new();
         internal static readonly List<string> ForestryCalloutsWaterCalls = new();
+        internal static bool ExceptionCatched = false;
         private static int _callCount;
 
         internal static bool IsCalloutEnabledInIni(string assemName, string callout)

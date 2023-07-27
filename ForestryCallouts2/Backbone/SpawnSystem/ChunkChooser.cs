@@ -19,14 +19,22 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
         private static  Vector3 _closestChunk; //Closet land chunk to player
         private static string _curcall;
         internal static bool StoppingCurrentCall;
-        
         #region Common
         internal static Vector3 FinalSpawnpoint;
         internal static float FinalHeading;
         #endregion
-
         #region AnimalOnRoadwayCall
         internal static Vector3 SafeOffroadPos;
+        #endregion
+        #region DeadBody
+        internal static Vector3 DeadBodySpawn;
+        internal static Vector3 ReporterSpawn;
+        internal static float ReporterHeading;
+        #endregion
+        #region IllegalCampFire
+        internal static Vector3 SuspectSpawn;
+        internal static float SuspectHeading;
+        internal static Vector3 FireSpawn;
         #endregion
 
         internal static void Main(in string currentCallout)
@@ -57,7 +65,10 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
                     CalloutSpawnSorter();
                 }   
             }
-            else CalloutSpawnSorter();
+            else
+            {
+                CalloutSpawnSorter();
+            }
         }
 
         internal static void CalloutSpawnSorter()
@@ -78,38 +89,78 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
 
         private static void PaletoBayForest(in string currentCallout)
         {
-            if (currentCallout is "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit" or "DangerousPerson") 
-                Common.PaletoBayForest(out FinalSpawnpoint, out FinalHeading);
-            if (currentCallout is "LoggerTruckPursuit")
-                LoggerTruckSpawns.PaletoBayForest(out FinalSpawnpoint, out FinalHeading);
-            if (currentCallout is "DeadAnimalOnRoadway")
-                DeadAnimalSpawnpoints.PaletoBayForest(out FinalSpawnpoint, out FinalHeading);
-            if (currentCallout is "AnimalOnRoadway")
-                AnimalOnRoadwaySpawnpoints.PaletoBayForest(out FinalSpawnpoint, out FinalHeading, out SafeOffroadPos);
+            switch (currentCallout)
+            {
+                case "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit" or "DangerousPerson":
+                    Common.PaletoBayForest(out FinalSpawnpoint, out FinalHeading);
+                    break;
+                case "LoggerTruckPursuit":
+                    LoggerTruckSpawns.PaletoBayForest(out FinalSpawnpoint, out FinalHeading);
+                    break;
+                case "DeadAnimalOnRoadway":
+                    DeadAnimalSpawnpoints.PaletoBayForest(out FinalSpawnpoint, out FinalHeading);
+                    break;
+                case "AnimalOnRoadway":
+                    AnimalOnRoadwaySpawnpoints.PaletoBayForest(out FinalSpawnpoint, out FinalHeading, out SafeOffroadPos);
+                    break;
+                case "DeadBody":
+                    DeadBodySpawnpoints.PaletoBayForest(out DeadBodySpawn, out ReporterSpawn, out ReporterHeading);
+                    break;
+                case "IllegalCampFire":
+                    IllegalCampFireSpawnpoints.PaletoBayForest(out SuspectSpawn, out SuspectHeading, out FireSpawn);
+                    break;
+
+            }
         }
         
         private static void AltruistCampArea(in string currentCallout)
         {
-            if (currentCallout is "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit" or "DangerousPerson") 
-                Common.AltruistCampArea(out FinalSpawnpoint, out FinalHeading);
-            if (currentCallout is "LoggerTruckPursuit")
-                LoggerTruckSpawns.AltruistCampArea(out FinalSpawnpoint, out FinalHeading);
-            if (currentCallout is "DeadAnimalOnRoadway")
-                DeadAnimalSpawnpoints.AltruistCampArea(out FinalSpawnpoint, out FinalHeading);
-            if (currentCallout is "AnimalOnRoadway")
-                AnimalOnRoadwaySpawnpoints.AltruistCampArea(out FinalSpawnpoint, out FinalHeading, out SafeOffroadPos);
+            switch (currentCallout)
+            {
+                case "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit" or "DangerousPerson":
+                    Common.AltruistCampArea(out FinalSpawnpoint, out FinalHeading);
+                    break;
+                case "LoggerTruckPursuit":
+                    LoggerTruckSpawns.AltruistCampArea(out FinalSpawnpoint, out FinalHeading);
+                    break;
+                case "DeadAnimalOnRoadway":
+                    DeadAnimalSpawnpoints.AltruistCampArea(out FinalSpawnpoint, out FinalHeading);
+                    break;
+                case "AnimalOnRoadway":
+                    AnimalOnRoadwaySpawnpoints.AltruistCampArea(out FinalSpawnpoint, out FinalHeading, out SafeOffroadPos);
+                    break;
+                case "DeadBody":
+                    DeadBodySpawnpoints.AltruistCampArea(out DeadBodySpawn, out ReporterSpawn, out ReporterHeading);
+                    break;
+                case "IllegalCampFire":
+                    IllegalCampFireSpawnpoints.AltruistCampArea(out SuspectSpawn, out SuspectHeading, out FireSpawn);
+                    break;
+            }
         }
         
         private static void RatonCanyon(in string currentCallout)
         {
-            if (currentCallout is "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit" or "DangerousPerson") 
-                Common.RatonCanyon(out FinalSpawnpoint, out FinalHeading);
-            if (currentCallout is "LoggerTruckPursuit")
-                LoggerTruckSpawns.RatonCanyon(out FinalSpawnpoint, out FinalHeading);
-            if (currentCallout is "DeadAnimalOnRoadway")
-                DeadAnimalSpawnpoints.RatonCanyon(out FinalSpawnpoint, out FinalHeading);
-            if (currentCallout is "AnimalOnRoadway")
-                AnimalOnRoadwaySpawnpoints.RatonCanyon(out FinalSpawnpoint, out FinalHeading, out SafeOffroadPos);
+            switch (currentCallout)
+            {
+                case "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit" or "DangerousPerson":
+                    Common.RatonCanyon(out FinalSpawnpoint, out FinalHeading);
+                    break;
+                case "LoggerTruckPursuit":
+                    LoggerTruckSpawns.RatonCanyon(out FinalSpawnpoint, out FinalHeading);
+                    break;
+                case "DeadAnimalOnRoadway":
+                    DeadAnimalSpawnpoints.RatonCanyon(out FinalSpawnpoint, out FinalHeading);
+                    break;
+                case "AnimalOnRoadway":
+                    AnimalOnRoadwaySpawnpoints.RatonCanyon(out FinalSpawnpoint, out FinalHeading, out SafeOffroadPos);
+                    break;
+                case "DeadBody":
+                    DeadBodySpawnpoints.RatonCanyon(out DeadBodySpawn, out ReporterSpawn, out ReporterHeading);
+                    break;
+                case "IllegalCampFire":
+                    IllegalCampFireSpawnpoints.RatonCanyon(out SuspectSpawn, out SuspectHeading, out FireSpawn);
+                    break;
+            }
         }
         
         /*private static void Chunk4(in string currentCallout)
@@ -124,14 +175,14 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
 
         private static void PaletoBayCoast(in string currentCallout)
         {
-            if (currentCallout is "DeadBodyWater")
+            switch (currentCallout)
             {
-                DeadBodyWater.PaletoBayCoast(out FinalSpawnpoint);
-            }
-
-            if (currentCallout is "BoatPursuit")
-            {
-                WaterCommon.PaletoBayCoast(out FinalSpawnpoint, out FinalHeading);
+                case "DeadBodyWater":
+                    DeadBodyWater.PaletoBayCoast(out FinalSpawnpoint);
+                    break;
+                case "BoatPursuit":
+                    WaterCommon.PaletoBayCoast(out FinalSpawnpoint, out FinalHeading);
+                    break;
             }
         }
     }

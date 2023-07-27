@@ -43,6 +43,7 @@ namespace ForestryCallouts2.Backbone.Menu
         internal static UIMenuListItem AtvPursuit;
         internal static UIMenuListItem DangerousPerson;
         internal static UIMenuListItem DeadAnimalOnRoadway;
+        internal static UIMenuListItem DeadBody;
         internal static UIMenuListItem AnimalOnRoadway;
         internal static UIMenuListItem DirtBikePursuit;
         internal static UIMenuListItem HighSpeedPursuit;
@@ -94,6 +95,7 @@ namespace ForestryCallouts2.Backbone.Menu
             AtvPursuit = new UIMenuListItem("AtvPursuit", "", IniSettings.AtvPursuit.ToString().ToLower(), (IniSettings.AtvPursuit) ? "false" : "true");
             DangerousPerson = new UIMenuListItem("DangerousPerson", "", IniSettings.DangerousPerson.ToString().ToLower(), (IniSettings.DangerousPerson) ? "false" : "true");
             DeadAnimalOnRoadway = new UIMenuListItem("DeadAnimalRoadway", "", IniSettings.DeadAnimalOnRoadway.ToString().ToLower(), (IniSettings.DeadAnimalOnRoadway) ? "false" : "true");
+            DeadBody = new UIMenuListItem("DeadBody", "", IniSettings.DeadBody.ToString().ToLower(), (IniSettings.DeadBody) ? "false" : "true");
             AnimalOnRoadway = new UIMenuListItem("AnimalOnRoadway", "", IniSettings.AnimalOnRoadway.ToString().ToLower(), (IniSettings.AnimalOnRoadway) ? "false" : "true");
             DirtBikePursuit = new UIMenuListItem("DirtBikePursuit", "",IniSettings.DirtBikePursuit.ToString().ToLower(), (IniSettings.DirtBikePursuit) ? "false" : "true");
             HighSpeedPursuit = new UIMenuListItem("HighSpeedPursuit", "", IniSettings.HighSpeedPursuit.ToString().ToLower(), (IniSettings.HighSpeedPursuit) ? "false" : "true");

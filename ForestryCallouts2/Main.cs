@@ -56,16 +56,18 @@ namespace ForestryCallouts2
         {
             if (!IniSettings.WaterCallouts)
             {
-                if (IniSettings.IntoxPerson) Functions.RegisterCallout(typeof(Callouts.LandCallouts.IntoxicatedPerson));
-                if (IniSettings.RegularPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.RegularPursuit));
                 if (IniSettings.AnimalAttack) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AnimalAttack));
-                if (IniSettings.DeadAnimalOnRoadway) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DeadAnimalOnRoadway));
+                if (IniSettings.AnimalAttack) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AnimalAttack2));
                 if (IniSettings.AnimalOnRoadway) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AnimalOnRoadway));
-                if (IniSettings.DangerousPerson) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DangerousPerson));
-                if (IniSettings.DirtBikePursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DirtBikePursuit));
                 if (IniSettings.AtvPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AtvPursuit));
-                if (IniSettings.HighSpeedPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.HighSpeedPursuit));
+                if (IniSettings.DangerousPerson) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DangerousPerson));
+                if (IniSettings.DeadAnimalOnRoadway) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DeadAnimalOnRoadway));
+                if (IniSettings.DeadBody) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DeadBody));
+                if (IniSettings.DirtBikePursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DirtBikePursuit));
+                if (IniSettings.HighSpeedPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.HighSpeedPursuit)); 
+                if (IniSettings.IntoxPerson) Functions.RegisterCallout(typeof(Callouts.LandCallouts.IntoxicatedPerson));
                 if (IniSettings.LoggerTruckPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.LoggerTruckPursuit));
+                if (IniSettings.RegularPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.RegularPursuit));
             }
             else
             {

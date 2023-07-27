@@ -40,7 +40,7 @@ internal static class StopPedFiber
                     _cPed.BlockPermanentEvents = true;
                     _cPed.Tasks.StandStill(-1);
                     _cPed.Heading = Game.LocalPlayer.Character.Heading + 180f;
-                    GameFiber.Wait(1000);
+                    GameFiber.Wait(700);
                     StopPedMenu.LicenseMenu.Visible = true;
                 }
             }
@@ -58,7 +58,7 @@ internal static class StopPedFiber
         }
         else
         {
-            _pedsLicense = License.ChooseTypeOfLicense();
+            _pedsLicense = License.ChooseTypeOfLicense("Fishing");
             _pedsLicense = License.CreateLicence(_persona, _pedsLicense);
         }
         License.DisplayLicenceInfo(_pedsLicense);
@@ -67,7 +67,19 @@ internal static class StopPedFiber
 
     internal static void OnAskForHuntingLicence()
     {
-        Game.DisplayNotification("Not implemented yet.");
+        if (License.HuntingDict.ContainsKey(_persona.FullName))
+        {
+            foreach (var t in License.FishingDict)
+            {
+                if (t.Key == _persona.FullName) _pedsLicense = t.Value;
+            }
+        }
+        else
+        {
+            _pedsLicense = License.ChooseTypeOfLicense("Hunting");
+            _pedsLicense = License.CreateLicence(_persona, _pedsLicense);
+        }
+        License.DisplayLicenceInfo(_pedsLicense);
     }
 
     internal static void Dismiss()

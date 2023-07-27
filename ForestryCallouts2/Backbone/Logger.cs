@@ -52,7 +52,6 @@ namespace ForestryCallouts2.Backbone
             Game.Console.Print("Checking Forestry Callouts version..");
             Game.Console.Print("Forestry Callouts update available: "+VersionChecker.IsUpdateAvailable()+"");
             Game.Console.Print("Version: "+VersionChecker.ReceivedData+"");
-            Game.Console.Print("Running Plugin Checks...");
             Game.Console.Print("Caching players callouts..");
             CalloutsGetter.CacheCallouts();
             Game.Console.Print("Initializing menus..");

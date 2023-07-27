@@ -98,7 +98,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         public override void Process()
         {
-            //If the player is 100 or closer delete route and blip
+            //If the player is 200 or closer delete route and blip
             if (_victim)
             {
                 if (Game.LocalPlayer.Character.DistanceTo(_victim) <= 200f && !_onScene)
@@ -187,7 +187,13 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             {
                 if (_animal.IsAlive)
                 {
-                    if (!_animalFound)
+                    if (_animal.DistanceTo(Game.LocalPlayer.Character) <= 25f && Game.LocalPlayer.Character.IsOnFoot)
+                    {
+                        _animal.RelationshipGroup.SetRelationshipWith(Game.LocalPlayer.Character.RelationshipGroup, Relationship.Hate);
+                        _animal.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                    }
+                    
+                    if (_animalFound)
                     {
                         if (_firstBlip && _timer >= 1 || _timer >= 1250)
                         {
@@ -214,18 +220,8 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                             _animalBlip.IsRouteEnabled = true;
                             _maxNotfiSent = true;
                         }
-                    }
-
-                    if (_animalFound && Game.LocalPlayer.Character.IsOnFoot && Game.LocalPlayer.Character.DistanceTo(_animal) <= 5f && !_playerCloseToAnimal)
-                    {
-                        _playerCloseToAnimal = true;
-                        _animal.RelationshipGroup.SetRelationshipWith(RelationshipGroup.SecurityGuard, Relationship.Neutral);
-                        _animal.Tasks.Clear();
-                        Rage.Native.NativeFunction.Natives.SET_PLAYER_ANGRY(_animal, true);
-                        _animal.Tasks.FightAgainst(Game.LocalPlayer.Character, -1);
-                        Logger.CallDebugLog(this, "Animal fighting player");
-                    }
                         
+                    }
                 }
                 else
                 {

@@ -15,7 +15,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
             Logger.DebugLog("LOGGERTRUCK SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayForest chunk");
             spawnpoint = default;
             heading = 0f;
-            int var = new Random().Next(1, 10);
+            var var = new Random().Next(1, 10);
             Logger.DebugLog("CASE", ""+var+"");
             switch (var)
             {
@@ -63,7 +63,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
             Logger.DebugLog("LOGGERTRUCK SPAWNPOINT CHOOSER", "Choosing spawnpoint in AltruistCampArea chunk");
             spawnpoint = default;
             heading = 0f;
-            int var = new Random().Next(1, 8);
+            var var = new Random().Next(1, 8);
             Logger.DebugLog("CASE", "" + var + "");
             switch (var)
             {
@@ -103,7 +103,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
             Logger.DebugLog("LOGGERTRUCK SPAWNPOINT CHOOSER", "Choosing spawnpoint in RatonCanyon chunk");
             spawnpoint = default;
             heading = 0f;
-            int var = new Random().Next(1, 11);
+            var var = new Random().Next(1, 11);
             Logger.DebugLog("CASE", ""+var+"");
             switch (var)
             {

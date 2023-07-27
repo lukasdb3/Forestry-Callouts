@@ -16,7 +16,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
             spawnpoint = default;
             heading = 0f;
             safePos = default;
-            int var = new Random().Next(1, 3);
+            var var = new Random().Next(1, 3);
             Logger.DebugLog("CASE", ""+var+"");
             switch (var)
             {
@@ -34,7 +34,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
             spawnpoint = default;
             heading = 0f;
             safePos = default;
-            int var = new Random().Next(1, 2);
+            var var = new Random().Next(1, 2);
             Logger.DebugLog("CASE", ""+var+"");
             switch (var)
             {
@@ -52,7 +52,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
             spawnpoint = default;
             heading = 0f;
             safePos = default;
-            int var = new Random().Next(1, 13);
+            var var = new Random().Next(1, 13);
             Logger.DebugLog("CASE", ""+var+"");
             switch (var)
             {

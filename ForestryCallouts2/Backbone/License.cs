@@ -31,14 +31,25 @@ public class License
     private static Random _rnd = new();
 
     internal static Dictionary<string, License> FishingDict = new();
+    internal static Dictionary<string, License> HuntingDict = new();
 
-    internal static License ChooseTypeOfLicense()
+    internal static License ChooseTypeOfLicense(string sender)
     {
         var licenseList = new List<License>() { };
-        licenseList.Add(new License() { Type = "ResidentialFishingLicense", Chance = IniSettings.ResidentLicense });
-        licenseList.Add(new License() { Type = "NonResidentialFishingLicense", Chance = IniSettings.NonResidentLicense });
-        licenseList.Add(new License() { Type = "OneDayFishingLicense", Chance = IniSettings.OneDayLicense });
-        licenseList.Add(new License() { Type = "TwoDayFishingLicense", Chance = IniSettings.TwoDayLicense });
+        if (sender == "Fishing")
+        {
+            licenseList.Add(new License() { Type = "ResidentialFishingLicense", Chance = IniSettings.ResidentLicense });
+            licenseList.Add(new License() { Type = "NonResidentialFishingLicense", Chance = IniSettings.NonResidentLicense });
+            licenseList.Add(new License() { Type = "OneDayFishingLicense", Chance = IniSettings.OneDayLicense });
+            licenseList.Add(new License() { Type = "TwoDayFishingLicense", Chance = IniSettings.TwoDayLicense });
+        }
+        else
+        {
+            licenseList.Add(new License() { Type = "ResidentialHuntingLicense", Chance = IniSettings.ResidentLicense });
+            licenseList.Add(new License() { Type = "NonResidentialHuntingLicense", Chance = IniSettings.NonResidentLicense });
+            licenseList.Add(new License() { Type = "OneDayHuntingLicense", Chance = IniSettings.OneDayLicense });
+            licenseList.Add(new License() { Type = "TwoDayHuntingLicense", Chance = IniSettings.TwoDayLicense });
+        }
         licenseList.Add(new License() { Type = "null", Chance = IniSettings.NoLicense });
         return SelectLicense(licenseList);
     }
@@ -77,7 +88,8 @@ public class License
         }
 
         //Add ped as key and license as val to dict
-        FishingDict.Add(license.HolderName, license);
+        if (license.Type.Contains("Fishing")) FishingDict.Add(license.HolderName, license);
+        else HuntingDict.Add(license.HolderName, license);
         return license;
     }
 
@@ -108,7 +120,29 @@ public class License
                 return GetRandomDateBetween(minDate, maxDate);
             case "TwoDayFishingLicense":
                 minDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day);
-                maxDate = new DateTime(sysDate.Year + 1, sysDate.Month, sysDate.Day +2);
+                maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day +2);
+                return GetRandomDateBetween(minDate, maxDate);
+            case "ResidentialHuntingLicense" or "NonResidentialHuntingLicense" when rawLicenseStatus.Status == "Expired":
+                minDate = new DateTime(sysDate.Year - 1, sysDate.Month, sysDate.Day);
+                maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day - 1);
+                return GetRandomDateBetween(minDate, maxDate);
+            case "ResidentialHuntingLicense" or "NonResidentialHuntingLicense":
+                minDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day);
+                maxDate = new DateTime(sysDate.Year + 1, sysDate.Month, sysDate.Day);
+                return GetRandomDateBetween(minDate, maxDate);
+            case "OneDayHuntingLicense" when rawLicenseStatus.Status == "Expired":
+                minDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day -7);
+                maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day -1);
+                return GetRandomDateBetween(minDate, maxDate);
+            case "OneDayHuntingLicense":
+                return sysDate;
+            case "TwoDayHuntingLicense" when rawLicenseStatus.Status == "Expired":
+                minDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day -7);
+                maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day -1);
+                return GetRandomDateBetween(minDate, maxDate);
+            case "TwoDayHuntingLicense":
+                minDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day);
+                maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day +2);
                 return GetRandomDateBetween(minDate, maxDate);
         }
         return sysDate;
@@ -166,6 +200,8 @@ public class License
 
     internal static void DisplayLicenceInfo(License license)
     {
+        var sender = "";
+        sender = license.Type.Contains("Fishing") ? "fishing" : "hunting";
         if (license.Type != "null")
         {
             Game.DisplayNotification("commonmenu", "mp_specitem_coke", GetNiceTypeString(license),
@@ -176,24 +212,24 @@ public class License
         }
         else
         {
-            Game.DisplayNotification(license.HolderName + " does not have a fishing license.");
+            Game.DisplayNotification(license.HolderName + " does not have a "+sender+" license.");
         }
     }
     
     private static string GetNiceTypeString(License license)
     {
-        switch (license.Type)
+        return license.Type switch
         {
-            case "ResidentialFishingLicense":
-                return "RESIDENT FISHING LICENCE";
-            case "NonResidentialFishingLicense":
-                return "TRAVELER FISHING LICENCE";
-            case "OneDayFishingLicense":
-                return "ONE DAY FISHING LICENCE";
-            case "TwoDayFishingLicense":
-                return "TWO DAY FISHING LICENSE";
-        }
-        return null;
+            "ResidentialFishingLicense" => "RESIDENT FISHING LICENCE",
+            "NonResidentialFishingLicense" => "NON RESIDENT FISHING LICENSE",
+            "OneDayFishingLicense" => "ONE DAY FISHING LICENCE",
+            "TwoDayFishingLicense" => "TWO DAY FISHING LICENSE",
+            "ResidentialHuntingLicense" => "RESIDENT HUNTING LICENCE",
+            "NonResidentialHuntingLicense" => "NON RESIDENT HUNTING LICENCE",
+            "OneDayHuntingLicense" => "ONE DAY HUNTING LICENCE",
+            "TwoDayHuntingLicense" => "TWO DAY HUNTING LICENSE",
+            _ => null
+        };
     }
 }
 
