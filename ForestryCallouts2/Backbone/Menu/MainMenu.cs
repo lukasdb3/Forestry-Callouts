@@ -90,7 +90,7 @@ namespace ForestryCallouts2.Backbone.Menu
             EnableBinoculars = new UIMenuListItem("EnableBinoculars", "Disables And Enables Binoculars", IniSettings.BinocularsEnabled.ToString().ToLower(), (IniSettings.BinocularsEnabled) ? "false" : "true");
             BinocularsSense = new UIMenuNumericScrollerItem<int>("BinocularsSensitivity", "Binoculars Horizontal Sensitivity",1, 10, 1);
             BinocularsSense.Value = IniSettings.BinocularsSensitivity;
-            BinocularsImage = new UIMenuNumericScrollerItem<int>("BinocularsImage", "Chooses The Texture Binoculars Uses", 1, 2, 1);
+            BinocularsImage = new UIMenuNumericScrollerItem<int>("BinocularsImage", "Chooses The Texture Binoculars Uses", 1, 6, 1);
             BinocularsImage.Value = int.Parse(IniSettings.BinocularsImage);
             //Callouts
             AnimalAttack = new UIMenuListItem("AnimalAttack", "",IniSettings.AnimalAttack.ToString().ToLower(), (IniSettings.AnimalAttack) ? "false" : "true");
