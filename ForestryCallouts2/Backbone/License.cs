@@ -105,13 +105,11 @@ public class License
                 var maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day - 1);
                 return GetRandomDateBetween(minDate, maxDate);
             case "ResidentialFishingLicense" or "NonResidentialFishingLicense":
-                minDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day);
+                minDate = sysDate;
                 maxDate = new DateTime(sysDate.Year + 1, sysDate.Month, sysDate.Day);
                 return GetRandomDateBetween(minDate, maxDate);
             case "OneDayFishingLicense" when rawLicenseStatus.Status == "Expired":
-                minDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day -7);
-                maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day -1);
-                return GetRandomDateBetween(minDate, maxDate);
+                return new DateTime(sysDate.Year, sysDate.Month, sysDate.Day - 1);
             case "OneDayFishingLicense":
                 return sysDate;
             case "TwoDayFishingLicense" when rawLicenseStatus.Status == "Expired":
@@ -119,21 +117,19 @@ public class License
                 maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day -1);
                 return GetRandomDateBetween(minDate, maxDate);
             case "TwoDayFishingLicense":
-                minDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day);
-                maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day +2);
+                minDate = sysDate;
+                maxDate = new DateTime(sysDate.Year, sysDate.Month+1, sysDate.Day);
                 return GetRandomDateBetween(minDate, maxDate);
             case "ResidentialHuntingLicense" or "NonResidentialHuntingLicense" when rawLicenseStatus.Status == "Expired":
                 minDate = new DateTime(sysDate.Year - 1, sysDate.Month, sysDate.Day);
                 maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day - 1);
                 return GetRandomDateBetween(minDate, maxDate);
             case "ResidentialHuntingLicense" or "NonResidentialHuntingLicense":
-                minDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day);
+                minDate = sysDate;
                 maxDate = new DateTime(sysDate.Year + 1, sysDate.Month, sysDate.Day);
                 return GetRandomDateBetween(minDate, maxDate);
             case "OneDayHuntingLicense" when rawLicenseStatus.Status == "Expired":
-                minDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day -7);
-                maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day -1);
-                return GetRandomDateBetween(minDate, maxDate);
+                return new DateTime(sysDate.Year, sysDate.Month, sysDate.Day - 1);
             case "OneDayHuntingLicense":
                 return sysDate;
             case "TwoDayHuntingLicense" when rawLicenseStatus.Status == "Expired":
@@ -141,8 +137,8 @@ public class License
                 maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day -1);
                 return GetRandomDateBetween(minDate, maxDate);
             case "TwoDayHuntingLicense":
-                minDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day);
-                maxDate = new DateTime(sysDate.Year, sysDate.Month, sysDate.Day +2);
+                minDate = sysDate;
+                maxDate = new DateTime(sysDate.Year, sysDate.Month+1, sysDate.Day);
                 return GetRandomDateBetween(minDate, maxDate);
         }
         return sysDate;

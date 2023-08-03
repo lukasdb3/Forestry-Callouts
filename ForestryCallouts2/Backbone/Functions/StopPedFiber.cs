@@ -19,7 +19,6 @@ internal static class StopPedFiber
     internal static GameFiber Fiber;
     private static Ped _cPed;
     private static Persona _persona;
-    private static Random _rand;
     private static License _pedsLicense;
 
     internal static void Main()

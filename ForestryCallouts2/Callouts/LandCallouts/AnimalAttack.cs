@@ -62,8 +62,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             //Gets spawnpoints from closest chunk
             ChunkChooser.Main(in CurCall);
             _victimSpawn = ChunkChooser.FinalSpawnpoint;
-            _victimHeading = ChunkChooser.FinalHeading;
-            
+
             //Normal callout details
             ShowCalloutAreaBlipBeforeAccepting(_victimSpawn, 30f);
             CalloutMessage = ("~g~Animal Attack");
@@ -84,7 +83,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         {
             Logger.CallDebugLog(this, "Callout accepted");
             //Spawn victim
-            CFunctions.SpawnHikerPed(out _victim, _victimSpawn, _victimHeading);
+            CFunctions.SpawnHikerPed(out _victim, _victimSpawn, _rand.Next(1, 361));
             _victimBlip = _victim.AttachBlip();
             _victimBlip.EnableRoute(Color.Yellow);
             _victim.Health = 10;
@@ -98,6 +97,8 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         public override void Process()
         {
+            if (!_animal || !_victim) return;
+            
             //If the player is 200 or closer delete route and blip
             if (_victim)
             {
@@ -171,17 +172,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     _pauseTimer = true;
                 }
             }
-            
-            if (!_animalFound && Game.LocalPlayer.Character.DistanceTo(_animal) <= 10f)
-            {
-                Logger.CallDebugLog(this, "Animal found!");
-                _animalBlip = _animal.AttachBlip();
-                _animalBlip.Color = Color.Red;
-                _animalBlip.Scale = .7f;
-                if (_areaBlip) _areaBlip.Delete();
-                _animalFound = true;
-                if (_victimFound) _pauseTimer = true;
-            }
 
             if (_victimFound)
             {
@@ -193,7 +183,18 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                         _animal.Tasks.FightAgainst(Game.LocalPlayer.Character);
                     }
                     
-                    if (_animalFound)
+                    if (!_animalFound && Game.LocalPlayer.Character.DistanceTo(_animal) <= 10f)
+                    {
+                        Logger.CallDebugLog(this, "Animal found!");
+                        _animalBlip = _animal.AttachBlip();
+                        _animalBlip.Color = Color.Red;
+                        _animalBlip.Scale = .7f;
+                        if (_areaBlip) _areaBlip.Delete();
+                        _animalFound = true;
+                        if (_victimFound) _pauseTimer = true;
+                    }
+                    
+                    if (!_animalFound)
                     {
                         if (_firstBlip && _timer >= 1 || _timer >= 1250)
                         {

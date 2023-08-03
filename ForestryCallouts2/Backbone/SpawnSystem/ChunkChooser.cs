@@ -91,7 +91,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
         {
             switch (currentCallout)
             {
-                case "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit" or "DangerousPerson":
+                case "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack2" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit" or "DangerousPerson":
                     Common.PaletoBayForest(out FinalSpawnpoint, out FinalHeading);
                     break;
                 case "LoggerTruckPursuit":
@@ -109,6 +109,9 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
                 case "IllegalCampFire":
                     IllegalCampFireSpawnpoints.PaletoBayForest(out SuspectSpawn, out SuspectHeading, out FireSpawn);
                     break;
+                case "AnimalAttack":
+                    AnimalAttackSpawnpoints.PaletoBayForest(out FinalSpawnpoint);
+                    break;
 
             }
         }
@@ -117,7 +120,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
         {
             switch (currentCallout)
             {
-                case "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit" or "DangerousPerson":
+                case "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack2" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit" or "DangerousPerson":
                     Common.AltruistCampArea(out FinalSpawnpoint, out FinalHeading);
                     break;
                 case "LoggerTruckPursuit":
@@ -135,6 +138,9 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
                 case "IllegalCampFire":
                     IllegalCampFireSpawnpoints.AltruistCampArea(out SuspectSpawn, out SuspectHeading, out FireSpawn);
                     break;
+                case "AnimalAttack":
+                    AnimalAttackSpawnpoints.AltruistCampArea(out FinalSpawnpoint);
+                    break;
             }
         }
         
@@ -142,7 +148,7 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
         {
             switch (currentCallout)
             {
-                case "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit" or "DangerousPerson":
+                case "IntoxicatedPerson" or "RegularPursuit" or "AnimalAttack2" or "DirtBikePursuit" or "AtvPursuit" or "HighSpeedPursuit" or "DangerousPerson":
                     Common.RatonCanyon(out FinalSpawnpoint, out FinalHeading);
                     break;
                 case "LoggerTruckPursuit":
@@ -159,6 +165,9 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
                     break;
                 case "IllegalCampFire":
                     IllegalCampFireSpawnpoints.RatonCanyon(out SuspectSpawn, out SuspectHeading, out FireSpawn);
+                    break;
+                case "AnimalAttack":
+                    AnimalAttackSpawnpoints.RatonCanyon(out FinalSpawnpoint);
                     break;
             }
         }

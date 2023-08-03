@@ -92,7 +92,7 @@ namespace ForestryCallouts2.Backbone.Functions
                 {
                     GameFiber.Yield();
                     //If animal control is dead or player is dead destroy everything involved and return;
-                    if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier) || !_acPed.IsAlive || !Game.LocalPlayer.Character.IsAlive)
+                    if (!_acPed.IsAlive || !Game.LocalPlayer.Character.IsAlive)
                     {
                         _acPed.Tasks.Clear();
                         DestroyAnimalControl();

@@ -38,6 +38,7 @@ namespace ForestryCallouts2.Backbone.Menu
         //Binoculars
         internal static UIMenuListItem EnableBinoculars;
         internal static UIMenuNumericScrollerItem<int> BinocularsSense;
+        internal static UIMenuNumericScrollerItem<int> BinocularsImage;
         //Callouts
         internal static UIMenuListItem AnimalAttack;
         internal static UIMenuListItem AtvPursuit;
@@ -55,7 +56,6 @@ namespace ForestryCallouts2.Backbone.Menu
         internal static UIMenuListItem BoatPursuit;
         
         private static UIMenuItem _saveSettings;
-        private static UIMenuItem _reload;
 
         internal static void Initialize()
         {
@@ -90,6 +90,8 @@ namespace ForestryCallouts2.Backbone.Menu
             EnableBinoculars = new UIMenuListItem("EnableBinoculars", "Disables And Enables Binoculars", IniSettings.BinocularsEnabled.ToString().ToLower(), (IniSettings.BinocularsEnabled) ? "false" : "true");
             BinocularsSense = new UIMenuNumericScrollerItem<int>("BinocularsSensitivity", "Binoculars Horizontal Sensitivity",1, 10, 1);
             BinocularsSense.Value = IniSettings.BinocularsSensitivity;
+            BinocularsImage = new UIMenuNumericScrollerItem<int>("BinocularsImage", "Chooses The Texture Binoculars Uses", 1, 2, 1);
+            BinocularsImage.Value = int.Parse(IniSettings.BinocularsImage);
             //Callouts
             AnimalAttack = new UIMenuListItem("AnimalAttack", "",IniSettings.AnimalAttack.ToString().ToLower(), (IniSettings.AnimalAttack) ? "false" : "true");
             AtvPursuit = new UIMenuListItem("AtvPursuit", "", IniSettings.AtvPursuit.ToString().ToLower(), (IniSettings.AtvPursuit) ? "false" : "true");
@@ -107,9 +109,8 @@ namespace ForestryCallouts2.Backbone.Menu
             BoatPursuit = new UIMenuListItem("BoatPursuit", "", IniSettings.BoatPursuit.ToString().ToLower(), (IniSettings.BoatPursuit) ? "false" : "true");
             //Buttons for saving and reloading Ini
             _saveSettings = new UIMenuItem("~g~Save Settings", "~r~Required To Press If Settings Were Just Changed");
-            _reload = new UIMenuItem("~b~Reload", "Reloads Forestry Callouts Settings and AmbientEvents");
-            _settingsMenu.AddItems(DebugLogs ,SearchAreaBlipsMax, MaxDistance, MinCalloutDistance, EnableBinoculars, BinocularsSense, IntoxicatedPerson, AnimalAttack, AtvPursuit, DangerousPerson, DeadAnimalOnRoadway,
-                DirtBikePursuit, HighSpeedPursuit, IntoxicatedPerson, LoggerTruckPursuit, RegularPursuit, _saveSettings, _reload);
+            _settingsMenu.AddItems(DebugLogs ,SearchAreaBlipsMax, MaxDistance, MinCalloutDistance, EnableBinoculars, BinocularsSense, BinocularsImage, IntoxicatedPerson, AnimalAttack, AtvPursuit, DangerousPerson, DeadAnimalOnRoadway,
+                DirtBikePursuit, HighSpeedPursuit, IntoxicatedPerson, LoggerTruckPursuit, RegularPursuit, _saveSettings);
             InteractionMenu.BindMenuToItem(_settingsMenu, _settings);
             _settingsMenu.RefreshIndex();
             _settingsMenu.OnItemSelect += OnSettingsMenuItemSelected;
@@ -135,19 +136,12 @@ namespace ForestryCallouts2.Backbone.Menu
 
         private static void OnSettingsMenuItemSelected(UIMenu sender, UIMenuItem selecteditem, int index)
         {
-            Logger.DebugLog("INTERACTION MENU", "Settings Item " + selecteditem.Text + " was selected!");
+            Logger.DebugLog("INTERACTION MENU", "Saving and reloading settings!");
             if (selecteditem == _saveSettings)
             {
-                Logger.DebugLog("INTERACTION MENU", "Forestry Callouts trying to save new settings");
                 IniSettings.SaveNewSettings();
-                _settingsMenu.RefreshIndex();
-            }
-            if (selecteditem == _reload)
-            {
                 IniSettings.LoadSettings();
-                Game.DisplayNotification("~g~Forestry Callouts Settings Reloaded");
-                GameFiber.Wait(1000);
-                Logger.DebugLog("INTERACTION MENU", "Forestry Callouts Reloaded");
+                _settingsMenu.RefreshIndex();
             }
         }
 

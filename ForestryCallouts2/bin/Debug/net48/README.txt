@@ -24,6 +24,8 @@ If there is a callsign error callsign will default to 1-LINCOLN-18.
 
 Notes:
 
+- Playable Chunks are around PaletoBay, RatonCanyon, and AltruistCamp. I plan on adding more later on.
+
 - If you are only playing with Forestry Callouts installed please set the distance checker to false in the ini file. If you do 
 not it will result in a crash.
 
@@ -66,11 +68,16 @@ Misc
 
 BETA v1.0.3
 Callouts
+- Fixed Spawning Issue With AnimalOnRoadway ~ Reported by Michael121107
 - Added AnimalAttack2 
+- Added AnimalAttack Specific Spawnpoints
+- Fixed AnimalAttack Crash
 - Added DeadBodyFound
 - Added IllegalCampFire
 New Features
+- Added Multiple Binocular Textures
 - Added Hunting Licenses
 INI Changes
 - Added the key to the actual INI for BinocularsZoom
+- Added key for BinocularsImage
 

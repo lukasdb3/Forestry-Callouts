@@ -47,6 +47,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         //Binoculars
         internal static bool BinocularsEnabled;
         internal static int BinocularsSensitivity;
+        internal static string BinocularsImage;
 
         //Callouts
         internal static bool AnimalAttack;
@@ -120,7 +121,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             {
                 SearchAreaNotifications = 15;
                 Game.Console.Print("!!! INVALID CONFIG !!! - Forestry Callouts Config Error");
-                Game.Console.Print("We detected SearchAreaBlipsMax was set to a lower integer than the minimum 5. Default has been set (15)");
+                Game.Console.Print("Detected SearchAreaBlipsMax was set to a lower integer than the minimum 5. Default has been set (15)");
             }
             //Keys
             try
@@ -151,6 +152,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             //Binoculars
             BinocularsEnabled = Ini.ReadBoolean("Binoculars", "EnableBinoculars", true);
             BinocularsSensitivity = Ini.ReadInt32("Binoculars", "BinocularsSensitivity", 3);
+            BinocularsImage = Ini.ReadString("Binoculars", "BinocularsImage", "1");
 
             //Callouts
             AnimalAttack = Ini.ReadBoolean("Callouts", "AnimalAttack", true);
@@ -169,10 +171,10 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             BoatPursuit = Ini.ReadBoolean("Callouts", "BoatPursuit", true);
             
             //LicensesPercents
-            ResidentLicense = Ini.ReadInt32("Licenses", "ResidentialFishing", 30);
-            NonResidentLicense = Ini.ReadInt32("Licenses", "NonResidentialFishing", 30);
-            OneDayLicense = Ini.ReadInt32("Licenses", "OneDayFishing", 10);
-            TwoDayLicense = Ini.ReadInt32("Licenses", "TwoDayFishing", 10);
+            ResidentLicense = Ini.ReadInt32("Licenses", "Residential", 30);
+            NonResidentLicense = Ini.ReadInt32("Licenses", "NonResidential", 30);
+            OneDayLicense = Ini.ReadInt32("Licenses", "OneDay", 10);
+            TwoDayLicense = Ini.ReadInt32("Licenses", "TwoDay", 10);
             NoLicense = Ini.ReadInt32("Licenses", "NoLicense", 20);
             //LicenseStatuses
             Expired = Ini.ReadInt32("Licenses", "Expired", 30);
@@ -217,6 +219,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             //Binoculars
             Ini.Write("Binoculars", "EnableBinoculars", Menu.MainMenu.EnableBinoculars.SelectedValue);
             Ini.Write("Binoculars", "BinocularsSensitivity", Menu.MainMenu.BinocularsSense.Value);
+            Ini.Write("Binoculars", "BinocularsImage", Menu.MainMenu.BinocularsImage.Value.ToString());
             //Callouts
             Ini.Write("Callouts", "AnimalAttack", Menu.MainMenu.AnimalAttack.SelectedValue);
             Ini.Write("Callouts", "AtvPursuit", Menu.MainMenu.AtvPursuit.SelectedValue);
@@ -231,8 +234,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             
             Ini.Write("Callouts", "DeadBodyWater", Menu.MainMenu.DeadBodyWater.SelectedValue);
             Ini.Write("Callouts", "BoatPursuit", Menu.MainMenu.BoatPursuit.SelectedValue);
-            Game.DisplayNotification("~g~Settings Saved To ForestryCallouts2.ini\n" +
-                                     "~r~If you changed any Callouts to True or False, LSPDFR will have to be reloaded for changes to be made!");
+            Game.DisplayNotification("~g~Settings Saved To ForestryCallouts2.ini");
         }
     }
 }

@@ -16,14 +16,49 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
             spawnpoint = default;
             heading = 0f;
             safePos = default;
-            var var = new Random().Next(1, 3);
+            var var = new Random().Next(1, 9);
             Logger.DebugLog("CASE", ""+var+"");
             switch (var)
             {
                case 1:
-                   spawnpoint = new Vector3();
-                   heading = 0f;
-                   safePos = new Vector3();
+                   spawnpoint = new Vector3(-491.3061f, 5868.85f, 33.3474f);
+                   heading = 146.5537f;
+                   safePos = new Vector3(-557.9032f, 5871.9941f, 31.46f);
+                   break;
+               case 2:
+                   spawnpoint = new Vector3(-504.6572f, 5828.9170f, 34.0549f);
+                   heading = 326.1937f;
+                   safePos = new Vector3(-562.1722f, 5864.2734f, 30.76f);
+                   break;
+               case 3:
+                   spawnpoint = new Vector3(-533.6594f, 5776.8760f, 35.3211f);
+                   heading = 157.7f;
+                   safePos = new Vector3(-562.1722f, 5864.2734f, 30.76f);
+                   break;
+               case 4:
+                   spawnpoint = new Vector3(-582.8653f, 5687.5474f, 37.60f);
+                   heading = 159.4734f;
+                   safePos = new Vector3(-562.1722f, 5864.2734f, 30.76f);
+                   break;
+               case 5:
+                   spawnpoint = new Vector3(-710.3641f, 5548.4751f, 37.0184f);
+                   heading = 138f;
+                   safePos = new Vector3(-709.0730f, 5420.1455f, 46.85f);
+                   break;
+               case 6:
+                   spawnpoint = new Vector3(-836.8792f, 5452.8892f, 33.67f);
+                   heading = 93f;
+                   safePos = new Vector3(-709.0730f, 5420.1455f, 46.85f);
+                   break;
+               case 7:
+                   spawnpoint = new Vector3(-792.5322f, 5547.7310f, 32.94f);
+                   heading = 4.1643f;
+                   safePos = new Vector3(-802.8455f, 5508.1060f, 25.6415f);
+                   break;
+               case 8:
+                   spawnpoint = new Vector3(-782.7314f, 5618.12f, 26.6f);
+                   heading = 339f;
+                   safePos = new Vector3(-711.42f, 5642.68f, 29.83f);
                    break;
             }
         }

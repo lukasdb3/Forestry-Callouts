@@ -20,12 +20,12 @@ using Functions = LSPD_First_Response.Mod.API.Functions;
 
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
-    [CalloutInterface("Animal Attack", CalloutProbability.Medium, "Domestic Animal Attack", "Code 3", "SASP")]
+    [CalloutInterface("Animal Attack2", CalloutProbability.Medium, "Domestic Animal Attack", "Code 3", "SASP")]
     internal class AnimalAttack2 : Callout
     {
         #region Variables
         
-        internal readonly string CurCall = "AnimalAttack";
+        internal readonly string CurCall = "AnimalAttack2";
         
         //victim variables
         private Ped _victim;
@@ -37,23 +37,11 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private Ped _animal;
         private Blip _animalBlip;
         private Random _rand = new();
-        
-        //timer variables
-        private int _timer = 0;
-        private bool _pauseTimer;
-        
-        //search area variables
-        private Blip _areaBlip;
-        private Vector3 _searchArea;
-        private bool _victimFound;
-        private bool _animalFound;
-        private bool _maxNotfiSent;
-        private bool _firstBlip;
-        private int _notfiSentCount;
 
         //callout variables
         private bool _onScene;
-        private bool _playerCloseToAnimal;
+        private bool _animalDeadVicAlive;
+        private bool victimHasDied;
         #endregion
         
         
@@ -98,40 +86,50 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         public override void Process()
         {
             //If the player is 200 or closer delete route and blip
-            if (_victim.IsAlive)
+            if (Game.LocalPlayer.Character.DistanceTo(_victim) <= 200f && !_onScene)
             {
-                if (Game.LocalPlayer.Character.DistanceTo(_victim) <= 200f && !_onScene)
-                {
-                    CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" proceed with caution.");
-                    Functions.PlayScannerAudio("GP_ATTENTION_UNIT "+Main.CallsignAudioString+" GP_CAUTION_02");
-                    Logger.CallDebugLog(this, "Process started");
-                    _animal.RelationshipGroup.SetRelationshipWith(Game.LocalPlayer.Character.RelationshipGroup, Relationship.Hate);
-                    _animal.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
-                    RelationshipGroup.Cop.SetRelationshipWith(_animal.RelationshipGroup, Relationship.Hate);
-                    _victim.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Neutral);
-                    RelationshipGroup.Cop.SetRelationshipWith(_animal.RelationshipGroup, Relationship.Neutral);
-                    _animal.Tasks.FightAgainst(_victim);
-                    _victim.Tasks.ReactAndFlee(_animal);
-                    _onScene = true;
-                    if (_victimBlip) _victimBlip.Delete();
-                }
-
-                if (Game.LocalPlayer.Character.DistanceTo(_animal) <= 15f && !_animalFound)
-                {
-                    _animalFound = true;
-                    _animalBlip = _animal.AttachBlip();
-                    _animalBlip.Scale = .7f;
-                    _animalBlip.Color = Color.Red;
-                    _victimBlip = _victim.AttachBlip();
-                    _victimBlip.Scale = .7f;
-                    _victimBlip.Color = Color.Green;
+                CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" proceed with caution.");
+                Functions.PlayScannerAudio("GP_ATTENTION_UNIT "+Main.CallsignAudioString+" GP_CAUTION_02");
+                Logger.CallDebugLog(this, "Process started");
                     
-                }
+                _animal.RelationshipGroup.SetRelationshipWith(Game.LocalPlayer.Character.RelationshipGroup, Relationship.Hate);
+                _animal.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+                RelationshipGroup.Cop.SetRelationshipWith(_animal.RelationshipGroup, Relationship.Hate);
+                _victim.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Neutral);
+                RelationshipGroup.Cop.SetRelationshipWith(_animal.RelationshipGroup, Relationship.Neutral);
+                _victim.Tasks.ReactAndFlee(_animal);
+                GameFiber.Wait(150);
+                _animal.Tasks.FightAgainst(_victim);
+                
+                if (_victimBlip) _victimBlip.Delete();
+                _animalBlip = _animal.AttachBlip();
+                _animalBlip.Scale = .7f;
+                _animalBlip.Color = Color.Red;
+                _victimBlip = _victim.AttachBlip();
+                _victimBlip.Scale = .7f;
+                _victimBlip.Color = Color.Green;
+                _victimBlip.EnableRoute(Color.Yellow);
+                _onScene = true;
             }
-            else
+
+            if (Game.LocalPlayer.Character.DistanceTo(_animal) <= 30f) _victimBlip.IsRouteEnabled = false;
+
+            if (_victim.IsDead)
             {
                 _animal.Tasks.Wander();
+                victimHasDied = true;
             }
+
+            if (_animal.IsDead && _victim.IsAlive && !_animalDeadVicAlive && !victimHasDied)
+            {
+                _animalDeadVicAlive = true;
+                GameFiber.Wait(500);
+                _victim.Tasks.Clear();
+                _victim.Tasks.StandStill(-1).WaitForCompletion();
+                _victim.Heading = Game.LocalPlayer.Character.Heading + 180;
+                Game.DisplaySubtitle("~g~Victim:~w~ Oh my god you saved my life!");
+            }
+            
 
             if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
@@ -152,7 +150,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_victimBlip) _victimBlip.Delete();
             if (_animal) _animal.Dismiss();
             if (_animalBlip) _animal.Delete();
-            if (_areaBlip) _areaBlip.Delete();
             if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _victimSpawn);

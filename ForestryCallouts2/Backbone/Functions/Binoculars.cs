@@ -12,12 +12,12 @@ namespace ForestryCallouts2.Backbone.Functions
 {
     internal class Binoculars
     {
-        private static Texture _binoTexture = Game.CreateTextureFromFile(@"plugins\lspdfr\ForestryCallouts2\Binoculars.png");
+        private static Texture _binoTexture;
         internal static bool IsRendering = false;
         internal static bool BinoKeyEnabled = true;
         private static Object _binoculars;
         private static Camera _binoCamera;
-
+        
         internal static void Enable()
         {
             GameFiber.StartNew(delegate
@@ -37,6 +37,8 @@ namespace ForestryCallouts2.Backbone.Functions
                 _binoCamera.AttachToEntity(_binoculars, new Vector3(0.0f, -0.1f, 0.0f), true);
                 _binoCamera.Rotation = Game.LocalPlayer.Character.Rotation;
                 // Start texture rendering
+                Logger.DebugLog("BINOCULARS", "TEXTURE = "+IniSettings.BinocularsImage+".png");
+                _binoTexture = Game.CreateTextureFromFile(@"plugins\lspdfr\ForestryCallouts2\" + IniSettings.BinocularsImage + ".png");
                 Game.RawFrameRender += RawFrameRender;
                 IsRendering = true;
 
