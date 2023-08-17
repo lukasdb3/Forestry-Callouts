@@ -166,7 +166,7 @@ internal class DeadBody : Callout
         if (!ChunkChooser.StoppingCurrentCall)
         {
             Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _victimSpawn);
-            Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dead Body Code 4", "");
+            if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dead Body Code 4", "");
             CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Dead Body code 4");
         }
         Logger.CallDebugLog(this, "Callout ended");

@@ -18,14 +18,6 @@ namespace ForestryCallouts2.Backbone
         {
             var curVersion = IniSettings.CurV;
 
-            if (curVersion == "2.0.0.0")
-            {
-                Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~FORESTRY CALLOUTS WARNING",
-                    "~g~BETA VERSION", 
-                    "This is a BETA version of Forestry Callouts 2, Thank you for testing!");
-                return false;
-            }
-
             var latestVersionUri =
                 new Uri(
                     "https://www.lcpdfr.com/applications/downloadsng/interface/api.php?do=checkForUpdates&fileId=34663&textOnly=1");
@@ -46,6 +38,14 @@ namespace ForestryCallouts2.Backbone
                 // server or connection is having issues
             }
 
+            var intCurVer = int.Parse(curVersion);
+            var intNewestVer = int.Parse(ReceivedData);
+            if (intCurVer > intNewestVer)
+            {
+                Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~FORESTRY CALLOUTS WARNING",
+                    "~g~ALPHA VERSION INSTALLED",
+                    "Current Version: ~r~" + curVersion + "~w~<br>New Version: ~g~" + ReceivedData);
+            }
             if (ReceivedData != IniSettings.CurV)
             {
                 Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~FORESTRY CALLOUTS WARNING",

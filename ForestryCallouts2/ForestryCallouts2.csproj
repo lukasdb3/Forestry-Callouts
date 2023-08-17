@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <AssemblyVersion>BETA 1.0.1</AssemblyVersion>
-        <FileVersion>BETA 1.0.1</FileVersion>
+        <AssemblyVersion>2.0.1.0</AssemblyVersion>
+        <FileVersion>2.0.1.0</FileVersion>
         <Title>ForestryCallouts2</Title>
         <Authors>lukasdb3</Authors>
         <Description>Callout plugin for LSPDFR</Description>
@@ -11,15 +11,18 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Reference Include="CalloutInterface">
+        <HintPath>..\..\..\Coding Refrences\CalloutInterface.dll</HintPath>
+      </Reference>
       <Reference Include="CalloutInterfaceAPI">
-        <HintPath>..\..\..\CodingCrap\Refrences\CalloutInterfaceAPI.dll</HintPath>
+        <HintPath>..\..\..\Coding Refrences\CalloutInterfaceAPI.dll</HintPath>
       </Reference>
       <Reference Include="LSPD First Response">
-        <HintPath>..\..\..\CodingCrap\Refrences\LSPD First Response.dll</HintPath>
+        <HintPath>..\..\..\Coding Refrences\LSPD First Response.dll</HintPath>
       </Reference>
       <Reference Include="Microsoft.CSharp" />
       <Reference Include="RAGENativeUI">
-        <HintPath>..\..\..\CodingCrap\Refrences\RAGENativeUI.dll</HintPath>
+        <HintPath>..\..\..\Coding Refrences\RAGENativeUI.dll</HintPath>
       </Reference>
       <Reference Include="RagePluginHookLauncher">
         <HintPath>..\..\..\CodingCrap\Refrences\RAGEPluginHook.exe</HintPath>

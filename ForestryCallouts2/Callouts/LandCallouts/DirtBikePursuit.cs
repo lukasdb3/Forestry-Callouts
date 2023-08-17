@@ -14,6 +14,7 @@ using ForestryCallouts2.Backbone.SpawnSystem;
 using ForestryCallouts2.Backbone.SpawnSystem.Land;
 //CalloutInterface
 using CalloutInterfaceAPI;
+using LSPD_First_Response.Engine.Scripting.Entities;
 using Functions = LSPD_First_Response.Mod.API.Functions;
 
 #endregion
@@ -34,6 +35,9 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private Vector3 _suspectSpawn;
         private float _suspectHeading;
         private Vehicle _susVehicle;
+        //cop
+        private Ped _cop = new Ped();
+        private Vehicle _copCar = new Vehicle();
         //callout variables
         private LHandle _pursuit;
         private bool _pursuitStarted;
@@ -72,6 +76,12 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             _suspect.WarpIntoVehicle(_susVehicle, -1);
             _suspectBlip = _suspect.AttachBlip();
             _suspectBlip.EnableRoute(Color.Yellow);
+            if (IniSettings.AICops)
+            {
+                _cop = new Ped("s_f_y_ranger_01", World.GetNextPositionOnStreet(_suspectSpawn.Around(15f, 20f)), 0f);
+                CFunctions.SpwanRangerBackup(out _copCar, World.GetNextPositionOnStreet(_suspectSpawn.Around(10f, 15f)), _susVehicle.Heading);
+                _cop.WarpIntoVehicle(_copCar, -1);
+            }
             return base.OnCalloutAccepted();
         }
 
@@ -87,6 +97,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     _suspect.Tasks.CruiseWithVehicle(_susVehicle, 15f ,VehicleDrivingFlags.Emergency);
                     _pursuit = Functions.CreatePursuit();
                     Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
+                    if (IniSettings.AICops) Functions.AddPedToPursuit(_pursuit, _cop);
                     Functions.AddPedToPursuit(_pursuit, _suspect);
                     Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
                     _pursuitStarted = true;
@@ -111,11 +122,15 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_suspect) _suspect.Dismiss();
             if (_suspectBlip) _suspectBlip.Delete();
             if (_susVehicle) _susVehicle.Dismiss();
+            if (_cop) _cop.Dismiss();
+            if (_copCar) _copCar.Dismiss();
+            
             if (Functions.IsPursuitStillRunning(_pursuit)) Functions.ForceEndPursuit(_pursuit);
             if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _suspectSpawn);
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dirt Bike Pursuit Code 4", "");
+                if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dirt Bike Pursuit Code 4", "");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Dirt Bike Pursuit code 4");
             }
             Logger.CallDebugLog(this, "Callout ended");

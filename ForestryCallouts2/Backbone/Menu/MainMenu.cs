@@ -30,11 +30,13 @@ namespace ForestryCallouts2.Backbone.Menu
         // Settings Menu
         //Main
         internal static UIMenuListItem DebugLogs;
+        internal static UIMenuListItem EndNotfiMessages;
         internal static UIMenuListItem WaterCallouts;
         internal static UIMenuNumericScrollerItem<int> SearchAreaBlipsMax;
         internal static UIMenuListItem EnableDistanceChecker;
         internal static UIMenuNumericScrollerItem<double> MaxDistance;
         internal static UIMenuNumericScrollerItem<int> MinCalloutDistance;
+        internal static UIMenuListItem AICops;
         //Binoculars
         internal static UIMenuListItem EnableBinoculars;
         internal static UIMenuNumericScrollerItem<int> BinocularsSense;
@@ -78,6 +80,7 @@ namespace ForestryCallouts2.Backbone.Menu
             _settingsMenu.MouseControlsEnabled = false;
             //Main
             DebugLogs = new UIMenuListItem("DebugsLogs", "For Debugging Forestry Callouts Crashes", IniSettings.DebugLogs.ToString().ToLower(), (IniSettings.DebugLogs) ? "false" : "true");
+            EndNotfiMessages = new UIMenuListItem("CalloutEndMessages", "Disables And Enables End Callout Notifications", IniSettings.EndNotfiMessages.ToString().ToLower(), (IniSettings.EndNotfiMessages) ? "false" : "true");
             WaterCallouts = new UIMenuListItem("WaterCallouts", "Disables And Enables Water Callouts", IniSettings.WaterCallouts.ToString().ToLower(), (IniSettings.WaterCallouts) ? "false" : "true");
             SearchAreaBlipsMax = new UIMenuNumericScrollerItem<int>("SearchAreaBlipsMax", "Amount of Search Areas Sent Before Object is Blipped", 5, 15, 1);
             SearchAreaBlipsMax.Value = IniSettings.SearchAreaNotifications;
@@ -86,6 +89,7 @@ namespace ForestryCallouts2.Backbone.Menu
             MaxDistance.Value = IniSettings.MaxDistance;
             MinCalloutDistance = new UIMenuNumericScrollerItem<int>("MinimumCalloutSpawnDistance", "The Minimum Distance A Callout Will Spawn Away From You (meters)", 30, 300, 1);
             MinCalloutDistance.Value = IniSettings.MinCalloutDistance;
+            AICops = new UIMenuListItem("AICops", "Disables And Enables AI Cops Spawning For Pursuits", IniSettings.AICops, (IniSettings.AICops) ? "false" : "true");
             //Binoculars
             EnableBinoculars = new UIMenuListItem("EnableBinoculars", "Disables And Enables Binoculars", IniSettings.BinocularsEnabled.ToString().ToLower(), (IniSettings.BinocularsEnabled) ? "false" : "true");
             BinocularsSense = new UIMenuNumericScrollerItem<int>("BinocularsSensitivity", "Binoculars Horizontal Sensitivity",1, 10, 1);
@@ -109,7 +113,7 @@ namespace ForestryCallouts2.Backbone.Menu
             BoatPursuit = new UIMenuListItem("BoatPursuit", "", IniSettings.BoatPursuit.ToString().ToLower(), (IniSettings.BoatPursuit) ? "false" : "true");
             //Buttons for saving and reloading Ini
             _saveSettings = new UIMenuItem("~g~Save Settings", "~r~Required To Press If Settings Were Just Changed");
-            _settingsMenu.AddItems(DebugLogs ,SearchAreaBlipsMax, MaxDistance, MinCalloutDistance, EnableBinoculars, BinocularsSense, BinocularsImage, IntoxicatedPerson, AnimalAttack, AtvPursuit, DangerousPerson, DeadAnimalOnRoadway,
+            _settingsMenu.AddItems(DebugLogs ,EndNotfiMessages ,SearchAreaBlipsMax, MaxDistance, MinCalloutDistance, AICops, EnableBinoculars, BinocularsSense, BinocularsImage, IntoxicatedPerson, AnimalAttack, AtvPursuit, DangerousPerson, DeadAnimalOnRoadway,
                 DirtBikePursuit, HighSpeedPursuit, IntoxicatedPerson, LoggerTruckPursuit, RegularPursuit, _saveSettings);
             InteractionMenu.BindMenuToItem(_settingsMenu, _settings);
             _settingsMenu.RefreshIndex();

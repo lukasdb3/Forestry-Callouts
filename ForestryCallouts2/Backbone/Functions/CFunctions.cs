@@ -182,6 +182,12 @@ namespace ForestryCallouts2.Backbone.Functions
             cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }
+        internal static void SpwanRangerBackup(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
+        {
+            string[] vehicleModels = IniSettings.RangerVehicles;
+            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
+            cVehicle.IsPersistent = true;
+        }
         
         //Weapons
         internal static void MeleeWeaponChooser(Ped cPed, short ammo, bool isNow)

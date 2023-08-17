@@ -21,10 +21,12 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         
         internal static string Callsign;
         internal static bool DebugLogs;
+        internal static bool EndNotfiMessages;
         internal static bool WaterCallouts;
         internal static bool EnableDistanceChecker;
         internal static double MaxDistance;
         internal static int MinCalloutDistance;
+        internal static bool AICops;
         
         internal static int SearchAreaNotifications;
 
@@ -92,6 +94,8 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         internal static String[] SemiTrucks;
         internal static string _boats;
         internal static String[] Boats;
+        internal static string _rangerVehicles;
+        internal static String[] RangerVehicles;
 
         #endregion
         
@@ -111,10 +115,12 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             //Main
             Callsign = Ini.ReadString("Main", "Callsign", "1-LINCOLN-18");
             DebugLogs = Ini.ReadBoolean("Main", "DebugLogs", false);
+            EndNotfiMessages = Ini.ReadBoolean("Main", "CalloutEndMessages", true);
             WaterCallouts = Ini.ReadBoolean("Main", "WaterCallouts", false);
             EnableDistanceChecker = Ini.ReadBoolean("Main", "EnableDistanceChecker", true);
             MaxDistance = Ini.ReadDouble("Main", "MaxDistance", 2500);
             MinCalloutDistance = Ini.ReadInt32("Main", "MinimumCalloutSpawnDistance", 100);
+            AICops = Ini.ReadBoolean("Main", "AICops", false);
             //Max number of search blips that can be sent out for callouts that use them, min is 10
             SearchAreaNotifications = Ini.ReadInt32("Main", "SearchAreaBlipsMax", 15);
             if (SearchAreaNotifications < 5) 
@@ -197,6 +203,8 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             SemiTrucks = _semiTrucks.Split(':');
             _boats = Ini.ReadString("Vehicles", "Boats", null);
             Boats = _boats.Split(':');
+            _rangerVehicles = Ini.ReadString("Vehicles", "RangerVehicles", null);
+            RangerVehicles = _rangerVehicles.Split(':');
 
             //Sees if any errors took place and if so a notification is sent to check the log
             if (_iniError)
@@ -211,11 +219,13 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         {
             //Main
             Ini.Write("Main", "DebugLogs", Menu.MainMenu.DebugLogs.SelectedValue);
+            Ini.Write("Main", "CalloutEndMessages", Menu.MainMenu.EndNotfiMessages.SelectedValue);
             Ini.Write("Main", "WaterCallouts", Menu.MainMenu.WaterCallouts.SelectedValue);
             Ini.Write("Main", "SearchAreaBlipsMax", Menu.MainMenu.SearchAreaBlipsMax.Value);
             Ini.Write("Main", "MaxDistance", Menu.MainMenu.MaxDistance.Value);
             Ini.Write("Main", "EnableDistanceChecker", Menu.MainMenu.EnableDistanceChecker.SelectedValue);
             Ini.Write("Main", "MinimumCalloutSpawnDistance", Menu.MainMenu.MinCalloutDistance.Value);
+            Ini.Write("Main", "AICops", Menu.MainMenu.AICops.SelectedValue);
             //Binoculars
             Ini.Write("Binoculars", "EnableBinoculars", Menu.MainMenu.EnableBinoculars.SelectedValue);
             Ini.Write("Binoculars", "BinocularsSensitivity", Menu.MainMenu.BinocularsSense.Value);
