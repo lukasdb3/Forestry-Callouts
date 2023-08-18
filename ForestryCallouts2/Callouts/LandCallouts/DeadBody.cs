@@ -1,4 +1,4 @@
-﻿#region Refrences
+﻿/*#region Refrences
 //System
 using System;
 using System.Drawing;
@@ -172,4 +172,4 @@ internal class DeadBody : Callout
         Logger.CallDebugLog(this, "Callout ended");
         base.End();
     }
-}
+}*/

@@ -30,7 +30,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         //victim variables
         private Ped _victim;
         private Vector3 _victimSpawn;
-        private float _victimHeading;
         private Blip _victimBlip;
         
         //animal variables
@@ -53,7 +52,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         //callout variables
         private bool _onScene;
-        private bool _playerCloseToAnimal;
         #endregion
         
         

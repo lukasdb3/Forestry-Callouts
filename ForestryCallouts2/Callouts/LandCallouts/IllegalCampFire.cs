@@ -1,4 +1,4 @@
-﻿#region Refrences
+﻿/*#region Refrences
 //System
 using System;
 using System.Drawing;
@@ -63,4 +63,4 @@ internal class IllegalCampFire : Callout
     {
         base.End();
     }
-}
+}*/

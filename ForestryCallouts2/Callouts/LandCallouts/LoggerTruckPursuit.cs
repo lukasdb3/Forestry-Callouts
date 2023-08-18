@@ -168,7 +168,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             {
                 if (passenger) passenger.Dismiss();
             }
-            if (Functions.IsPursuitStillRunning(_pursuit) && _pursuitStarted) Functions.ForceEndPursuit(_pursuit);
+            if (_pursuitStarted) if (Functions.IsPursuitStillRunning(_pursuit)) Functions.ForceEndPursuit(_pursuit);
             if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _suspectSpawn);
