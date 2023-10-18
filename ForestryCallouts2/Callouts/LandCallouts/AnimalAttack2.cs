@@ -70,7 +70,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         public override bool OnCalloutAccepted()
         {
-            Logger.CallDebugLog(this, "Callout accepted");
+            Log.CallDebug(this, "Callout accepted");
             //Spawn victim
             CFunctions.SpawnHikerPed(out _victim, _victimSpawn, _victimHeading);
             _victimBlip = _victim.AttachBlip();
@@ -90,7 +90,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             {
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" proceed with caution.");
                 Functions.PlayScannerAudio("GP_ATTENTION_UNIT "+Main.CallsignAudioString+" GP_CAUTION_02");
-                Logger.CallDebugLog(this, "Process started");
+                Log.CallDebug(this, "Process started");
                     
                 _animal.RelationshipGroup.SetRelationshipWith(Game.LocalPlayer.Character.RelationshipGroup, Relationship.Hate);
                 _animal.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
@@ -133,12 +133,12 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
             if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
-                Logger.CallDebugLog(this, "Callout was force ended by player");
+                Log.CallDebug(this, "Callout was force ended by player");
                 End();
             }
             if (Game.LocalPlayer.Character.IsDead)
             {
-                Logger.CallDebugLog(this, "Player died callout ending");
+                Log.CallDebug(this, "Player died callout ending");
                 End();
             }
             base.Process();
@@ -156,7 +156,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Animal Attack Code 4", "");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Animal Attack code 4");
             }
-            Logger.CallDebugLog(this, "Callout ended");
+            Log.CallDebug(this, "Callout ended");
             base.End();
         }
     }

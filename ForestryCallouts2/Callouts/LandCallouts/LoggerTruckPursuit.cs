@@ -38,9 +38,11 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private float _suspectHeading;
         private Vehicle _susVehicle;
         private Vehicle _susVehTrailer;
+        //cop
+        private Ped _cop;
+        private Vehicle _copCar;
         //passenger variables
-        private GameFiber _fiber;
-        private List<Ped> _passengerList = new();
+        private readonly List<Ped> _passengerList = new();
         //callout variables
         private LHandle _pursuit;
         private bool _pursuitStarted;
@@ -71,7 +73,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         }
         public override bool OnCalloutAccepted()
         {
-            Logger.CallDebugLog(this, "Callout accepted");
+            Log.CallDebug(this, "Callout accepted");
             //Spawn Suspect and car
             CFunctions.SpawnCountryPed(out _suspect, _suspectSpawn, _suspectHeading);
             Vector3 vehicleSpawn = World.GetNextPositionOnStreet(_suspectSpawn);
@@ -80,39 +82,15 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             _susVehTrailer = new Vehicle("trailerlogs", _susVehicle.GetOffsetPositionFront(10f), _suspectHeading);
             _susVehTrailer.IsPersistent = true;
             _susVehicle.Trailer = _susVehTrailer;
+            if (IniSettings.AICops)
+            {
+                _cop = new Ped("s_f_y_ranger_01", World.GetNextPositionOnStreet(_suspectSpawn.Around(15f, 20f)), 0f);
+                CFunctions.SpawnRangerBackup(out _copCar, World.GetNextPositionOnStreet(_suspectSpawn.Around(10f, 15f)), _susVehicle.Heading);
+                _cop.WarpIntoVehicle(_copCar, -1);
+                _cop.Tasks.CruiseWithVehicle(-1);
+            }
             //Spawn possible passenger
-            var pChoice = _rand.Next(1, 3);
-            if (pChoice == 1)
-            {
-                if (_susVehicle.FreePassengerSeatsCount >= 1)
-                {
-                    var rnd = _rand.Next(1, _susVehicle.FreePassengerSeatsCount + 1);
-                    Logger.CallDebugLog(this, "Free Passenger Seats Count " + _susVehicle.FreePassengerSeatsCount);
-                    Logger.CallDebugLog(this, "Spawning "+ rnd + " criminal passengers");
-                    _fiber = GameFiber.StartNew(delegate
-                    {
-                        var i = 0;
-                        while (i != rnd)
-                        {
-                            if (i > 4) break;
-                            GameFiber.Yield();
-                            var cped = new Ped();
-                            Logger.CallDebugLog(this, "Creating Passenger..");
-                            CFunctions.SpawnCountryPed(out cped, _suspectSpawn, 0);
-                            cped.WarpIntoVehicle(_susVehicle, i);
-                            _passengerList.Add(cped);
-                            i += 1;   
-                        }
-                        Logger.CallDebugLog(this, "There is " + _passengerList.Count.ToString() + " passengers");
-                        Logger.CallDebugLog(this, "Aborting passenger fiber");
-                        _fiber.Abort();
-                    });
-                }    
-            }
-            else
-            {
-                Logger.CallDebugLog(this, "No passengers spawning");
-            }
+            CFunctions.GetVehiclePassengers(_susVehicle, _passengerList, _suspectSpawn);
             
             //Warp suspect into vehicle and set a blip
             _suspect.WarpIntoVehicle(_susVehicle, -1);
@@ -134,10 +112,11 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     _suspect.Tasks.CruiseWithVehicle(_susVehicle, 15f ,VehicleDrivingFlags.Emergency);
                     _pursuit = Functions.CreatePursuit();
                     Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
+                    if (IniSettings.AICops) Functions.AddCopToPursuit(_pursuit, _cop);
                     Functions.AddPedToPursuit(_pursuit, _suspect);
                     foreach (Ped passenger in _passengerList)
                     {
-                        Logger.CallDebugLog(this, "passenger added to pursuit");
+                        Log.CallDebug(this, "passenger added to pursuit");
                         Functions.AddPedToPursuit(_pursuit, passenger);
                     }
                     Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
@@ -148,12 +127,12 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             //End Callout
             if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
-                Logger.CallDebugLog(this, "Callout was force ended by player");
+                Log.CallDebug(this, "Callout was force ended by player");
                 End();
             }
             if (Game.LocalPlayer.Character.IsDead)
             {
-                Logger.CallDebugLog(this, "Player died callout ending");
+                Log.CallDebug(this, "Player died callout ending");
                 End();
             }
         }
@@ -164,6 +143,8 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_suspectBlip) _suspectBlip.Delete();
             if (_susVehicle) _susVehicle.Dismiss();
             if (_susVehTrailer) _susVehTrailer.Dismiss();
+            if (_cop) _cop.Dismiss();
+            if (_copCar) _copCar.Dismiss();
             foreach (Ped passenger in _passengerList)
             {
                 if (passenger) passenger.Dismiss();
@@ -175,7 +156,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Logger Truck Pursuit Code 4", "");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Logger Truck Pursuit code 4");
             }
-            Logger.CallDebugLog(this, "Callout ended");
+            Log.CallDebug(this, "Callout ended");
             base.End();
         }
     }

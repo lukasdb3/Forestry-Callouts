@@ -11,11 +11,11 @@ internal static class WaterCommon
 {
     internal static void PaletoBayCoast(out Vector3 spawnpoint, out float heading)
             {
-                Logger.DebugLog("COMMON WATER SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayCoast chunk");
+                Log.Debug("COMMON WATER SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayCoast chunk");
                 spawnpoint = default;
                 heading = 0f;
                 int var = new Random().Next(1, 2);
-                Logger.DebugLog("CASE", ""+var+"");
+                Log.Debug("CASE", ""+var+"");
                 switch (var)
                 {
                     case 1:

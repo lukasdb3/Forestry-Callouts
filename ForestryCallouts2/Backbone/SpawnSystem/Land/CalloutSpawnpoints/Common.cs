@@ -12,11 +12,11 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
     {
         internal static void PaletoBayForest(out Vector3 spawnpoint, out float heading)
         {
-            Logger.DebugLog("COMMON SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayForest chunk");
+            Log.Debug("COMMON SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayForest chunk");
             spawnpoint = default;
             heading = 0f;
             var var = new Random().Next(1, 28);
-            Logger.DebugLog("CASE", ""+var+"");
+            Log.Debug("CASE", ""+var+"");
             switch (var)
             {
                 case 1:
@@ -132,11 +132,11 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
         
         internal static void AltruistCampArea(out Vector3 spawnpoint, out float heading)
         {
-            Logger.DebugLog("COMMON SPAWNPOINT CHOOSER", "Choosing spawnpoint in AltruistCampArea chunk");
+            Log.Debug("COMMON SPAWNPOINT CHOOSER", "Choosing spawnpoint in AltruistCampArea chunk");
             spawnpoint = default;
             heading = 0f;
             var var = new Random().Next(1, 13);
-            Logger.DebugLog("CASE", ""+var+"");
+            Log.Debug("CASE", ""+var+"");
             switch (var)
             {
                 case 1:
@@ -192,11 +192,11 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
         
         internal static void RatonCanyon(out Vector3 spawnpoint, out float heading)
         {
-            Logger.DebugLog("COMMON SPAWNPOINT CHOOSER", "Choosing spawnpoint in RatonCanyon chunk");
+            Log.Debug("COMMON SPAWNPOINT CHOOSER", "Choosing spawnpoint in RatonCanyon chunk");
             spawnpoint = default;
             heading = 0f;
             var var = new Random().Next(1, 27);
-            Logger.DebugLog("CASE", ""+var+"");
+            Log.Debug("CASE", ""+var+"");
             switch (var)
             {
                 case 1:

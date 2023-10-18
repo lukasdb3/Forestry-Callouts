@@ -2,6 +2,7 @@
 //System
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -42,28 +43,28 @@ namespace ForestryCallouts2.Backbone.Functions
         internal static List<Ped> GetValidPedsNearby(int max)
         {
             //get all peds
-            Logger.DebugLog("GetValidPedsNearby", "Getting all peds in the world");
+            Log.Debug("GetValidPedsNearby", "Getting all peds in the world");
             var allPeds = World.GetAllPeds();
-            Logger.DebugLog("GetValidPedsNearby", "All Peds Count = " + allPeds.Length);
+            Log.Debug("GetValidPedsNearby", "All Peds Count = " + allPeds.Length);
             //get peds <= 30 from the player
             var pedsInRange = new List<Ped>{};
-            Logger.DebugLog("GetValidPedsNearby", "Getting peds in range of player");
+            Log.Debug("GetValidPedsNearby", "Getting peds in range of player");
             foreach (var ped in allPeds)
             {
                 if (ped != Game.LocalPlayer.Character && Game.LocalPlayer.Character.DistanceTo(ped) <= 30f)
                 {
                     pedsInRange.Add(ped);
-                    Logger.DebugLog("GetValidPedsNearby", "Added " +ped.Model.Name+ " to list");
+                    Log.Debug("GetValidPedsNearby", "Added " +ped.Model.Name+ " to list");
                 }
             }
             //sort the peds closest from farthest from player, if there are peds nearby.
             var closePeds = new List<Ped>();
             if (!pedsInRange.Any()) return closePeds;
-            Logger.DebugLog("GetValidPedsNearby", "Ordering peds from closest to farthest");
+            Log.Debug("GetValidPedsNearby", "Ordering peds from closest to farthest");
             var sortedPeds = pedsInRange.OrderBy(x => x.DistanceTo(Game.LocalPlayer.Character));
-            Logger.DebugLog("GetValidPedsNearby", "Figuring out if we are taking max peds or the whole list");
+            Log.Debug("GetValidPedsNearby", "Figuring out if we are taking max peds or the whole list");
             closePeds = sortedPeds.Count() > 10 ? sortedPeds.Take(10).ToList() : sortedPeds.ToList();
-            Logger.DebugLog("GetValidPedsNearby", "Returning list!");
+            Log.Debug("GetValidPedsNearby", "Returning list!");
             return closePeds;
         }
 
@@ -103,6 +104,50 @@ namespace ForestryCallouts2.Backbone.Functions
             }
         }
 
+        internal static void GetVehiclePassengers(Vehicle vehicle, List<Ped> passengerList, Vector3 spawn)
+        {
+            var rand = new Random();
+            var pChoice = rand.Next(1, 3);
+            GameFiber fiber = null;   
+            if (pChoice == 1)
+            {
+                if (vehicle.FreePassengerSeatsCount >= 1)
+                {
+                    var rnd = rand.Next(1, vehicle.FreePassengerSeatsCount + 1);
+                    Log.Debug("GET VEHICLE PASSENGERS", "Free Passenger Seats Count " + vehicle.FreePassengerSeatsCount);
+                    Log.Debug("GET VEHICLE PASSENGERS", "Spawning "+ rnd + " criminal passengers");
+                    fiber = GameFiber.StartNew(delegate
+                    {
+                        var i = 0;
+                        for (i = 0; i!=rnd; i++)
+                        {
+                            if (i > 4) break;
+                            GameFiber.Yield();
+                            Ped cped;
+                            Log.Debug("GET VEHICLE PASSENGERS", "Creating Passenger..");
+                            CFunctions.SpawnCountryPed(out cped, spawn, 0);
+                            cped.WarpIntoVehicle(vehicle, i);
+                            passengerList.Add(cped);
+                        }
+                        Log.Debug("GET VEHICLE PASSENGERS", "There is " + passengerList.Count.ToString() + " passengers");
+                        Log.Debug("GET VEHICLE PASSENGERS", "Aborting passenger fiber");
+                        fiber.Abort();
+                    });
+                }    
+            }
+            else
+            {
+                Log.Debug("GET VEHICLE PASSENGERS", "No passengers spawning");
+            }
+        }
+
+        internal static Blip SpawnSearchArea(Vector3 position, float arnMinDistance, float arnMaxDistance, float radius, Color color,
+            float alpha)
+        {
+            var searchArea = position.Around2D(arnMinDistance, arnMaxDistance);
+            return new Blip(searchArea, radius) { Color = color, Alpha = alpha };
+        }
+
         //Spawn Peds
         internal static void SpawnHikerPed(out Ped cPed, Vector3 Spawnpoint, float heading)
         {
@@ -137,55 +182,73 @@ namespace ForestryCallouts2.Backbone.Functions
         internal static void SpawnNormalCar(out Vehicle vehicle, Vector3 spawnpoint, float heading)
         {
             string[] vehicleModels = IniSettings.NormalVehicles;
-            vehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], spawnpoint, heading);
+            string model = vehicleModels[new Random().Next(vehicleModels.Length)];
+            Log.Debug("SPAWN NORMAL CAR", "Selected: "+model);
+            vehicle = new Vehicle(model, spawnpoint, heading);
             vehicle.IsPersistent = true;
         }
         internal static void SpawnOffroadCar(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
         {
             string[] vehicleModels = IniSettings.OffRoadVehicles;
-            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
+            string model = vehicleModels[new Random().Next(vehicleModels.Length)];
+            Log.Debug("SPAWN OFFROAD CAR", "Selected: "+model);
+            cVehicle = new Vehicle(model, Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }
         internal static void SpawnFastOffroadCar(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
         {
             string[] vehicleModels = IniSettings.OffRoadFastVehicles;
-            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
+            string model = vehicleModels[new Random().Next(vehicleModels.Length)];
+            Log.Debug("SPAWN FAST OFFROAD CAR", "Selected: "+model);
+            cVehicle = new Vehicle(model, Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }
         internal static void SpawnAnimalControl(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
         {
             string[] vehicleModels = IniSettings.AnimalControlVehicles;
-            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
+            string model = vehicleModels[new Random().Next(vehicleModels.Length)];
+            Log.Debug("SPAWN ANIMAL CONTROL CAR", "Selected: "+model);
+            cVehicle = new Vehicle(model, Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }
         internal static void SpawnDirtBike(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
         {
             string[] vehicleModels = IniSettings.Dirtbikes;
-            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
+            string model = vehicleModels[new Random().Next(vehicleModels.Length)];
+            Log.Debug("SPAWN DIRT BIKE", "Selected: "+model);
+            cVehicle = new Vehicle(model, Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }
         internal static void SpawnAtv(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
         {
             string[] vehicleModels = IniSettings.AtvVehicles;
-            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
+            string model = vehicleModels[new Random().Next(vehicleModels.Length)];
+            Log.Debug("SPAWN ATV", "Selected: "+model);
+            cVehicle = new Vehicle(model, Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }
         internal static void SpawnSemiTrucks(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
         {
             string[] vehicleModels = IniSettings.SemiTrucks;
-            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
+            string model = vehicleModels[new Random().Next(vehicleModels.Length)];
+            Log.Debug("SPAWN SEMI TRUCK", "Selected: "+model);
+            cVehicle = new Vehicle(model, Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }
         internal static void SpawnBoat(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
         {
             string[] vehicleModels = IniSettings.Boats;
-            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
+            string model = vehicleModels[new Random().Next(vehicleModels.Length)];
+            Log.Debug("SPAWN BOAT", "Selected: "+model);
+            cVehicle = new Vehicle(model, Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }
-        internal static void SpwanRangerBackup(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
+        internal static void SpawnRangerBackup(out Vehicle cVehicle, Vector3 Spawnpoint, float heading) 
         {
             string[] vehicleModels = IniSettings.RangerVehicles;
-            cVehicle = new Vehicle(vehicleModels[new Random().Next(vehicleModels.Length)], Spawnpoint, heading);
+            string model = vehicleModels[new Random().Next(vehicleModels.Length)];
+            Log.Debug("SPAWN RANGER BACKUP CAR", "Selected: "+model);
+            cVehicle = new Vehicle(model, Spawnpoint, heading);
             cVehicle.IsPersistent = true;
         }
         

@@ -26,21 +26,21 @@ namespace ForestryCallouts2.Backbone.Functions
         
         internal static void CallAnimalControl()
         {
-            Logger.DebugLog("ANIMAL CONTROL", "Animal Control has been called");
-            Logger.DebugLog("ANIMAL CONTROL", "Finding closest dead animal");
+            Log.Debug("ANIMAL CONTROL", "Animal Control has been called");
+            Log.Debug("ANIMAL CONTROL", "Finding closest dead animal");
             _allPeds = CFunctions.GetValidPedsNearby(10);
             
             //return if animal is null
             if (!_allPeds.Any())
             {
                 Game.DisplayNotification("~g~No Peds Nearby");
-                Logger.DebugLog("ANIMAL CONTROL", "No peds in range of player");
+                Log.Debug("ANIMAL CONTROL", "No peds in range of player");
                 return;
             }
             
             foreach (var ped in _allPeds.Where(ped => Game.LocalPlayer.Character.DistanceTo(ped) <= 10f && !ped.IsHuman && ped.IsDead))
             {
-                Logger.DebugLog("ANIMAL CONTROL", ped.Model.Name);
+                Log.Debug("ANIMAL CONTROL", ped.Model.Name);
                 _animal = ped;
                 break;
             }
@@ -48,7 +48,7 @@ namespace ForestryCallouts2.Backbone.Functions
             if (_animal == null)
             {
                 Game.DisplayNotification("~g~No Dead Animal Found");
-                Logger.DebugLog("ANIMAL CONTROL", "No dead animal was found near player");
+                Log.Debug("ANIMAL CONTROL", "No dead animal was found near player");
                 return;
             }
 

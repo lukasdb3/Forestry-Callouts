@@ -67,7 +67,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         }
         public override bool OnCalloutAccepted()
         {
-            Logger.CallDebugLog(this, "Callout accepted");
+            Log.CallDebug(this, "Callout accepted");
             //Spawn Suspect and car
             CFunctions.SpawnCountryPed(out _suspect, _suspectSpawn, _suspectHeading);
             Vector3 vehicleSpawn = World.GetNextPositionOnStreet(_suspectSpawn);
@@ -79,8 +79,9 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (IniSettings.AICops)
             {
                 _cop = new Ped("s_f_y_ranger_01", World.GetNextPositionOnStreet(_suspectSpawn.Around(15f, 20f)), 0f);
-                CFunctions.SpwanRangerBackup(out _copCar, World.GetNextPositionOnStreet(_suspectSpawn.Around(10f, 15f)), _susVehicle.Heading);
+                CFunctions.SpawnRangerBackup(out _copCar, World.GetNextPositionOnStreet(_suspectSpawn.Around(10f, 15f)), _susVehicle.Heading);
                 _cop.WarpIntoVehicle(_copCar, -1);
+                _cop.Tasks.CruiseWithVehicle(-1);
             }
             return base.OnCalloutAccepted();
         }
@@ -97,7 +98,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     _suspect.Tasks.CruiseWithVehicle(_susVehicle, 15f ,VehicleDrivingFlags.Emergency);
                     _pursuit = Functions.CreatePursuit();
                     Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
-                    if (IniSettings.AICops) Functions.AddPedToPursuit(_pursuit, _cop);
+                    if (IniSettings.AICops) Functions.AddCopToPursuit(_pursuit, _cop);
                     Functions.AddPedToPursuit(_pursuit, _suspect);
                     Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
                     _pursuitStarted = true;
@@ -107,12 +108,12 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             //End Callout
             if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
-                Logger.CallDebugLog(this, "Callout was force ended by player");
+                Log.CallDebug(this, "Callout was force ended by player");
                 End();
             }
             if (Game.LocalPlayer.Character.IsDead)
             {
-                Logger.CallDebugLog(this, "Player died callout ending");
+                Log.CallDebug(this, "Player died callout ending");
                 End();
             }
         }
@@ -133,7 +134,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dirt Bike Pursuit Code 4", "");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Dirt Bike Pursuit code 4");
             }
-            Logger.CallDebugLog(this, "Callout ended");
+            Log.CallDebug(this, "Callout ended");
             base.End();
         }
     }

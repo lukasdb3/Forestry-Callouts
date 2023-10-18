@@ -31,7 +31,7 @@ internal static class GrabPedFiber
                     
                     _cPed = _cPeds.FirstOrDefault();
                     if (_cPed.DistanceTo(Game.LocalPlayer.Character) > 2f) return;
-                    Logger.DebugLog("GrabPed", "Model Grabbing is " + _cPed.Model.Name);
+                    Log.Debug("GrabPed", "Model Grabbing is " + _cPed.Model.Name);
                 
                     _cPed.AttachTo(Game.LocalPlayer.Character, 57005, Vector3.RelativeFront, new Rotator(0,0,90));
                     _cPed.IsPersistent = true;

@@ -79,7 +79,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         public override bool OnCalloutAccepted()
         {
-            Logger.CallDebugLog(this, "Callout accepted");
+            Log.CallDebug(this, "Callout accepted");
             //Spawn victim
             CFunctions.SpawnHikerPed(out _victim, _victimSpawn, _rand.Next(1, 361));
             _victimBlip = _victim.AttachBlip();
@@ -104,7 +104,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 {
                     CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" proceed with caution.");
                     Functions.PlayScannerAudio("GP_ATTENTION_UNIT "+Main.CallsignAudioString+" GP_CAUTION_02");
-                    Logger.CallDebugLog(this, "Process started");
+                    Log.CallDebug(this, "Process started");
                     _onScene = true;
                     if (_victimBlip) _victimBlip.Delete();
                     _firstBlip = true;
@@ -122,11 +122,9 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 if (_firstBlip && _timer >= 1 || _timer >= 1250)
                 {
                     if (_areaBlip) _areaBlip.Delete();
-                    var position = _victim.Position;
-                    _searchArea = position.Around2D(10f, 20f);
-                    _areaBlip = new Blip(_searchArea, 35f) {Color = Color.Yellow, Alpha = .5f};
+                    _areaBlip = CFunctions.SpawnSearchArea(_victim.Position, 10f, 20f, 35f, Color.Yellow, .5f);
                     _notfiSentCount++;
-                    Logger.CallDebugLog(this, "Search areas sent: " + _notfiSentCount + "");
+                    Log.CallDebug(this, "Search areas sent: " + _notfiSentCount + "");
                     _firstBlip = false;
                     _timer = 0;
                 }
@@ -135,7 +133,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 if (_notfiSentCount == IniSettings.SearchAreaNotifications && !_maxNotfiSent)
                 {
                     //Pause the timer so search blips dont keep coming in
-                    Logger.CallDebugLog(this, "Blipped victim because player took to long to find them.");
+                    Log.CallDebug(this, "Blipped victim because player took to long to find them.");
                     _pauseTimer = true;
                     if (_areaBlip) _areaBlip.Delete();
                     _victimBlip = _victim.AttachBlip();
@@ -149,7 +147,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             //player found the victim
             if (!_victimFound && Game.LocalPlayer.Character.DistanceTo(_victim) <= 10f)
             {
-                Logger.CallDebugLog(this, "Victim found!");
+                Log.CallDebug(this, "Victim found!");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" on scene with victim.");
                 _victimBlip = _victim.AttachBlip();
                 _victimBlip.Color = Color.ForestGreen;
@@ -183,7 +181,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     
                     if (!_animalFound && Game.LocalPlayer.Character.DistanceTo(_animal) <= 10f)
                     {
-                        Logger.CallDebugLog(this, "Animal found!");
+                        Log.CallDebug(this, "Animal found!");
                         _animalBlip = _animal.AttachBlip();
                         _animalBlip.Color = Color.Red;
                         _animalBlip.Scale = .7f;
@@ -197,11 +195,9 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                         if (_firstBlip && _timer >= 1 || _timer >= 1250)
                         {
                             if (_areaBlip) _areaBlip.Delete();
-                            var position = _animal.Position;
-                            _searchArea = position.Around2D(10f, 20f);
-                            _areaBlip = new Blip(_searchArea, 35f) {Color = Color.Red, Alpha = .5f};
+                            _areaBlip = CFunctions.SpawnSearchArea(_animal.Position, 10f, 20f, 35f, Color.Red, .5f);
                             _notfiSentCount++;
-                            Logger.CallDebugLog(this, "Search areas sent: " + _notfiSentCount + "");
+                            Log.CallDebug(this, "Search areas sent: " + _notfiSentCount + "");
                             _firstBlip = false;
                             _timer = 0;
                         }
@@ -210,7 +206,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                         if (_notfiSentCount == IniSettings.SearchAreaNotifications && !_maxNotfiSent)
                         {
                             //Pause the timer so search blips dont keep coming in
-                            Logger.CallDebugLog(this, "Blipped animal because player took to long to find them.");
+                            Log.CallDebug(this, "Blipped animal because player took to long to find them.");
                             _pauseTimer = true;
                             if (_areaBlip) _areaBlip.Delete();
                             _animalBlip = _animal.AttachBlip();
@@ -225,18 +221,19 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 else
                 {
                     if (_animalBlip) _animalBlip.Delete();
+                    if (_areaBlip) _areaBlip.Delete();
                 }
             }
             
 
             if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
-                Logger.CallDebugLog(this, "Callout was force ended by player");
+                Log.CallDebug(this, "Callout was force ended by player");
                 End();
             }
             if (Game.LocalPlayer.Character.IsDead)
             {
-                Logger.CallDebugLog(this, "Player died callout ending");
+                Log.CallDebug(this, "Player died callout ending");
                 End();
             }
             base.Process();
@@ -255,7 +252,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Animal Attack Code 4", "");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Animal Attack code 4");
             }
-            Logger.CallDebugLog(this, "Callout ended");
+            Log.CallDebug(this, "Callout ended");
             base.End();
         }
     }

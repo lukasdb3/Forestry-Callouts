@@ -12,12 +12,12 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
     {                                                                                                                                                       
         internal static void PaletoBayForest(out Vector3 spawnpoint, out float heading, out Vector3 safePos)
         {
-            Logger.DebugLog("ANIMAL ON ROADWAY SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayForest chunk");
+            Log.Debug("ANIMAL ON ROADWAY SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayForest chunk");
             spawnpoint = default;
             heading = 0f;
             safePos = default;
             var var = new Random().Next(1, 9);
-            Logger.DebugLog("CASE", ""+var+"");
+            Log.Debug("CASE", ""+var+"");
             switch (var)
             {
                case 1:
@@ -65,12 +65,12 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
 
         internal static void AltruistCampArea(out Vector3 spawnpoint, out float heading, out Vector3 safePos)
         {
-            Logger.DebugLog("ANIMAL ON ROADWAY SPAWNPOINT CHOOSER", "Choosing spawnpoint in AltruistCampArea chunk");
+            Log.Debug("ANIMAL ON ROADWAY SPAWNPOINT CHOOSER", "Choosing spawnpoint in AltruistCampArea chunk");
             spawnpoint = default;
             heading = 0f;
             safePos = default;
             var var = new Random().Next(1, 2);
-            Logger.DebugLog("CASE", ""+var+"");
+            Log.Debug("CASE", ""+var+"");
             switch (var)
             {
                 case 1:
@@ -83,12 +83,12 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
         
         internal static void RatonCanyon(out Vector3 spawnpoint, out float heading, out Vector3 safePos)
         {
-            Logger.DebugLog("ANIMAL ON ROADWAY SPAWNPOINT CHOOSER", "Choosing spawnpoint in RatonCanyon chunk");
+            Log.Debug("ANIMAL ON ROADWAY SPAWNPOINT CHOOSER", "Choosing spawnpoint in RatonCanyon chunk");
             spawnpoint = default;
             heading = 0f;
             safePos = default;
             var var = new Random().Next(1, 13);
-            Logger.DebugLog("CASE", ""+var+"");
+            Log.Debug("CASE", ""+var+"");
             switch (var)
             {
                 case 1:

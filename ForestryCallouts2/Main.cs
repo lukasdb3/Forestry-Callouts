@@ -12,6 +12,7 @@ using ForestryCallouts2.Backbone;
 using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.Menu;
 using ForestryCallouts2.Backbone.Functions;
+using ForestryCallouts2.Backbone.SpawnSystem;
 using MainMenu = ForestryCallouts2.Backbone.Menu.MainMenu;
 
 #endregion
@@ -20,8 +21,7 @@ namespace ForestryCallouts2
 {
     internal class Main : Plugin
     {
-        internal static Random Rnd = new Random();
-        internal static MenuPool Pool = new();
+        internal static readonly MenuPool Pool = new();
         private static GameFiber _mainFiber;
         internal static string CallsignAudioString;
         public override void Initialize()
@@ -41,18 +41,49 @@ namespace ForestryCallouts2
             Game.LogTrivial("ForestryCallouts2 has been cleaned up.");
         }
 
-        private static void OnOnDutyStateChangedHandler(bool OnDuty)
+        private static void OnOnDutyStateChangedHandler(bool onDuty)
         {
             //When player goes on duty FC fully loads
-            if (OnDuty)
+            if (onDuty)
             {
-                Logger.StartLoadingPhase();
-                Game.DisplayNotification("commonmenu", "shop_franklin_icon_a", "~g~Forestry Callouts 2", "~g~Plugin Version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " ", "Plugin Loaded! Enjoy!");
+                Game.Console.Print();
+                Game.Console.Print("=============== FORESTRY CALLOUTS ===============");
+                Game.Console.Print("Loading settings..");
+                IniSettings.LoadSettings();
+                CallsignAudioString = IniSettings.Callsign.TranslateCallsignToAudio();
+                Game.Console.Print("Checking Forestry Callouts version..");
+                Game.Console.Print("Forestry Callouts update available: "+VersionChecker.IsUpdateAvailable()+"");
+                Game.Console.Print("Version: "+VersionChecker.ReceivedData+"");
+                Game.Console.Print("Initializing menus..");
+                MainMenu.Initialize();
+                StopPedMenu.Initialize();
+                Game.Console.Print("Starting Main Loop..");
+                RunLoop();
+                if (PluginChecker.ForestryCallouts)
+                {
+                    Game.Console.Print();
+                    Game.Console.Print("===== WARNING =====");
+                    Game.Console.Print("The first version of ForestryCallouts was detected still in the plugins folder.");
+                    Game.Console.Print("Please remove ForestryCallouts and reload LSPDFR");
+                    Game.Console.Print("===== WARNING =====");
+                    Game.Console.Print();
+                }
+                Game.Console.Print("Loading needed chunks...");
+                if (!IniSettings.WaterCallouts) ChunkLoader.Land();
+                else ChunkLoader.Water();
+                GrabPedFiber.Main();
+                StopPedFiber.Main();
+                Game.Console.Print("Registering Callouts..");
+                RegisterCallouts();
+                Game.Console.Print("=============== FORESTRY CALLOUTS ===============");
+                Game.Console.Print();
+                CalloutCache.CacheCallouts();
+                Game.DisplayNotification("commonmenu", "shop_franklin_icon_a", "~g~ForestryCallouts2", "~g~Plugin Version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " ", "Plugin Loaded! Enjoy!");
             }
         }
 
         //Registers all callouts
-        internal static void RegisterCallouts()
+        private static void RegisterCallouts()
         {
             if (!IniSettings.WaterCallouts)
             {
@@ -62,21 +93,17 @@ namespace ForestryCallouts2
                 if (IniSettings.AtvPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.AtvPursuit));
                 if (IniSettings.DangerousPerson) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DangerousPerson));
                 if (IniSettings.DeadAnimalOnRoadway) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DeadAnimalOnRoadway));
+                if (IniSettings.DeadBody) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DeadBody));
                 if (IniSettings.DirtBikePursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.DirtBikePursuit));
                 if (IniSettings.HighSpeedPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.HighSpeedPursuit)); 
                 if (IniSettings.IntoxPerson) Functions.RegisterCallout(typeof(Callouts.LandCallouts.IntoxicatedPerson));
                 if (IniSettings.LoggerTruckPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.LoggerTruckPursuit));
                 if (IniSettings.RegularPursuit) Functions.RegisterCallout(typeof(Callouts.LandCallouts.RegularPursuit));
             }
-            else
-            {
-                if (IniSettings.DeadBodyWater) Functions.RegisterCallout(typeof(Callouts.WaterCallouts.DeadBodyWater));
-                if (IniSettings.BoatPursuit) Functions.RegisterCallout(typeof(Callouts.WaterCallouts.BoatPursuit));
-            }
         }
         
         //GameFiber that runs constantly for interaction menu and binoculars
-        internal static void RunLoop()
+        private static void RunLoop()
         {
             _mainFiber = GameFiber.StartNew(delegate
             {
@@ -84,13 +111,11 @@ namespace ForestryCallouts2
                 {
                     GameFiber.Yield();
                     
-
                     //Menu
                     Pool.ProcessMenus();
                     if (CFunctions.IsKeyAndModifierDown(IniSettings.InteractionMenuKey, IniSettings.InteractionMenuKeyModifier) && !Binoculars.IsRendering)
                     {
-                        if (MainMenu.InteractionMenu.Visible) MainMenu.InteractionMenu.Visible = false;
-                        else MainMenu.InteractionMenu.Visible = true;
+                        MainMenu.InteractionMenu.Visible = !MainMenu.InteractionMenu.Visible;
                     }
 
                     //Binoculars Hotkey

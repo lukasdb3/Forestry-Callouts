@@ -1,11 +1,13 @@
 ﻿#region Refrences
 //System
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 //Rage
 using Rage;
 //LSPDFR
 using LSPD_First_Response.Mod.API;
+using Functions = LSPD_First_Response.Mod.API.Functions;
 using LSPD_First_Response.Mod.Callouts;
 //RageNativeUI
 using RAGENativeUI;
@@ -18,7 +20,9 @@ using ForestryCallouts2.Backbone.SpawnSystem;
 using ForestryCallouts2.Backbone.SpawnSystem.Land;
 //CalloutInterface
 using CalloutInterfaceAPI;
-using Functions = LSPD_First_Response.Mod.API.Functions;
+//DAGDialogueSystem
+using static DAGDialogueSystem.DirectedAcyclicGraph;
+using DAGDialogueSystem;
 
 #endregion
 
@@ -54,8 +58,9 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private bool _firstBlip;
         private int _notfiSentCount;
         
-        //scenarios & dialogue
+        //scenarios
         private int _scenario;
+        private bool _sceanrioChosen;
         
         //pursuit
         private LHandle _pursuit;
@@ -63,16 +68,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         
         //dialogue
         private bool _askedPedToTalk;
-        private string _gender;
-        private int _counter = 0;
-        private bool _dialoguePhase1Complete = false;
-
-        private MenuPool _pool = new();
-        private UIMenu _choiceMenu = new("Forestry Callouts", "Pick A Dialogue Option");
-        private UIMenuItem _choice1 = new("null");
-        private UIMenuItem _choice2 = new("null");
-        private UIMenuItem _choice3 = new("null");
-        private UIMenuItem _choice4 = new("null");
+        private Node _root;
         #endregion
         public override bool OnBeforeCalloutDisplayed()
         {
@@ -99,43 +95,32 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         public override bool OnCalloutAccepted()
         {
-            Logger.CallDebugLog(this, "Callout accepted");
-            Logger.CallDebugLog(this, "Scenario: " + _scenario);
-            //Spawn the suspect
+            Log.CallDebug(this, "Callout accepted");
+            // spawn the suspect
             CFunctions.SpawnHikerPed(out _suspect, _suspectSpawn, _rand.Next(1, 361));
             CFunctions.SetDrunk(_suspect, true);
-            //Sets a blip on the suspects head and enables route
+            // sets a blip on the suspect and enables route
             _suspectBlip = _suspect.AttachBlip();
             _suspectBlip.EnableRoute(Color.Yellow);
-            //Gets the gender of suspect for dialogue
-            if (_suspect.IsMale) { _gender = "Sir"; }
-            else { _gender = "Mam"; }
-            //StartUI
-            _choiceMenu.AddItems(_choice1, _choice2, _choice3, _choice4);
-            _choiceMenu.MouseControlsEnabled = false;
-            _choiceMenu.Width = .3312f;
-            _choiceMenu.RemoveBanner();
-            _choiceMenu.SubtitleBackgroundColor = Color.DarkGreen;
-            _pool.Add(_choiceMenu);
             return base.OnCalloutAccepted();
         }
 
         public override void Process()
         {
-            //Prevent crashes by not running anything in Process other than end methods
+            // prevent crashes by not running anything in Process other than end methods
             if (!_pursuitStarted)
             {
-                //If the player is 200 or closer delete route and blip
+                // if the player is 200 or closer delete route and blip
                 if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 200f && !_onScene)
                 {
                     _suspect.Tasks.Wander();
-                    Logger.CallDebugLog(this, "Process started");
+                    Log.CallDebug(this, "Process started");
                     _onScene = true;
                     if (_suspectBlip) _suspectBlip.Delete();
                     _firstBlip = true;
                 }
 
-                //If suspect isn't found initialize the search area
+                // if suspect isn't found initialize the search area
                 if (!_suspectFound && _onScene)
                 {
                     if (!_pauseTimer) _timer++;
@@ -147,18 +132,18 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                         _searchArea = position.Around2D(10f, 50f);
                         _suspectAreaBlip = new Blip(_searchArea, 65f) {Color = Color.Yellow, Alpha = .5f};
                         _notfiSentCount++;
-                        Logger.CallDebugLog(this, "Search areas sent: " + _notfiSentCount + "");
+                        Log.CallDebug(this, "Search areas sent: " + _notfiSentCount + "");
                         _firstBlip = false;
                         Functions.PlayScannerAudioUsingPosition("SUSPECT_LAST_SEEN_01 IN_OR_ON_POSITION",
                             _suspect.Position);
                         _timer = 0;
                     }
 
-                    //we delete the search area, and blip the suspect because the player is taking to long to find the suspect
+                    // we delete the search area, and blip the suspect because the player is taking to long to find the suspect
                     if (_notfiSentCount == IniSettings.SearchAreaNotifications && !_maxNotfiSent)
                     {
-                        //Pause the timer so search blips dont keep coming in
-                        Logger.CallDebugLog(this, "Blipped suspect because player took to long to find them.");
+                        // pause the timer so search blips dont keep coming in
+                        Log.CallDebug(this, "Blipped suspect because player took to long to find them.");
                         _pauseTimer = true;
                         if (_suspectAreaBlip) _suspectAreaBlip.Delete();
                         _suspectBlip = _suspect.AttachBlip();
@@ -168,10 +153,10 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     }
                 }
 
-                //player found the intoxicated ped
+                // player found the intoxicated ped
                 if (!_suspectFound && Game.LocalPlayer.Character.DistanceTo(_suspect) <= 10f)
                 {
-                    Logger.CallDebugLog(this, "Suspect found!");
+                    Log.CallDebug(this, "Suspect found!");
                     _suspectBlip = _suspect.AttachBlip();
                     _suspectBlip.Color = Color.Red;
                     if (_suspectAreaBlip) _suspectAreaBlip.Delete();
@@ -180,60 +165,66 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
                 if (_suspectFound)
                 {
-                    //Dialogue scenario
-                    _scenario = _rand.Next(1, 5);
-                    if (_scenario < 4)
+                    if (!_sceanrioChosen)
                     {
-                        if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 5f && !_askedPedToTalk && Game.LocalPlayer.Character.IsOnFoot)
-                        {
-                            Game.DisplayHelp("Press ~r~(~y~" + IniSettings.DialogueKey.GetInstructionalKey() + "~r~)~w~ to start dialogue with the suspect.");
-                        }
-
-                        //Goes to Dialogue when player presses key again.
-                        if (CFunctions.IsKeyAndModifierDown(IniSettings.DialogueKey, IniSettings.DialogueKeyModifier) && Game.LocalPlayer.Character.IsOnFoot)
-                        {
-                            if (!_askedPedToTalk)
-                            {
-                                Game.DisplaySubtitle("~b~You:~w~ Can I talk to you, " + _gender + ".");
-                            }
-                            _suspect.Tasks.Clear();
-                            _suspect.Tasks.StandStill(-1);
-                            _suspect.Heading = Game.LocalPlayer.Character.Heading + 180f;
-                            MainDialogue();
-                        }
-
-                        //Dialogue Menu Processor
-                        _pool.ProcessMenus();
+                        _scenario = _rand.Next(1, 5);
+                        Log.CallDebug(this, "Scenario # = " + _scenario);
+                        _sceanrioChosen = true;
                     }
 
-                    //Drunk Ped starts foot pursuit
-                    if (_scenario == 4)
+                    switch (_scenario)
                     {
-                        if (!_pursuitStarted)
+                        case < 4:
                         {
-                            Game.DisplaySubtitle("~r~Suspect:~w~ LEAVE ME ALONE!");
-                            _suspect.Tasks.Wander();
-                            _pursuit = Functions.CreatePursuit();
-                            Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
-                            Functions.AddPedToPursuit(_pursuit, _suspect);
-                            Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
-                            if (_suspectBlip) _suspectBlip.Delete();
-                            _pursuitStarted = true;
+                            if (Game.LocalPlayer.Character.DistanceTo(_suspect) < 5f && Game.LocalPlayer.Character.IsOnFoot)
+                            {
+                                if (CFunctions.IsKeyAndModifierDown(IniSettings.DialogueKey, IniSettings.DialogueKeyModifier) && !_askedPedToTalk)
+                                {
+                                    // builds dialogue for scenarios 1 - 3.
+                                    BuildDialogue();
+                                    _askedPedToTalk = true;
+                                    _suspect.Tasks.StandStill(-1);
+                                    _suspect.Heading = Game.LocalPlayer.Character.Heading + 180;
+                                    GameFiber.StartNew(delegate
+                                    {
+                                        GameFiber.Yield();
+                                        DialogueFunctions.IterateDialogue(_root);
+                                    });
+                                }
+                                
+                            }
+                            break;
+                        }
+                        // drunk Ped starts foot pursuit
+                        case 4:
+                        {
+                            if (!_pursuitStarted)
+                            {
+                                Game.DisplaySubtitle("~r~Suspect:~w~ LEAVE ME ALONE!");
+                                _suspect.Tasks.Wander();
+                                _pursuit = Functions.CreatePursuit();
+                                Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
+                                Functions.AddPedToPursuit(_pursuit, _suspect);
+                                Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
+                                if (_suspectBlip) _suspectBlip.Delete();
+                                _pursuitStarted = true;
+                            }
+                            break;
                         }
                     }
                 }
             }
 
 
-            //End Callout
+            // end callout
             if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
-                Logger.CallDebugLog(this, "Callout was force ended by player");
+                Log.CallDebug(this, "Callout was force ended by player");
                 End();
             }
             if (Game.LocalPlayer.Character.IsDead)
             {
-                Logger.CallDebugLog(this, "Player died callout ending");
+                Log.CallDebug(this, "Player died callout ending");
                 End();
             }
             base.Process();
@@ -241,292 +232,70 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         public override void End()
         {
+            DialogueFunctions.Clean();
             if (_suspect) _suspect.Dismiss();
             if (_suspectBlip) _suspectBlip.Delete();
             if (_suspectAreaBlip) _suspectAreaBlip.Delete();
+            if (_scenario == 4) if (_pursuitStarted) if (Functions.IsPursuitStillRunning(_pursuit)) Functions.ForceEndPursuit(_pursuit);
             if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _suspectSpawn);
                 if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Intoxicated Person Code 4", "");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Intoxicated Person code 4");
             }
-            Logger.CallDebugLog(this, "Callout ended");
+            Log.CallDebug(this, "Callout ended");
             base.End();
         }
 
-        private void MainDialogue()
+        private void BuildDialogue()
         {
-            if (_counter == 1)
-            {
-                Logger.CallDebugLog(this, "Main Dialogue started");
-                _askedPedToTalk = true;
-                var random = _rand.Next(1, 5);
-                Logger.CallDebugLog(this, "Suspect Dialogue Choice: " + random);
-                switch (random)
-                {
-                    case 1:
-                        Game.DisplaySubtitle("~r~Suspect:~w~ What do you want.");
-                        break;
-                    case 2:
-                        Game.DisplaySubtitle("~r~Suspect:~w~ Oh, of course officer.");
-                        break;
-                    case 3:
-                        Game.DisplaySubtitle("~r~Suspect:~w~ Im on my daily walk but sure.");
-                        break;
-                    case 4:
-                        Game.DisplaySubtitle("~r~Suspect:~w~ Yes of course officer.");
-                        break;
-                }
-            }
-
-            if (_counter == 2)
-            {
-                _choice1.Text = "What are you doing out here?";
-                _choice2.Text = "How much have you had to drink?";
-                _choice3.Text = "It's not safe out here especially when your intoxicated.";
-                _choice4.Text = "Do you know public intoxication is a misdemeanor charge?";
-                _choiceMenu.RefreshIndex();
-                _choiceMenu.Visible = true;
-                Logger.CallDebugLog(this, "First Menu Visible");
-
-                //If 1 is chosen
-                _choice1.Activated += (menu, item) =>
-                {
-                    GameFiber.Wait(750);
-                    _choiceMenu.Visible = false;
-                    Game.DisplaySubtitle("~b~You: ~w~" + _choice1.Text);
-                    GameFiber.Wait(3500);
-                    var _rnd = _rand.Next(1, 5);
-                    if (!_dialoguePhase1Complete)
-                    {
-                        switch (_rnd)
-                        {
-                            case 1:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Leave me alone im trying to go on a peaceful walk.");
-                                break;
-                            case 2:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Im taking a nap in my head. Alcohol seems to help a lot and the natural beauty around me.");
-                                break;
-                            case 3:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Going on a walk officer.. ranger.. what ever you are.");
-                                break;
-                            case 4:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ How does a beer sound officer?");
-                                break;
-                        }   
-                    }
-                    if (_dialoguePhase1Complete)
-                    {
-                        switch (_rnd)
-                        {
-                            case 1:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ NO YOUR NOT!");
-                                _suspect.Tasks.Wander();
-                                _pursuit = Functions.CreatePursuit();
-                                Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
-                                Functions.AddPedToPursuit(_pursuit, _suspect);
-                                Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
-                                if (_suspectBlip) _suspectBlip.Delete();
-                                _pursuitStarted = true;
-                                return;
-                            case 2:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Please officer at least let me be released tomorrow.");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                            case 3:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ I accept my consequences officer.");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                            case 4:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Please don't do this officer.");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                        }
-                    }
-
-                    _choice1.Enabled = false;
-                    RefreshMenu();
-                };
-                //If 2 is chosen
-                _choice2.Activated += (menu, item) =>
-                {
-                    GameFiber.Wait(750);
-                    _choiceMenu.Visible = false;
-                    Game.DisplaySubtitle("~b~You: ~w~" + _choice2.Text);
-                    GameFiber.Wait(3500);
-                    var _rnd = _rand.Next(1, 5);
-                    if (!_dialoguePhase1Complete)
-                    {
-                        switch (_rnd)
-                        {
-                            case 1:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Ive had a few drinks, not enough to get me drunk though.");
-                                break;
-                            case 2:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Ive had zero drinks officer zero!");
-                                break;
-                            case 3:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Drinks? What are drinks? Like pepsi?");
-                                break;
-                            case 4:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Im gonna be honest im wasted. Went on a hike to sober up.");
-                                break;
-                        }   
-                    }
-                    if (_dialoguePhase1Complete)
-                    {
-                        switch (_rnd)
-                        {
-                            case 1:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Officer please I've done nothing wrong.");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                            case 2:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ I accept my consequences officer.");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                            case 3:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Let me go officer please I beg you.");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                            case 4:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ I've never been to jail I don't want to go!");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                        }
-                    }
-                    _choice2.Enabled = false;
-                    RefreshMenu();
-                };
-                //If 3 is chosen
-                _choice3.Activated += (menu, item) =>
-                {
-                    GameFiber.Wait(750);
-                    _choiceMenu.Visible = false;
-                    Game.DisplaySubtitle("~b~You: ~w~" + _choice3.Text);
-                    GameFiber.Wait(3500);
-                    var _rnd = _rand.Next(1, 5);
-                    if (!_dialoguePhase1Complete)
-                    {
-                        switch (_rnd)
-                        {
-                            case 1:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Yeah I have had a lot of drinks.");
-                                break;
-                            case 2:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Yeah, I've had quite a few drinks I'll admit.");
-                                break;
-                            case 3:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Doesn't nature beauty sober people up? I must be an alien.");
-                                break;
-                            case 4:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Officer, you have the wrong person I swear.");
-                                break;
-                        }   
-                    }
-                    if (_dialoguePhase1Complete)
-                    {
-                        switch (_rnd)
-                        {
-                            case 1:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Officer you know.. there isn't any fun in that.");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                            case 2:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Please don't arrest me.");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                            case 3:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Please officer let me go on a warning.");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                            case 4:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ I'LL RUN INTOXICATED TOO!");
-                                _suspect.Tasks.Wander();
-                                _pursuit = Functions.CreatePursuit();
-                                Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
-                                Functions.AddPedToPursuit(_pursuit, _suspect);
-                                Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
-                                if (_suspectBlip) _suspectBlip.Delete();
-                                _pursuitStarted = true;
-                                return;
-                        }
-                    }
-                    _choice3.Enabled = false;
-                    RefreshMenu();
-                };
-                //If 4 is chosen, choice 4 is the trigger for new dialogue questions
-                _choice4.Activated += (menu, item) =>
-                {
-                    GameFiber.Wait(750);
-                    _choiceMenu.Visible = false;
-                    Game.DisplaySubtitle("~b~You: ~w~" + _choice4.Text);
-                    GameFiber.Wait(3500);
-                    var _rnd = _rand.Next(1, 5);
-                    if (!_dialoguePhase1Complete)
-                    {
-                        switch (_rnd)
-                        {
-                            case 1:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Does that mean your going to arrest me?");
-                                break;
-                            case 2:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Please officer give me one more chance I'll go straight home!");
-                                break;
-                            case 3:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ I just wanted to go on a nice walk officer I hope you understand.");
-                                break;
-                            case 4:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ How could you be charged for a crime in mother nature officer?");
-                                break;
-                        }   
-                    }
-                    if (_dialoguePhase1Complete)
-                    {
-                        switch (_rnd)
-                        {
-                            case 1:
-                                Game.DisplaySubtitle("~r~Suspect:~w~: I accept my consequences officer.");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                            case 2:
-                                Game.DisplaySubtitle("~r~Suspect:~w~: The inmates will kill me officer!");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                            case 3:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Well I guess it was a nice walk while it lasted.");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                            case 4:
-                                Game.DisplaySubtitle("~r~Suspect:~w~ Im gonna miss the free world.");
-                                Game.DisplayHelp("~g~Dialogue Finished");
-                                return;
-                        }
-                    }
-
-                    //Change questions and reenable the choices.
-                    _choice1.Enabled = true;
-                    _choice2.Enabled = true;
-                    _choice3.Enabled = true;
-
-                    _choice1.Text = "Im going to have to arrest you.";
-                    _choice2.Text = "I can't just let you go free sorry.";
-                    _choice3.Text = "You could've went on a nice walk not intoxicated.";
-                    _choice4.Text = "Mother nature doesn't free you from charges.";
-
-                    _dialoguePhase1Complete = true;
-                    RefreshMenu();
-                };
-            }
-            _counter++;
-        }
-
-        private void RefreshMenu()
-        {
-            Logger.CallDebugLog(this, "Refreshed Dialogue Menu");
-            GameFiber.Wait(3500);
-            _choiceMenu.RefreshIndex();
-            _choiceMenu.Visible = true;
+            Log.CallDebug(this, "Callout Dialogue Building..");
+            const string prefixS = "~r~Suspect:~w~ ";
+            const string prefixP = "~y~You:~w~ ";
+            _root = new Node(1, prefixP+"Excuse me, may I speak to you for a minute?");
+            var _1 = _root.AddNode(1, prefixS+"Sure of course officer..");
+        
+            var _2 = _1.AddNode(2, "[This is a Prompt Node]");
+            var _3 = _2.AddNode(3, "We have gotten reports of an intoxicated hiker.");
+            var _4 = _2.AddNode(3, "You match the description of an intoxicated individual.");
+            var _5 = _2.AddNode(3, "I know you have been drinking, how drunk are you?");
+            var _6 = _2.AddNode(3, "Your going to get me drunk off your breath!");
+                    
+            //Ai Speaking Options
+            //N
+            var _7 = _3.AddNode(1, prefixS+"I can’t lie, I have had a few drinks but im good to walk.");
+            var _8 = _3.AddNode(1, prefixS+"That’s not me officer, I swear!");
+            //G
+            var _9 = _4.AddNode(1, prefixS+"I think you are in the wrong area officer.. I'm not drunk!");
+            var _10 = _4.AddNode(1, prefixS+"Get outta here! Your kidding! I'm walking my imaginary dog!");
+            //B
+            var _11 = _5.AddNode(1, prefixS+"Drinking is fun! I can tell your not a fun person..");
+            var _12 = _5.AddNode(1, prefixS+"F*ck you, pig. Leave me alone!");
+            //S
+            var _13 = _6.AddNode(1, prefixS+"That’s why you want to talk to me?");
+            var _14 = _6.AddNode(1, prefixS+"You should smell your own breath before you start judging.");
+            
+            //N G Prompt Node
+            var _15 = _7.AddNode(2, "[This is a Prompt Node]");
+            _8.ConnectTo(_15);
+            _9.ConnectTo(_15);
+            _10.ConnectTo(_15);
+            var _16 = _15.AddNode(3, "Do you mind if I breathalyzer test you?");
+            var _17 = _15.AddNode(3, "You are being detained, put your hands behind your back.");
+            var _18 = _15.AddNode(3, "You're under arrest for public intoxication.");
+            var _19 = _15.AddNode(3, "Put em up! You're under arrest for public intox!");
+            
+            //B S Prompt Node
+            var _20 = _11.AddNode(2, "[This is a Prompt Node]");
+            _12.ConnectTo(_20);
+            _13.ConnectTo(_20);
+            _14.ConnectTo(_20);
+            var _21 = _20.AddNode(3, "NOT IMPLEMENTED");
+            var _22 = _20.AddNode(3, "NOT IMPLEMENTED");
+            var _23 = _20.AddNode(3, "NOT IMPLEMENTED");
+            var _24 = _20.AddNode(3, "NOT IMPLEMENTED");
+                        
+            Log.CallDebug(this, "Callout Dialogue Building Finished!");
         }
     }
 }

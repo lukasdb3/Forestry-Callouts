@@ -1,6 +1,7 @@
 ﻿#region Refrences
 //System
 using System.Drawing;
+using System.Threading;
 //Rage
 using Rage;
 //RageNativeUI
@@ -29,7 +30,6 @@ namespace ForestryCallouts2.Backbone.Menu
 
         // Settings Menu
         //Main
-        internal static UIMenuListItem DebugLogs;
         internal static UIMenuListItem EndNotfiMessages;
         internal static UIMenuListItem WaterCallouts;
         internal static UIMenuNumericScrollerItem<int> SearchAreaBlipsMax;
@@ -46,15 +46,13 @@ namespace ForestryCallouts2.Backbone.Menu
         internal static UIMenuListItem AtvPursuit;
         internal static UIMenuListItem DangerousPerson;
         internal static UIMenuListItem DeadAnimalOnRoadway;
+        internal static UIMenuListItem DeadBody;
         internal static UIMenuListItem AnimalOnRoadway;
         internal static UIMenuListItem DirtBikePursuit;
         internal static UIMenuListItem HighSpeedPursuit;
         internal static UIMenuListItem IntoxicatedPerson;
         internal static UIMenuListItem LoggerTruckPursuit;
         internal static UIMenuListItem RegularPursuit;
-
-        internal static UIMenuListItem DeadBodyWater;
-        internal static UIMenuListItem BoatPursuit;
         
         private static UIMenuItem _saveSettings;
 
@@ -78,17 +76,16 @@ namespace ForestryCallouts2.Backbone.Menu
             _settingsMenu.SetBannerType(Color.ForestGreen);
             _settingsMenu.MouseControlsEnabled = false;
             //Main
-            DebugLogs = new UIMenuListItem("DebugsLogs", "For Debugging Forestry Callouts Crashes", IniSettings.DebugLogs.ToString().ToLower(), (IniSettings.DebugLogs) ? "false" : "true");
             EndNotfiMessages = new UIMenuListItem("CalloutEndMessages", "Disables And Enables End Callout Notifications", IniSettings.EndNotfiMessages.ToString().ToLower(), (IniSettings.EndNotfiMessages) ? "false" : "true");
             WaterCallouts = new UIMenuListItem("WaterCallouts", "Disables And Enables Water Callouts", IniSettings.WaterCallouts.ToString().ToLower(), (IniSettings.WaterCallouts) ? "false" : "true");
             SearchAreaBlipsMax = new UIMenuNumericScrollerItem<int>("SearchAreaBlipsMax", "Amount of Search Areas Sent Before Object is Blipped", 5, 15, 1);
             SearchAreaBlipsMax.Value = IniSettings.SearchAreaNotifications;
-            EnableDistanceChecker = new UIMenuListItem("EnableDistanceChecker", "Disables And Enables Distance Checker", IniSettings.EnableDistanceChecker, (IniSettings.EnableDistanceChecker) ? "false" : "true");
+            EnableDistanceChecker = new UIMenuListItem("EnableDistanceChecker", "Disables And Enables Distance Checker", IniSettings.EnableDistanceChecker.ToString().ToLower(), (IniSettings.EnableDistanceChecker) ? "false" : "true");
             MaxDistance = new UIMenuNumericScrollerItem<double>("MaxDistance", "The Max Distance A Callout Will Spawn Away From You (meters)", 1000, 10000, 100);
             MaxDistance.Value = IniSettings.MaxDistance;
             MinCalloutDistance = new UIMenuNumericScrollerItem<int>("MinimumCalloutSpawnDistance", "The Minimum Distance A Callout Will Spawn Away From You (meters)", 30, 300, 1);
             MinCalloutDistance.Value = IniSettings.MinCalloutDistance;
-            AICops = new UIMenuListItem("AICops", "Disables And Enables AI Cops Spawning For Pursuits", IniSettings.AICops, (IniSettings.AICops) ? "false" : "true");
+            AICops = new UIMenuListItem("AICops", "Disables And Enables AI Cops Spawning For Pursuits", IniSettings.AICops.ToString().ToLower(), (IniSettings.AICops) ? "false" : "true");
             //Binoculars
             EnableBinoculars = new UIMenuListItem("EnableBinoculars", "Disables And Enables Binoculars", IniSettings.BinocularsEnabled.ToString().ToLower(), (IniSettings.BinocularsEnabled) ? "false" : "true");
             BinocularsSense = new UIMenuNumericScrollerItem<int>("BinocularsSensitivity", "Binoculars Horizontal Sensitivity",1, 10, 1);
@@ -100,19 +97,17 @@ namespace ForestryCallouts2.Backbone.Menu
             AtvPursuit = new UIMenuListItem("AtvPursuit", "", IniSettings.AtvPursuit.ToString().ToLower(), (IniSettings.AtvPursuit) ? "false" : "true");
             DangerousPerson = new UIMenuListItem("DangerousPerson", "", IniSettings.DangerousPerson.ToString().ToLower(), (IniSettings.DangerousPerson) ? "false" : "true");
             DeadAnimalOnRoadway = new UIMenuListItem("DeadAnimalRoadway", "", IniSettings.DeadAnimalOnRoadway.ToString().ToLower(), (IniSettings.DeadAnimalOnRoadway) ? "false" : "true");
+            DeadBody = new UIMenuListItem("DeadBody", "", "", IniSettings.DeadBody.ToString().ToLower(),(IniSettings.DeadBody) ? "false" : "true");
             AnimalOnRoadway = new UIMenuListItem("AnimalOnRoadway", "", IniSettings.AnimalOnRoadway.ToString().ToLower(), (IniSettings.AnimalOnRoadway) ? "false" : "true");
             DirtBikePursuit = new UIMenuListItem("DirtBikePursuit", "",IniSettings.DirtBikePursuit.ToString().ToLower(), (IniSettings.DirtBikePursuit) ? "false" : "true");
             HighSpeedPursuit = new UIMenuListItem("HighSpeedPursuit", "", IniSettings.HighSpeedPursuit.ToString().ToLower(), (IniSettings.HighSpeedPursuit) ? "false" : "true");
             IntoxicatedPerson = new UIMenuListItem("IntoxicatedPerson", "",IniSettings.IntoxPerson.ToString().ToLower(), (IniSettings.IntoxPerson) ? "false" : "true");
             LoggerTruckPursuit = new UIMenuListItem("LoggerTruckPursuit", "", IniSettings.LoggerTruckPursuit.ToString().ToLower(), (IniSettings.LoggerTruckPursuit) ? "false" : "true");
-            RegularPursuit = new UIMenuListItem("RegularPursuit", "",IniSettings.RegularPursuit.ToString().ToLower(), (IniSettings.RegularPursuit) ? "false" : "true");
-
-            DeadBodyWater = new UIMenuListItem("DeadBodyWater", "", IniSettings.DeadBodyWater.ToString().ToLower(), (IniSettings.DeadBodyWater) ? "false" : "true");
-            BoatPursuit = new UIMenuListItem("BoatPursuit", "", IniSettings.BoatPursuit.ToString().ToLower(), (IniSettings.BoatPursuit) ? "false" : "true");
+            RegularPursuit = new UIMenuListItem("Pursuit", "",IniSettings.RegularPursuit.ToString().ToLower(), (IniSettings.RegularPursuit) ? "false" : "true");
             //Buttons for saving and reloading Ini
-            _saveSettings = new UIMenuItem("~g~Save Settings", "~r~Required To Press If Settings Were Just Changed");
-            _settingsMenu.AddItems(DebugLogs ,EndNotfiMessages ,SearchAreaBlipsMax, MaxDistance, MinCalloutDistance, AICops, EnableBinoculars, BinocularsSense, BinocularsImage, IntoxicatedPerson, AnimalAttack, AtvPursuit, DangerousPerson, DeadAnimalOnRoadway,
-                DirtBikePursuit, HighSpeedPursuit, IntoxicatedPerson, LoggerTruckPursuit, RegularPursuit, _saveSettings);
+            _saveSettings = new UIMenuItem("~g~Save Settings", "~r~Required To Do If Settings Were Just Changed");
+            _settingsMenu.AddItems(EndNotfiMessages ,SearchAreaBlipsMax, EnableDistanceChecker ,MaxDistance, MinCalloutDistance, AICops, EnableBinoculars, BinocularsSense, BinocularsImage, AnimalAttack, AtvPursuit, DangerousPerson, DeadAnimalOnRoadway, DeadBody,
+                AnimalOnRoadway, DirtBikePursuit, HighSpeedPursuit, IntoxicatedPerson, LoggerTruckPursuit, RegularPursuit, _saveSettings);
             InteractionMenu.BindMenuToItem(_settingsMenu, _settings);
             _settingsMenu.RefreshIndex();
             _settingsMenu.OnItemSelect += OnSettingsMenuItemSelected;
@@ -121,7 +116,7 @@ namespace ForestryCallouts2.Backbone.Menu
 
         private static void OnInteractionMenuItemSelected(UIMenu sender, UIMenuItem selecteditem, int index)
         {
-            Logger.DebugLog("INTERACTION MENU", "Item " + selecteditem.Text + " was selected!");
+            Log.Debug("INTERACTION MENU", "Item " + selecteditem.Text + " was selected!");
             if (selecteditem == _callAnimalControl) AnimalControl.CallAnimalControl();
 
             if (selecteditem == _endCallout)
@@ -129,21 +124,22 @@ namespace ForestryCallouts2.Backbone.Menu
                 if (LSPD_First_Response.Mod.API.Functions.IsCalloutRunning())
                 {
                     LSPD_First_Response.Mod.API.Functions.StopCurrentCallout();
-                    Logger.DebugLog("INTERACTION MENU", "Ended current callout");
+                    Log.Debug("INTERACTION MENU", "Ended current callout");
                 }
                 Game.DisplayNotification("~g~There Is No Callout Running");
-                Logger.DebugLog("INTERACTION MENU", "There is no callout to end");
+                Log.Debug("INTERACTION MENU", "There is no callout to end");
             }
         }
 
         private static void OnSettingsMenuItemSelected(UIMenu sender, UIMenuItem selecteditem, int index)
         {
-            Logger.DebugLog("INTERACTION MENU", "Saving and reloading settings!");
+            Log.Debug("INTERACTION MENU", "Saving and reloading settings!");
             if (selecteditem == _saveSettings)
             {
                 IniSettings.SaveNewSettings();
                 IniSettings.LoadSettings();
                 _settingsMenu.RefreshIndex();
+                Game.DisplayNotification("~g~It is recommended to reload LSPDFR after changing INI options, some settings require a reload!");
             }
         }
 

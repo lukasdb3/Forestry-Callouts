@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DAGDialogueSystem</name>
+    </assembly>
+    <members>
+        <member name="M:DAGDialogueSystem.DialogueFunctions.IterateDialogue(DAGDialogueSystem.DirectedAcyclicGraph.Node)">
+            <summary>
+             Iterates through dialogue starting with the root node.
+            </summary>
+            <param name="n"> root node </param>
+        </member>
+        <member name="M:DAGDialogueSystem.DialogueFunctions.DisplayData(System.String)">
+            <summary>
+            Displays the node data in a subtitle.
+            </summary>
+            <param name="s"> the node's data </param>
+        </member>
+        <member name="M:DAGDialogueSystem.DialogueFunctions.Clean">
+            <summary>
+            Sets the global class variables back to default.
+            </summary>
+        </member>
+        <member name="T:DAGDialogueSystem.DirectedAcyclicGraph">
+            <summary>
+            Main class for DAGDialogueSystem
+            </summary>
+        </member>
+        <member name="T:DAGDialogueSystem.DirectedAcyclicGraph.Node">
+            <summary>
+            The node class for the Directed Acyclic Graph.
+            Type 1, Dialogue that is said in every conversation. This is usual a starter like "Hello Officer".
+            Type 2, Prompt Node, initializes menu.
+            Type 3, Dialogue Options, Parent must be Type 2.
+            </summary>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.#ctor(System.Int32,System.String)">
+            <summary>
+            Makes a new node in memory
+            </summary>
+            <param name="type">
+            Type 1, Dialogue that is said in every conversation. This is usual a starter like "Hello Officer".
+            Type 2, Prompt Node, initializes menu.
+            Type 3, Dialogue Options, Parent must be Type 2. </param>
+            <param name="data"> dialogue string </param>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.GetNType">
+            <summary>
+            Gets the node type.
+            </summary>
+            <returns>Int</returns>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.GetData">
+            <summary>
+            Gets the node data.
+            </summary>
+            <returns>String</returns>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.GetEdges">
+            <summary>
+            Gets node edges.
+            </summary>
+            <returns>List</returns>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.GetNextNode">
+            <summary>
+            Gets the next node in the graph.
+            </summary>
+            <returns> if no edges, returns null. If one edge, return's receiver of that edge. Likewise, if more than one edge, does the same thing but randomly
+            gets the edge to return. </returns>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.AddNode(System.Int32,System.String)">
+            <summary>
+            Adds edge between this node and a new node with the type and data params.
+            If multiple AddNodes take place on the same node. The top (most left) node will be
+            the first edge.
+            </summary>
+            <param name="type"> 1 hard dialogue, 2 menu, 3 menu options</param>
+            <param name="data">dialogue line in string format</param>
+            <returns> Node </returns>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.ConnectTo(DAGDialogueSystem.DirectedAcyclicGraph.Node)">
+            <summary>
+            Connects this node and target node with edge.
+            </summary>
+            <param name="target"> node that needs connecting </param>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.EdgesCount">
+            returns the amount of edges that node has.
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.GetFirstEdge">
+            returns the first edge of node.
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.GetEdgeAtIndex(System.Int32)">
+            gets edge at index.
+            <param name="i"> the index of needed edge </param>>
+        </member>
+        <member name="T:DAGDialogueSystem.DirectedAcyclicGraph.Edge">
+            <summary>
+            The arrow in between nodes.
+            </summary>
+        </member>
+    </members>
+</doc>

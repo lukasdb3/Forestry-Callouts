@@ -37,7 +37,7 @@ namespace ForestryCallouts2.Backbone.Functions
                 _binoCamera.AttachToEntity(_binoculars, new Vector3(0.0f, -0.1f, 0.0f), true);
                 _binoCamera.Rotation = Game.LocalPlayer.Character.Rotation;
                 // Start texture rendering
-                Logger.DebugLog("BINOCULARS", "TEXTURE = "+IniSettings.BinocularsImage+".png");
+                Log.Debug("BINOCULARS", "TEXTURE = "+IniSettings.BinocularsImage+".png");
                 _binoTexture = Game.CreateTextureFromFile(@"plugins\lspdfr\ForestryCallouts2\" + IniSettings.BinocularsImage + ".png");
                 Game.RawFrameRender += RawFrameRender;
                 IsRendering = true;

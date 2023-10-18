@@ -1,0 +1,29 @@
+Changelog
+
+v2.0.1.0
+
+- Added Option to Disable End Callout Notfications (audio still gets sent)
+- Added Option to Have AI Cops Purusing the Pursuit Suspects
+- Changed Version Checker to Detect Beta Version Automatically
+- Removed DebugLogs option
+- Fixed Typos
+
+v2.0.1.1
+
+- Fixed Ini & Settings Menu Issues
+- Fixed ATV Pursuit Crash
+- Cleaned Repitive Code
+- Fixed A Animal Attack issue where Search Area would not
+delete when the Animal is dead
+- Added DeadBody Callout
+
+v2.0.1.2
+
+- Fixed Callout Cacher Issues
+- Changed Logs
+- Cleand More Repitive Code
+- Fixed Issues With Dangerous Person
+- Fixed Issues With Intoxicated Hiker
+- Implemented New Dialogue System
+  # DAGDialogueSystem
+  # Major WIP but I hope to release fully one day

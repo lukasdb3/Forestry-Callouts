@@ -77,7 +77,7 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
 
         public override bool OnCalloutAccepted()
         {
-            Logger.CallDebugLog(this, "Callout accepted");
+            Log.CallDebug(this, "Callout accepted");
             //Spawn victim
             CFunctions.SpawnBeachPed(out _victim, _victimSpawn, _victimHeading);
             _victimBlip = _victim.AttachBlip();
@@ -94,7 +94,7 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
             {
                 if (Game.LocalPlayer.Character.DistanceTo(_victim) <= 200f && !_onScene)
                 {
-                    Logger.CallDebugLog(this, "Process started");
+                    Log.CallDebug(this, "Process started");
                     _onScene = true;
                     if (_victimBlip) _victimBlip.Delete();
                     _firstBlip = true;
@@ -113,7 +113,7 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
                     _searchArea = position.Around2D(10f, 50f);
                     _victimSearchArBlip = new Blip(_searchArea, 65f) {Color = Color.Yellow, Alpha = .5f};
                     _notfiSentCount++;
-                    Logger.CallDebugLog(this, "Search areas sent: " + _notfiSentCount + "");
+                    Log.CallDebug(this, "Search areas sent: " + _notfiSentCount + "");
                     _firstBlip = false;
                     _timer = 0;
                 }
@@ -122,7 +122,7 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
                 if (_notfiSentCount == IniSettings.SearchAreaNotifications && !_maxNotfiSent)
                 {
                     //Pause the timer so search blips dont keep coming in
-                    Logger.CallDebugLog(this, "Blipped victim because player took to long to find them.");
+                    Log.CallDebug(this, "Blipped victim because player took to long to find them.");
                     _pauseTimer = true;
                     if (_victimSearchArBlip) _victimSearchArBlip.Delete();
                     _victimBlip = _victim.AttachBlip();
@@ -134,7 +134,7 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
                 //player found the animal
                 if (!_victimFound && Game.LocalPlayer.Character.DistanceTo(_victim) <= 8f)
                 {
-                    Logger.CallDebugLog(this, "Suspect found!");
+                    Log.CallDebug(this, "Suspect found!");
                     _victimBlip = _victim.AttachBlip();
                     _victimBlip.Color = Color.Red;
                     if (_victimSearchArBlip) _victimSearchArBlip.Delete();
@@ -150,12 +150,12 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
             
             if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
-                Logger.CallDebugLog(this, "Callout was force ended by player");
+                Log.CallDebug(this, "Callout was force ended by player");
                 End();
             }
             if (Game.LocalPlayer.Character.IsDead)
             {
-                Logger.CallDebugLog(this, "Player died callout ending");
+                Log.CallDebug(this, "Player died callout ending");
                 End();
             }
             base.Process();
@@ -172,7 +172,7 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dead Body Code 4", "");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Dead Body Code 4");
             }
-            Logger.CallDebugLog(this, "Callout ended");
+            Log.CallDebug(this, "Callout ended");
             
             base.End();
         }

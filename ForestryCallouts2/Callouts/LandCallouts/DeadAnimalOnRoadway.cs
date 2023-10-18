@@ -62,7 +62,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         public override bool OnCalloutAccepted()
         {
-            Logger.CallDebugLog(this, "Callout accepted");
+            Log.CallDebug(this, "Callout accepted");
             //Spawn victim
             CFunctions.SpawnAnimal(out _animal, _animalSpawn, _animalHeading);
             _animalBlip = _animal.AttachBlip();
@@ -85,12 +85,12 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             
             if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
-                Logger.CallDebugLog(this, "Callout was force ended by player");
+                Log.CallDebug(this, "Callout was force ended by player");
                 End();
             }
             if (Game.LocalPlayer.Character.IsDead)
             {
-                Logger.CallDebugLog(this, "Player died callout ending");
+                Log.CallDebug(this, "Player died callout ending");
                 End();
             }
             base.Process();
@@ -106,7 +106,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dead Animal On Roadway Code 4", "");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Dead Animal On Roadway code 4");
             }
-            Logger.CallDebugLog(this, "Callout ended");
+            Log.CallDebug(this, "Callout ended");
             base.End();
         }
     }

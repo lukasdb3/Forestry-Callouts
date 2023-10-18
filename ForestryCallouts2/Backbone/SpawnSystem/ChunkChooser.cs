@@ -45,8 +45,8 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
 
             //finds closest chunk to the player
             _closestChunk = ChunkLoader.chunklist.OrderBy(x => x.DistanceTo(playerPos)).FirstOrDefault();
-            Logger.DebugLog("CHUNK CHOOSER","WaterCallouts = " + IniSettings.WaterCallouts);
-            Logger.DebugLog("CHUNK CHOOSER","Closest chunk: "+_closestChunk+"");
+            Log.Debug("CHUNK CHOOSER","WaterCallouts = " + IniSettings.WaterCallouts);
+            Log.Debug("CHUNK CHOOSER","Closest chunk: "+_closestChunk+"");
 
             //Checks and makes sure the chunk is within the max distance range if not callout is ended.
             if (IniSettings.EnableDistanceChecker)
@@ -55,13 +55,13 @@ namespace ForestryCallouts2.Backbone.SpawnSystem
                 {
                     StoppingCurrentCall = true;
                     LSPD_First_Response.Mod.API.Functions.StopCurrentCallout();
-                    Logger.DebugLog("DISTANCE CHECKER", "Stopping current callout due to it being out of the max distance range");
-                    Logger.DebugLog("DISTANCE CHECKER", "Selecting new callout to start");
-                    CalloutsGetter.StartRandomCallout();
+                    Log.Debug("DISTANCE CHECKER", "Stopping current callout due to it being out of the max distance range");
+                    Log.Debug("DISTANCE CHECKER", "Selecting new callout to start");
+                    CalloutCache.StartRandomCallout();
                 }
                 else
                 {
-                    Logger.DebugLog("DISTANCE CHECKER", "Player is in good range of the chunk");
+                    Log.Debug("DISTANCE CHECKER", "Player is in good range of the chunk");
                     CalloutSpawnSorter();
                 }   
             }

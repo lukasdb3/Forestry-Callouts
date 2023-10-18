@@ -40,7 +40,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         
         //search area variables
         private Blip _suspectAreaBlip;
-        private Vector3 _searchArea;
         private bool _maxNotfiSent;
         private bool _firstBlip;
         private int _notfiSentCount;
@@ -85,8 +84,8 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         public override bool OnCalloutAccepted()
         {
-            Logger.CallDebugLog(this, "Callout accepted");
-            Logger.CallDebugLog(this, "Scenario: " + _scenario);
+            Log.CallDebug(this, "Callout accepted");
+            Log.CallDebug(this, "Scenario: " + _scenario);
             //Spawn the suspect
             CFunctions.SpawnCountryPed(out _suspect, _suspectSpawn, _rand.Next(1, 361));
             //Give gun
@@ -107,7 +106,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 200f && !_onScene)
                 {
                     _suspect.Tasks.Wander();
-                    Logger.CallDebugLog(this, "Process started");
+                    Log.CallDebug(this, "Process started");
                     _onScene = true;
                     if (_suspectBlip) _suspectBlip.Delete();
                     _firstBlip = true;
@@ -121,11 +120,10 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     if (_firstBlip && _timer >= 1 || _timer >= 1250)
                     {
                         if (_suspectAreaBlip) _suspectAreaBlip.Delete();
-                        var position = _suspect.Position;
-                        _searchArea = position.Around2D(10f, 50f);
-                        _suspectAreaBlip = new Blip(_searchArea, 65f) {Color = Color.Yellow, Alpha = .5f};
+                        _suspectAreaBlip = CFunctions.SpawnSearchArea(_suspect.Position, 10f, 30f, 65f, Color.Yellow, .5f);
                         _notfiSentCount++;
-                        Logger.CallDebugLog(this, "Search areas sent: " + _notfiSentCount + "");
+                        
+                        Log.CallDebug(this, "Search areas sent: " + _notfiSentCount + "");
                         _firstBlip = false;
                         Functions.PlayScannerAudioUsingPosition("SUSPECT_LAST_SEEN_01 IN_OR_ON_POSITION",
                             _suspect.Position);
@@ -136,7 +134,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     if (_notfiSentCount == IniSettings.SearchAreaNotifications && !_maxNotfiSent)
                     {
                         //Pause the timer so search blips dont keep coming in
-                        Logger.CallDebugLog(this, "Blipped suspect because player took to long to find them.");
+                        Log.CallDebug(this, "Blipped suspect because player took to long to find them.");
                         _pauseTimer = true;
                         if (_suspectAreaBlip) _suspectAreaBlip.Delete();
                         _suspectBlip = _suspect.AttachBlip();
@@ -149,7 +147,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 //player found the intoxicated ped
                 if (!_suspectFound && Game.LocalPlayer.Character.DistanceTo(_suspect) <= 10f)
                 {
-                    Logger.CallDebugLog(this, "Suspect found!");
+                    Log.CallDebug(this, "Suspect found!");
                     _suspectBlip = _suspect.AttachBlip();
                     _suspectBlip.Color = Color.Red;
                     if (_suspectAreaBlip) _suspectAreaBlip.Delete();
@@ -185,12 +183,12 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
                 if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
                 {
-                    Logger.CallDebugLog(this, "Callout was force ended by player");
+                    Log.CallDebug(this, "Callout was force ended by player");
                     End();
                 }
                 if (Game.LocalPlayer.Character.IsDead)
                 {
-                    Logger.CallDebugLog(this, "Player died callout ending");
+                    Log.CallDebug(this, "Player died callout ending");
                     End();
                 }
                 base.Process();
@@ -200,17 +198,15 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         {
             if (_suspect) _suspect.Dismiss();
             if (_suspectBlip) _suspectBlip.Delete();
-            if (_scenario2 == 1)
-            {
-                if (Functions.IsPursuitStillRunning(_pursuit)) Functions.ForceEndPursuit(_pursuit);
-            }
+            if (_suspectAreaBlip) _suspectAreaBlip.Delete();
+            if (_scenario2 == 1) if (Functions.IsPursuitStillRunning(_pursuit)) Functions.ForceEndPursuit(_pursuit);
             if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _suspectSpawn);
                 if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dangerous Person Code 4", "");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Dangerous Person code 4");
             }
-            Logger.CallDebugLog(this, "Callout ended");
+            Log.CallDebug(this, "Callout ended");
             base.End();
         }
     }

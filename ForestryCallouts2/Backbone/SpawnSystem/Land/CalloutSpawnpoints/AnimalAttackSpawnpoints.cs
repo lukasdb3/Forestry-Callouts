@@ -12,10 +12,10 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
     {                                                                                                                                                                                                             
         internal static void PaletoBayForest(out Vector3 spawnpoint)
         {
-            Logger.DebugLog("ANIMAL ATTACK SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayForest chunk");
+            Log.Debug("ANIMAL ATTACK SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayForest chunk");
             spawnpoint = default;
             var var = new Random().Next(1, 11);
-            Logger.DebugLog("CASE", ""+var+"");
+            Log.Debug("CASE", ""+var+"");
             spawnpoint = var switch
             {
                 1 => new Vector3(-791.41f, 5479.48f, 26.51f),
@@ -34,10 +34,10 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
 
         internal static void AltruistCampArea(out Vector3 spawnpoint)
         {
-            Logger.DebugLog("ANIMAL ATTACK SPAWNPOINT CHOOSER", "Choosing spawnpoint in AltruistCampArea chunk");
+            Log.Debug("ANIMAL ATTACK SPAWNPOINT CHOOSER", "Choosing spawnpoint in AltruistCampArea chunk");
             spawnpoint = default;
             var var = new Random().Next(1, 9);
-            Logger.DebugLog("CASE", ""+var+"");
+            Log.Debug("CASE", ""+var+"");
             spawnpoint = var switch
             {
                 1 => new Vector3(-921.68f, 5146.91f, 157.94f),
@@ -54,10 +54,10 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
         
         internal static void RatonCanyon(out Vector3 spawnpoint)
         {
-            Logger.DebugLog("ANIMAL ATTACK SPAWNPOINT CHOOSER", "Choosing spawnpoint in RatonCanyon chunk");
+            Log.Debug("ANIMAL ATTACK SPAWNPOINT CHOOSER", "Choosing spawnpoint in RatonCanyon chunk");
             spawnpoint = default;
             var var = new Random().Next(1, 12);
-            Logger.DebugLog("CASE", ""+var+"");
+            Log.Debug("CASE", ""+var+"");
             spawnpoint = var switch
             {
                 1 => new Vector3(-1547.290f, 4842.29f, 68.18f),

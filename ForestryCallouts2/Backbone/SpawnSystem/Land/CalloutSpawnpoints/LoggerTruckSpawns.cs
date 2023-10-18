@@ -12,11 +12,11 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
     {
         internal static void PaletoBayForest(out Vector3 spawnpoint, out float heading)
         {
-            Logger.DebugLog("LOGGERTRUCK SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayForest chunk");
+            Log.Debug("LOGGERTRUCK SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayForest chunk");
             spawnpoint = default;
             heading = 0f;
             var var = new Random().Next(1, 10);
-            Logger.DebugLog("CASE", ""+var+"");
+            Log.Debug("CASE", ""+var+"");
             switch (var)
             {
                 case 1:
@@ -60,11 +60,11 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
 
         internal static void AltruistCampArea(out Vector3 spawnpoint, out float heading)
         {
-            Logger.DebugLog("LOGGERTRUCK SPAWNPOINT CHOOSER", "Choosing spawnpoint in AltruistCampArea chunk");
+            Log.Debug("LOGGERTRUCK SPAWNPOINT CHOOSER", "Choosing spawnpoint in AltruistCampArea chunk");
             spawnpoint = default;
             heading = 0f;
             var var = new Random().Next(1, 8);
-            Logger.DebugLog("CASE", "" + var + "");
+            Log.Debug("CASE", "" + var + "");
             switch (var)
             {
                 case 1:
@@ -100,11 +100,11 @@ namespace ForestryCallouts2.Backbone.SpawnSystem.Land.CalloutSpawnpoints
         
         internal static void RatonCanyon(out Vector3 spawnpoint, out float heading)
         {
-            Logger.DebugLog("LOGGERTRUCK SPAWNPOINT CHOOSER", "Choosing spawnpoint in RatonCanyon chunk");
+            Log.Debug("LOGGERTRUCK SPAWNPOINT CHOOSER", "Choosing spawnpoint in RatonCanyon chunk");
             spawnpoint = default;
             heading = 0f;
             var var = new Random().Next(1, 11);
-            Logger.DebugLog("CASE", ""+var+"");
+            Log.Debug("CASE", ""+var+"");
             switch (var)
             {
                 case 1:

@@ -31,7 +31,7 @@ public static class StopPedMenu
     
     internal static void Initialize()
     {
-        LicenseMenu = new("Forestry Callouts", "~b~License Menu ~g~| ~y~v"+Version);
+        LicenseMenu = new UIMenu("Forestry Callouts", "~b~License Menu ~g~| ~y~v"+Version);
         LicenseMenu.SetBannerType(Color.ForestGreen);
         LicenseMenu.MouseControlsEnabled = false;
 
@@ -47,7 +47,7 @@ public static class StopPedMenu
 
     private static void OnLicenseMenuItemSelect(UIMenu sender, UIMenuItem selecteditem, int index)
     {
-        Logger.DebugLog("LICENSE MENU", "Item " + selecteditem.Text + " was selected!");
+        Log.Debug("LICENSE MENU", "Item " + selecteditem.Text + " was selected!");
         if (selecteditem == _dismissPed) StopPedFiber.Dismiss();
         if (selecteditem == _fishingLicence) StopPedFiber.OnAskForFishingLicence();
         if (selecteditem == _huntingLicence) StopPedFiber.OnAskForHuntingLicence();

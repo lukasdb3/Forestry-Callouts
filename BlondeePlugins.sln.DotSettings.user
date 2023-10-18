@@ -9,6 +9,8 @@
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Cadmin_005CDocuments_005CCodingCrap_005CRefrences_005CRAGEPluginHook_002Eexe/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Cadmin_005CDocuments_005CCodingCrap_005CRefrences_005CStopThePed_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Cadmin_005CDocuments_005CCodingCrap_005CRefrences_005CUltimateBackup_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Cadmin_005CDocuments_005CGitHub_005CAdvancedDialogueSystem_005CAdvancedDialogueSystem_005Cbin_005CDebug_005CAdvancedDialogueSystem_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Cadmin_005CDocuments_005CGitHub_005CDAGDialogueSystem_002DAPI_005CDAGDialogueSystem_005Cbin_005CDebug_005CDAGDialogueSystem_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Cbenderl_005CDocuments_005CCoding_0020Refrences_005CCalloutInterface_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Cbenderl_005CDocuments_005CCoding_0020Refrences_005CCalloutInterfaceAPI_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Cbenderl_005CDocuments_005CCoding_0020Refrences_005CLSPD_0020First_0020Response_002Edll/@EntryIndexedValue">True</s:Boolean>
@@ -45,7 +47,9 @@
   &lt;Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Windows.Forms.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\admin\Documents\CodingCrap\Refrences\CalloutInterfaceAPI.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=a10a8dc2_002Dd2e0_002D4027_002D86fd_002D38f5bb3d1890_0023ForestryCallouts/@EntryIndexedValue">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
+	
 	
 	
 	

@@ -68,7 +68,7 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
         }
         public override bool OnCalloutAccepted()
         {
-            Logger.CallDebugLog(this, "Callout accepted");
+            Log.CallDebug(this, "Callout accepted");
             //Spawn Suspect and car
             CFunctions.SpawnBoat(out _susVehicle, _suspectSpawn, _suspectHeading);
             var aboveBoat = new Vector3(_suspectSpawn.X, _suspectSpawn.Y, _suspectSpawn.Z + 5f);
@@ -80,8 +80,8 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
                 if (_susVehicle.FreePassengerSeatsCount >= 1)
                 {
                     var rnd = _rand.Next(1, _susVehicle.FreePassengerSeatsCount + 1);
-                    Logger.CallDebugLog(this, "Free Passenger Seats Count " + _susVehicle.FreePassengerSeatsCount);
-                    Logger.CallDebugLog(this, "Spawning "+ rnd + " criminal passengers");
+                    Log.CallDebug(this, "Free Passenger Seats Count " + _susVehicle.FreePassengerSeatsCount);
+                    Log.CallDebug(this, "Spawning "+ rnd + " criminal passengers");
                     _fiber = GameFiber.StartNew(delegate
                     {
                         var i = 0;
@@ -90,21 +90,21 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
                             if (i > 4) break;
                             GameFiber.Yield();
                             var cped = new Ped();
-                            Logger.CallDebugLog(this, "Creating Passenger..");
+                            Log.CallDebug(this, "Creating Passenger..");
                             CFunctions.SpawnCountryPed(out cped, aboveBoat, 0);
                             cped.WarpIntoVehicle(_susVehicle, i);
                             _passengerList.Add(cped);
                             i += 1;   
                         }
-                        Logger.CallDebugLog(this, "There is " + _passengerList.Count + " passengers");
-                        Logger.CallDebugLog(this, "Aborting passenger fiber");
+                        Log.CallDebug(this, "There is " + _passengerList.Count + " passengers");
+                        Log.CallDebug(this, "Aborting passenger fiber");
                         _fiber.Abort();
                     });
                 }    
             }
             else
             {
-                Logger.CallDebugLog(this, "No passengers spawning");
+                Log.CallDebug(this, "No passengers spawning");
             }
             
             //Warp suspect into vehicle and set a blip
@@ -135,12 +135,12 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
             //End Callout
             if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
-                Logger.CallDebugLog(this, "Callout was force ended by player");
+                Log.CallDebug(this, "Callout was force ended by player");
                 End();
             }
             if (Game.LocalPlayer.Character.IsDead)
             {
-                Logger.CallDebugLog(this, "Player died callout ending");
+                Log.CallDebug(this, "Player died callout ending");
                 End();
             }
         }
@@ -157,7 +157,7 @@ namespace ForestryCallouts2.Callouts.WaterCallouts
                 Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Boat Pursuit Code 4", "");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Boat Pursuit Code 4");
             }
-            Logger.CallDebugLog(this, "Callout ended");
+            Log.CallDebug(this, "Callout ended");
             base.End();
         }
     }

@@ -69,7 +69,7 @@ public class License
             accumulatedProbability += t.Chance;
             if (randomNumber <= accumulatedProbability)
             {
-                Logger.DebugLog("Select License", "Selected " + t.Type);
+                Log.Debug("Select License", "Selected " + t.Type);
                 return t;
             }
         }
@@ -167,7 +167,7 @@ public class License
             accumulatedProbability += t.Chance;
             if (randomNumber <= accumulatedProbability)
             {
-                Logger.DebugLog("Select License Status", "Selected " + t.Status);
+                Log.Debug("Select License Status", "Selected " + t.Status);
                 return t;
             }
         }

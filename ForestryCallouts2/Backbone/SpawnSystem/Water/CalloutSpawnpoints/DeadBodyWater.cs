@@ -11,10 +11,10 @@ internal static class DeadBodyWater
 {
     internal static void PaletoBayCoast(out Vector3 spawnpoint)
             {
-                Logger.DebugLog("DEAD BODY WATER SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayCoast chunk");
+                Log.Debug("DEAD BODY WATER SPAWNPOINT CHOOSER", "Choosing spawnpoint in PaletoBayCoast chunk");
                 spawnpoint = default;
                 int var = new Random().Next(1, 2);
-                Logger.DebugLog("CASE", ""+var+"");
+                Log.Debug("CASE", ""+var+"");
                 switch (var)
                 {
                     case 1:

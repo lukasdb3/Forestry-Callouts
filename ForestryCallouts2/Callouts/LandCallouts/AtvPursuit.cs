@@ -34,6 +34,9 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private Vector3 _suspectSpawn;
         private float _suspectHeading;
         private Vehicle _susVehicle;
+        //cop
+        private Ped _cop;
+        private Vehicle _copCar;
         //callout variables
         private LHandle _pursuit;
         private bool _pursuitStarted;
@@ -63,7 +66,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         }
         public override bool OnCalloutAccepted()
         {
-            Logger.CallDebugLog(this, "Callout accepted");
+            Log.CallDebug(this, "Callout accepted");
             //Spawn Suspect and car
             CFunctions.SpawnCountryPed(out _suspect, _suspectSpawn, _suspectHeading);
             Vector3 vehicleSpawn = World.GetNextPositionOnStreet(_suspectSpawn);
@@ -72,6 +75,13 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             _suspect.WarpIntoVehicle(_susVehicle, -1);
             _suspectBlip = _suspect.AttachBlip();
             _suspectBlip.EnableRoute(Color.Yellow);
+            if (IniSettings.AICops)
+            {
+                _cop = new Ped("s_f_y_ranger_01", World.GetNextPositionOnStreet(_suspectSpawn.Around(15f, 20f)), 0f);
+                CFunctions.SpawnRangerBackup(out _copCar, World.GetNextPositionOnStreet(_suspectSpawn.Around(10f, 15f)), _susVehicle.Heading);
+                _cop.WarpIntoVehicle(_copCar, -1);
+                _cop.Tasks.CruiseWithVehicle(-1);
+            }
             return base.OnCalloutAccepted();
         }
 
@@ -87,6 +97,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     _suspect.Tasks.CruiseWithVehicle(_susVehicle, 15f ,VehicleDrivingFlags.Emergency);
                     _pursuit = Functions.CreatePursuit();
                     Functions.SetPursuitIsActiveForPlayer(_pursuit, true);
+                    if (IniSettings.AICops) Functions.AddCopToPursuit(_pursuit, _cop);
                     Functions.AddPedToPursuit(_pursuit, _suspect);
                     Functions.PlayScannerAudio("ATTENTION_ALL_UNITS_01 CRIME_SUSPECT_ON_THE_RUN_01");
                     _pursuitStarted = true;
@@ -96,12 +107,12 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             //End Callout
             if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
             {
-                Logger.CallDebugLog(this, "Callout was force ended by player");
+                Log.CallDebug(this, "Callout was force ended by player");
                 End();
             }
             if (Game.LocalPlayer.Character.IsDead)
             {
-                Logger.CallDebugLog(this, "Player died callout ending");
+                Log.CallDebug(this, "Player died callout ending");
                 End();
             }
         }
@@ -111,14 +122,16 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_suspect) _suspect.Dismiss();
             if (_suspectBlip) _suspectBlip.Delete();
             if (_susVehicle) _susVehicle.Dismiss();
-            if (Functions.IsPursuitStillRunning(_pursuit)) Functions.ForceEndPursuit(_pursuit);
+            if (_pursuitStarted) if (Functions.IsPursuitStillRunning(_pursuit)) Functions.ForceEndPursuit(_pursuit);
+            if (_cop) _cop.Dismiss();
+            if (_copCar) _copCar.Dismiss();
             if (!ChunkChooser.StoppingCurrentCall)
             {
                 Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _suspectSpawn);
                 if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~ATV Pursuit Code 4", "");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting ATV Pursuit code 4");
             }
-            Logger.CallDebugLog(this, "Callout ended");
+            Log.CallDebug(this, "Callout ended");
             base.End();
         }
     }

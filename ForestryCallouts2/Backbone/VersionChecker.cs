@@ -38,22 +38,22 @@ namespace ForestryCallouts2.Backbone
                 // server or connection is having issues
             }
 
-            var intCurVer = int.Parse(curVersion);
-            var intNewestVer = int.Parse(ReceivedData);
-            if (intCurVer > intNewestVer)
+            var currentVersion = new Version(curVersion);
+            var newestVersion = new Version(ReceivedData);
+            var result = currentVersion.CompareTo(newestVersion);
+            if (result > 0)
             {
                 Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~FORESTRY CALLOUTS WARNING",
-                    "~g~ALPHA VERSION INSTALLED",
-                    "Current Version: ~r~" + curVersion + "~w~<br>New Version: ~g~" + ReceivedData);
+                    "~g~BETA VERSION INSTALLED",
+                    "Current Version: ~g~" + curVersion);
             }
-            if (ReceivedData != IniSettings.CurV)
+            if (result < 0)
             {
                 Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~FORESTRY CALLOUTS WARNING",
                     "~g~NEW UPDATE AVAILABLE!",
                     "Current Version: ~r~" + curVersion + "~w~<br>New Version: ~g~" + ReceivedData);
                 return true;
             }
-
             return false;
         }
     }

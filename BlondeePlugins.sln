@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForestryCallouts", "ForestryCallouts\ForestryCallouts.csproj", "{A10A8DC2-D2E0-4027-86FD-38F5BB3D1890}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForestryCallouts2", "ForestryCallouts2\ForestryCallouts2.csproj", "{F0501379-1CC1-40C3-89EF-7BB38718EF98}"
 EndProject
 Global
@@ -15,14 +13,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A10A8DC2-D2E0-4027-86FD-38F5BB3D1890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A10A8DC2-D2E0-4027-86FD-38F5BB3D1890}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A10A8DC2-D2E0-4027-86FD-38F5BB3D1890}.Debug|x64.ActiveCfg = Debug|x64
-		{A10A8DC2-D2E0-4027-86FD-38F5BB3D1890}.Debug|x64.Build.0 = Debug|x64
-		{A10A8DC2-D2E0-4027-86FD-38F5BB3D1890}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A10A8DC2-D2E0-4027-86FD-38F5BB3D1890}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A10A8DC2-D2E0-4027-86FD-38F5BB3D1890}.Release|x64.ActiveCfg = Release|x64
-		{A10A8DC2-D2E0-4027-86FD-38F5BB3D1890}.Release|x64.Build.0 = Release|x64
 		{F0501379-1CC1-40C3-89EF-7BB38718EF98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F0501379-1CC1-40C3-89EF-7BB38718EF98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0501379-1CC1-40C3-89EF-7BB38718EF98}.Debug|x64.ActiveCfg = Debug|Any CPU
