@@ -4,10 +4,21 @@
         <name>DAGDialogueSystem</name>
     </assembly>
     <members>
-        <member name="M:DAGDialogueSystem.DialogueFunctions.IterateDialogue(DAGDialogueSystem.DirectedAcyclicGraph.Node)">
+        <member name="T:DAGDialogueSystem.DialogueFunctions">
             <summary>
-             Iterates through dialogue starting with the root node.
+            Class used to iterate through dialogue.
             </summary>
+        </member>
+        <member name="F:DAGDialogueSystem.DialogueFunctions.DialogueMenu">
+            <summary>
+            Menu used for all dialogue options.
+            </summary>
+        </member>
+        <member name="M:DAGDialogueSystem.DialogueFunctions.IterateDialogue(LSPD_First_Response.Mod.Callouts.Callout,DAGDialogueSystem.DirectedAcyclicGraph.Node)">
+            <summary>
+            Iterates through dialogue starting with the root node.
+            </summary>
+            <param name="calloutName"> used for logging purposes </param>
             <param name="n"> root node </param>
         </member>
         <member name="M:DAGDialogueSystem.DialogueFunctions.DisplayData(System.String)">
@@ -29,20 +40,21 @@
         <member name="T:DAGDialogueSystem.DirectedAcyclicGraph.Node">
             <summary>
             The node class for the Directed Acyclic Graph.
-            Type 1, Dialogue that is said in every conversation. This is usual a starter like "Hello Officer".
-            Type 2, Prompt Node, initializes menu.
-            Type 3, Dialogue Options, Parent must be Type 2.
             </summary>
         </member>
-        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.#ctor(System.Int32,System.String)">
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.#ctor(DAGDialogueSystem.NodeTypes.Type,System.String)">
             <summary>
             Makes a new node in memory
             </summary>
-            <param name="type">
-            Type 1, Dialogue that is said in every conversation. This is usual a starter like "Hello Officer".
-            Type 2, Prompt Node, initializes menu.
-            Type 3, Dialogue Options, Parent must be Type 2. </param>
+            <param name="type"> the type of node, NodeTypes.Type </param>
             <param name="data"> dialogue string </param>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.#ctor(DAGDialogueSystem.NodeTypes.Type,System.Action)">
+            <summary>
+            Makes a new action node
+            </summary>
+            <param name="type"> the type of node, NodeTypes.Type </param>
+            <param name="action"> method name wanting to run if this node is chosen randomly or directly chosen if its the only edge.</param>
         </member>
         <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.GetNType">
             <summary>
@@ -66,18 +78,24 @@
             <summary>
             Gets the next node in the graph.
             </summary>
-            <returns> if no edges, returns null. If one edge, return's receiver of that edge. Likewise, if more than one edge, does the same thing but randomly
-            gets the edge to return. </returns>
+            <returns> Receiver of chosen edge </returns>
         </member>
-        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.AddNode(System.Int32,System.String)">
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.AddNode(DAGDialogueSystem.NodeTypes.Type,System.String)">
             <summary>
             Adds edge between this node and a new node with the type and data params.
             If multiple AddNodes take place on the same node. The top (most left) node will be
             the first edge.
             </summary>
-            <param name="type"> 1 hard dialogue, 2 menu, 3 menu options</param>
+            <param name="type"> the type of node, NodeTypes.Type </param>
             <param name="data">dialogue line in string format</param>
             <returns> Node </returns>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.AddNode(System.Action)">
+            <summary>
+            Adds a edge between this node and a new action node.
+            </summary>
+            <param name="method"> the method that needs to be ran</param>
+            <returns></returns>
         </member>
         <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.ConnectTo(DAGDialogueSystem.DirectedAcyclicGraph.Node)">
             <summary>
@@ -98,6 +116,36 @@
         <member name="T:DAGDialogueSystem.DirectedAcyclicGraph.Edge">
             <summary>
             The arrow in between nodes.
+            </summary>
+        </member>
+        <member name="T:DAGDialogueSystem.NodeTypes">
+            <summary>
+            Class containing enum of node types.
+            </summary>
+        </member>
+        <member name="T:DAGDialogueSystem.NodeTypes.Type">
+            <summary>
+            Type of nodes, Dialogue, Prompt, Option, and Action.
+            </summary>
+        </member>
+        <member name="F:DAGDialogueSystem.NodeTypes.Type.Dialogue">
+            <summary>
+            node dialogue line said by npc
+            </summary>
+        </member>
+        <member name="F:DAGDialogueSystem.NodeTypes.Type.Prompt">
+            <summary>
+            node to initialize menu
+            </summary>
+        </member>
+        <member name="F:DAGDialogueSystem.NodeTypes.Type.Option">
+            <summary>
+            node to add dialogue line to prompt node
+            </summary>
+        </member>
+        <member name="F:DAGDialogueSystem.NodeTypes.Type.Action">
+            <summary>
+            node that runs an action
             </summary>
         </member>
     </members>
