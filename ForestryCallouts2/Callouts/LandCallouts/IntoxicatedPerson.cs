@@ -191,7 +191,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                                     GameFiber.StartNew(delegate
                                     {
                                         GameFiber.Yield();
-                                        DialogueFunctions.IterateDialogue(this, _root);
+                                        DialogueFunctions.IterateDialogue(this, _root, "~r~Suspect", "~y~You");
                                     });
                                 }
                                 
@@ -249,18 +249,17 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             Log.CallDebug(this, "Callout ended");
             base.End();
         }
+
         private void BuildDialogue()
         {
             Log.CallDebug(this, "Callout Dialogue Building..");
-            const string prefixS = "~r~Suspect:~w~ ";
-            const string prefixP = "~y~You:~w~ ";
-            
+
             // Make root node
-            _root = new Node(Dialogue, prefixP+"Excuse me, may I speak to you for a minute?");
-            
+            _root = new Node(PlayerDialogue, "Excuse me, may I speak to you for a minute?");
+
             // First npc response
-            var _1 = _root.AddNode(Dialogue, prefixS+"Sure of course officer..");
-            
+            var _1 = _root.AddNode(NpcDialogue, "Sure of course officer..");
+
             // Initial prompt node
             var _2 = _1.AddNode(Prompt, "[This is a Prompt Node]");
             var _3 = _2.AddNode(Option, "We have gotten reports of an intoxicated hiker.");
@@ -268,50 +267,107 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             var _5 = _2.AddNode(Option, "How much have you had to drink?");
             var _6 = _2.AddNode(Option, "You match the description of a intoxicated person!");
             var _7 = _2.AddNode(Option, "You smell like alcohol!");
-            
-            // Player chooses "We have gotten reports of an intoxicated hiker." in Prompt Node (_2)
-            var _8 = _3.AddNode(Dialogue, "Your lying!");
-            var _9 = _3.AddNode(Dialogue, "Well.. I don't think I am drunk?!?");
-            var _10 = _3.AddNode(Dialogue, "Officer, I think you are mistaken, I am not drunk.");
-            
-            // Player chooses "What are you doing out here?" in Prompt Node (_2)
-            var _11 = _4.AddNode(Dialogue, "Im going on a nice walk, would you like to join?");
-            var _12 = _4.AddNode(Dialogue, "Im going on a beautiful hike!");
-            var _13 = _4.AddNode(Dialogue, "Im trying to find the dinosaur that the zoo lost!");
-            
-            // Player chooses "How much have you had to drink" in Prompt Node (_2)
-            var _14 = _5.AddNode(Dialogue, "Are you kidding me!?.. Not a single drop?");
-            var _15 = _5.AddNode(Dialogue, "You know.. I really dislike the police force.");
-            var _16 = _5.AddNode(Dialogue, "I've had a few apple juices the Busch Light ones!");
-            var _17 = _5.AddNode(Dialogue, "Like a few bottles of wine?... That's nothing for me!");
-            
-            // Player chooses "You match the description of a intoxicated person!" in Prompt Node (_2)
-            var _18 = _6.AddNode(Dialogue, "Your lying! I look nothing like someone who would be intoxicated!");
-            var _19 = _6.AddNode(Dialogue, "No way! I think you should look in the mirror!");
-            var _20 = _6.AddNode(Dialogue, "Yeah im wasted, what do you want?");
-            
-            // Player chooses "You smell like alcohol!" in Prompt Node (_2)
-            var _21 = _7.AddNode(Dialogue, "You should smell yourself before you start judging!");
-            var _22 = _7.AddNode(Dialogue, "Oh well I lost my smell. I wouldn't of gone out if I knew that!");
-            var _23 = _7.AddNode(Dialogue, "Please, please dont arrest me!");
-            
-            // Prompt Node for Node (_8) (14) (_18) (_21)
-            var _24 = _8.AddNode(Prompt, "[This is a Prompt Node]");
 
-            var _25 = _24.AddNode("");
+                // Player chooses "We have gotten reports of an intoxicated hiker." in Prompt Node (_2)
+                var _8 = _3.AddNode(NpcDialogue, "Your lying!");
+                var _9 = _3.AddNode(NpcDialogue, "Well.. I don't think I am drunk?!?");
+                var _10 = _3.AddNode(NpcDialogue, "Officer, I think you are mistaken, I am not drunk.");
+
+                // Player chooses "What are you doing out here?" in Prompt Node (_2)
+                var _11 = _4.AddNode(NpcDialogue, "Im going on a nice walk, would you like to join?");
+                var _12 = _4.AddNode(NpcDialogue, "Im going on a beautiful hike!");
+                var _13 = _4.AddNode(NpcDialogue, "Im trying to find the dinosaur that the zoo lost!");
+
+                // Player chooses "How much have you had to drink" in Prompt Node (_2)
+                var _14 = _5.AddNode(NpcDialogue, "Are you kidding me!?.. Not a single drop?");
+                var _15 = _5.AddNode(NpcDialogue, "You know.. I really dislike the police force.");
+                var _16 = _5.AddNode(NpcDialogue, "I've had a few apple juices the Busch Light ones!");
+                var _17 = _5.AddNode(NpcDialogue, "Like a few bottles of wine?... That's nothing for me!");
+
+                // Player chooses "You match the description of a intoxicated person!" in Prompt Node (_2)
+                var _18 = _6.AddNode(NpcDialogue, "Your lying! I look nothing like someone who would be intoxicated!");
+                var _19 = _6.AddNode(NpcDialogue, "No way! I think you should look in the mirror!");
+                var _20 = _6.AddNode(NpcDialogue, "Yeah im wasted, what do you want?");
+
+                // Player chooses "You smell like alcohol!" in Prompt Node (_2)
+                var _21 = _7.AddNode(NpcDialogue, "You should smell yourself before you start judging!");
+                var _22 = _7.AddNode(NpcDialogue, "Oh well I lost my smell. I wouldn't of gone out if I knew that!");
+                var _23 = _7.AddNode(NpcDialogue, "Please, please dont arrest me!");
+
+                    // Prompt Node for Node (_8) (_14) (_18) (_21). NPC bad responses
+                    var _24 = _8.AddNode(Prompt, "[This is a Prompt Node]");
+                    var _25 = _24.AddNode(Option, "Do you mind taking a breathalyzer?");
+                    var _26 = _24.AddNode(Option, "Do I have consent to frisk you?");
+                    var _27 = _24.AddNode(Option, "Be honest with me!");
+                    var _28 = _24.AddNode(Option, "Im going to have to arrest you for public intoxication.");
+                    _24.LinkNodesAsParents(new []{_14, _18, _21});
+
+                    // Player chooses "Do you mind taking a breathalyzer?" in Prompt Node (_24)
+                    var _29 = _25.AddNode(NpcDialogue, "Yes, I will take a breathalyzer test.");
+                    var _30 = _25.AddNode(NpcDialogue, "No! I refuse! Do not test me!");
+                    var _31 = _25.AddActionNodeWithDialogue(StartPursuit, "NO RUN AWAY!!");
+
+                        // Prompt Node for Node (_29)                   
+                        var _32 = _29.AddNode(Prompt, "[This is a Prompt Node]");
+                        var _33 = _32.AddNode(Option, "Great! Thank you for your cooperation!");
+                        var _34 = _32.AddNode(Option, "I appreciate your cooperation.");
+                        var _35 = _32.AddNode(Option, "Blow hard!");
+
+                        // Prompt Node for Node (_30)
+                        var _36 = _30.AddNode(Prompt, "[This is a Prompt Node]");
+                        var _37 = _36.AddNode(Option, "If you resist we will have to go to the station and do blood work.");
+                        var _38 = _36.AddNode(Option, "Well to bad, I believe you are intoxicated. Therefore you are under arrest.");
+                        var _39 = _36.AddNode(Option, "Okay then, can I have you complete a field test?");
+
+                            // Player chooses "If you resist we will have to go to the station and do blood work." in Prompt Node (_36)
+                            var _40 = _37.AddNode(NpcDialogue, "No way! I hate drawing blood. You can do the breathalyzer test.");
+                            var _41 = _37.AddNode(NpcDialogue, "Can I complete a field sobriety test?");
+                            var _42 = _37.AddNode(NpcDialogue, "No thank you! I will do breathalyzer test.");
+
+                                var _43 = _41.AddNode(Prompt, "[This is a Prompt Node]");
+                                var _44 = _43.AddNode(Option, "No, you cant.");
+                                var _45 = _43.AddNode(Option, "Sure, why not.");
+                                
+                                    // Player chooses "No, you cant." in Prompt Node (_43)
+                                    var _46 = _44.AddNode(NpcDialogue, "Fine! Just arrest me! Im drunk!");
+                                    var _47 = _44.AddNode(NpcDialogue, "If you arrest me I will sue you!");
+                                    var _48 = _38.AddActionNodeWithDialogue(StartPursuit, "TRY AND CATCH ME!");
+                            
+                            // Player chooses "Well to bad, I believe you are intoxicated. Therefore you are under arrest." in Prompt Node (_36)
+                            var _49 = _38.AddNode(NpcDialogue, "No please don't arrest me, you can do a breathalyzer test.");
+                            var _50 = _38.AddNode(NpcDialogue, "I have nothing to live for anyways.");
+                            var _51 = _38.AddActionNodeWithDialogue(StartPursuit, "DO THAT AND I WILL SUE YOU!!");
+                            
+                            // Player chooses "Okay then, can I have you complete a field test?" in Prompt Node (_36)
+                            var _52 = _39.AddNode(NpcDialogue, "No, I will not do that either!");
+                            var _53 = _39.AddNode(NpcDialogue, "Okay look.. I am drunk. I've had a rough day.");
+                            var _54 = _39.AddActionNodeWithDialogue(StartPursuit, "MAYBE IF YOU CAN CATCH ME");
             
+                    // Prompt Node for Node (_10) (_11) (_12) (_23). NPC neutral responses
+                    var _55 = _10.AddNode(Prompt, "[This is a Prompt Node]");
+                    var _56 = _55.AddNode(Option, "Do you mind taking a breathalyzer?");
+                    var _57 = _55.AddNode(Option, "You are being arrested for public intoxication.");
+                    var _58 = _55.AddNode(Option, "You are being detained for public intoxication.");
+                    var _59 = _55.AddNode(Option, "Would you let me perform a field test on you?");
+                    _55.LinkNodesAsParents(new []{_11, _12, _23});
+                    
+                      
+                        
+                        
             
-            
-            
-           
-            
-            
-            
-            
-            
-            
-            
-            // Player chooses "Put em up! You're under arrest for public intox!" in Prompt node (_15)
+
+
+
+
+
+
+
+
+
+
+
+
+        // Player chooses "Put em up! You're under arrest for public intox!" in Prompt node (_15)
             Log.CallDebug(this, "Callout Dialogue Building Finished!");
         }
         
