@@ -81,15 +81,16 @@ internal class DeadBody : Callout
         _victim.Health = 10;
         //Spawn reporter
         CFunctions.SpawnHikerPed(out _reporter, _reporterSpawn, _reporterHeading);
-        _reporterBlip = _reporter.AttachBlip();
-        _reporterBlip.Color = Color.Yellow;
-        _reporterBlip.Scale = .7f;
+        _reporterBlip = CFunctions.CreateBlip(_reporter, true, Color.Yellow, Color.Yellow, 1f);
         _reporterBlip.EnableRoute(Color.Yellow);
         return base.OnCalloutAccepted();
     }
 
     public override void Process()
     {
+
+        //reset reporter blip to match ped standards
+
         //End Stuff
         if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
         {

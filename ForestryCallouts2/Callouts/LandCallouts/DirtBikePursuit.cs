@@ -74,7 +74,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             CFunctions.SpawnDirtBike(out _susVehicle, vehicleSpawn, _suspectHeading);
             //Warp suspect into vehicle and set a blip
             _suspect.WarpIntoVehicle(_susVehicle, -1);
-            _suspectBlip = _suspect.AttachBlip();
+            _suspectBlip = CFunctions.CreateBlip(_suspect, true, Color.Yellow, Color.Yellow, 1f);
             _suspectBlip.EnableRoute(Color.Yellow);
             if (IniSettings.AICops)
             {

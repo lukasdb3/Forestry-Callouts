@@ -52,6 +52,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         //callout variables
         private bool _onScene;
+        private bool _hateSet;
         #endregion
         
         
@@ -167,10 +168,11 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             {
                 if (_animal.IsAlive)
                 {
-                    if (_animal.DistanceTo(Game.LocalPlayer.Character) <= 25f && Game.LocalPlayer.Character.IsOnFoot)
+                    if (_animal.DistanceTo(Game.LocalPlayer.Character) <= 25f && Game.LocalPlayer.Character.IsOnFoot && !_hateSet)
                     {
                         _animal.RelationshipGroup.SetRelationshipWith(Game.LocalPlayer.Character.RelationshipGroup, Relationship.Hate);
                         _animal.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                        _hateSet = true;
                     }
                     
                     if (!_animalFound && Game.LocalPlayer.Character.DistanceTo(_animal) <= 10f)

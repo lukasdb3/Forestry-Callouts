@@ -65,8 +65,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             Log.CallDebug(this, "Callout accepted");
             //Spawn victim
             CFunctions.SpawnAnimal(out _animal, _animalSpawn, _animalHeading);
-            _animalBlip = _animal.AttachBlip();
-            _animalBlip.EnableRoute(Color.Yellow);
+            _animalBlip = CFunctions.CreateBlip(_animal, true, Color.Purple, Color.Yellow, .75f);
             _animal.Health = 10;
             return base.OnCalloutAccepted();
         }

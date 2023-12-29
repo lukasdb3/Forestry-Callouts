@@ -89,8 +89,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             
             //Warp suspect into vehicle and set a blip
             _suspect.WarpIntoVehicle(_susVehicle, -1);
-            _suspectBlip = _suspect.AttachBlip();
-            _suspectBlip.EnableRoute(Color.Yellow);
+            _suspectBlip = CFunctions.CreateBlip(_suspect, true, Color.Yellow, Color.Yellow, 1f);
             return base.OnCalloutAccepted();
         }
 

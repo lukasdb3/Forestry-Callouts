@@ -22,7 +22,7 @@ using Functions = LSPD_First_Response.Mod.API.Functions;
 
 namespace ForestryCallouts2.Callouts.WaterCallouts
 {
-    [CalloutInterface("Boat Pursuit", CalloutProbability.Medium, "Pursuit", "Code 3", "SASP")]
+    [CalloutInterface("[FC] BoatPursuit", CalloutProbability.Medium, "Pursuit", "Code 3", "SASP")]
      
     internal class BoatPursuit : Callout
     {

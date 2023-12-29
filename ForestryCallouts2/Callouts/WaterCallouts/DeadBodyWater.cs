@@ -21,7 +21,7 @@ using Functions = LSPD_First_Response.Mod.API.Functions;
 
 namespace ForestryCallouts2.Callouts.WaterCallouts
 {
-    [CalloutInterface("Dead Body In Water", CalloutProbability.Low, "Deceased Victim", "Code 3", "SASP")]
+    [CalloutInterface("[FC] DeadBodyInWater", CalloutProbability.Low, "Deceased Person", "Code 3", "SASP")]
     
     internal class DeadBodyWater : Callout
     {
