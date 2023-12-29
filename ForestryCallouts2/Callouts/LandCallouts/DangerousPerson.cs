@@ -21,7 +21,7 @@ using Functions = LSPD_First_Response.Mod.API.Functions;
 
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
-    [CalloutInterface("Dangerous Person", CalloutProbability.Low, "Dangerous Individual", "Code 3", "SASP")]
+    [CalloutInterface("[FC] DangerousPerson", CalloutProbability.Low, "Dangerous Individual", "Code 3", "SASP")]
     
     internal class DangerousPerson : Callout
     {

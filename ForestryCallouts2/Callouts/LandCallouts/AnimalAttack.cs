@@ -20,7 +20,7 @@ using Functions = LSPD_First_Response.Mod.API.Functions;
 
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
-    [CalloutInterface("Animal Attack", CalloutProbability.Medium, "Domestic Animal Attack", "Code 3", "SASP")]
+    [CalloutInterface("[FC] AnimalAttack", CalloutProbability.Medium, "Domestic Animal Attack", "Code 3", "SASP")]
     internal class AnimalAttack : Callout
     {
         #region Variables
@@ -82,8 +82,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             Log.CallDebug(this, "Callout accepted");
             //Spawn victim
             CFunctions.SpawnHikerPed(out _victim, _victimSpawn, _rand.Next(1, 361));
-            _victimBlip = _victim.AttachBlip();
-            _victimBlip.EnableRoute(Color.Yellow);
+            _victimBlip = CFunctions.CreateBlip(_victim, true, Color.Yellow, Color.Yellow, 1f);
             _victim.Health = 10;
             //Spawn animal
             _animal = new Ped("a_c_mtlion", World.GetNextPositionOnStreet(_victimSpawn.Around(40f, 60f)), _rand.Next(1, 361));
@@ -136,10 +135,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     Log.CallDebug(this, "Blipped victim because player took to long to find them.");
                     _pauseTimer = true;
                     if (_areaBlip) _areaBlip.Delete();
-                    _victimBlip = _victim.AttachBlip();
-                    _victimBlip.Color = Color.ForestGreen;
-                    _victimBlip.Scale = .7f;
-                    _victimBlip.IsRouteEnabled = true;
+                    _victimBlip = CFunctions.CreateBlip(_victim, true, Color.Orange, Color.Yellow, .75f);
                     _maxNotfiSent = true;
                 }
             }
@@ -149,9 +145,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             {
                 Log.CallDebug(this, "Victim found!");
                 CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" on scene with victim.");
-                _victimBlip = _victim.AttachBlip();
-                _victimBlip.Color = Color.ForestGreen;
-                _victimBlip.Scale = .7f;
+                _victimBlip = CFunctions.CreateBlip(_victim, false, Color.Orange, Color.Yellow, .75f);
                 if (_areaBlip) _areaBlip.Delete();
                 _victimFound = true;
                 //reset
@@ -182,9 +176,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     if (!_animalFound && Game.LocalPlayer.Character.DistanceTo(_animal) <= 10f)
                     {
                         Log.CallDebug(this, "Animal found!");
-                        _animalBlip = _animal.AttachBlip();
-                        _animalBlip.Color = Color.Red;
-                        _animalBlip.Scale = .7f;
+                        _animalBlip = CFunctions.CreateBlip(_animal, false, Color.Red, Color.Yellow, .75f);
                         if (_areaBlip) _areaBlip.Delete();
                         _animalFound = true;
                         if (_victimFound) _pauseTimer = true;
@@ -209,10 +201,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                             Log.CallDebug(this, "Blipped animal because player took to long to find them.");
                             _pauseTimer = true;
                             if (_areaBlip) _areaBlip.Delete();
-                            _animalBlip = _animal.AttachBlip();
-                            _animalBlip.Color = Color.Red;
-                            _animalBlip.Scale = .7f;
-                            _animalBlip.IsRouteEnabled = true;
+                            _animalBlip = CFunctions.CreateBlip(_animal, true, Color.Red, Color.Yellow, .75f);
                             _maxNotfiSent = true;
                         }
                         

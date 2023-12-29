@@ -9,29 +9,22 @@ using Rage;
 using LSPD_First_Response.Mod.API;
 using Functions = LSPD_First_Response.Mod.API.Functions;
 using LSPD_First_Response.Mod.Callouts;
-//RageNativeUI
-using RAGENativeUI;
-using RAGENativeUI.Elements;
 //ForestryCallouts2
 using ForestryCallouts2.Backbone;
 using ForestryCallouts2.Backbone.Functions;
 using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.SpawnSystem;
-using ForestryCallouts2.Backbone.SpawnSystem.Land;
 //CalloutInterface
 using CalloutInterfaceAPI;
 //DAGDialogueSystem
 using static DAGDialogueSystem.DirectedAcyclicGraph;
 using DAGDialogueSystem;
 using static DAGDialogueSystem.Type;
-using LSPD_First_Response.Engine.Scripting.Entities;
-using Type = System.Type;
-
 #endregion
 
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
-    [CalloutInterface("Intoxicated Person", CalloutProbability.Medium, "Disturbance", "Code 2", "SASP")]
+    [CalloutInterface("[FC] IntoxicatedPerson", CalloutProbability.Medium, "Disturbance", "Code 2", "SASP")]
 
     public class IntoxicatedPerson : Callout
     {
@@ -103,8 +96,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             CFunctions.SpawnHikerPed(out _suspect, _suspectSpawn, _rand.Next(1, 361));
             CFunctions.SetDrunk(_suspect, true);
             // sets a blip on the suspect and enables route
-            _suspectBlip = _suspect.AttachBlip();
-            _suspectBlip.EnableRoute(Color.Yellow);
+            _suspectBlip = CFunctions.CreateBlip(_suspect, true, Color.Yellow, Color.Yellow,1);
             return base.OnCalloutAccepted();
         }
 
@@ -149,10 +141,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                         Log.CallDebug(this, "Blipped suspect because player took to long to find them.");
                         _pauseTimer = true;
                         if (_suspectAreaBlip) _suspectAreaBlip.Delete();
-                        _suspectBlip = _suspect.AttachBlip();
-                        _suspectBlip.Color = Color.Red;
-                        _suspectBlip.IsRouteEnabled = true;
-                        _maxNotfiSent = true;
+                        _suspectBlip = CFunctions.CreateBlip(_suspect, true, Color.Yellow, Color.Yellow, .75f);
                     }
                 }
 
@@ -160,8 +149,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 if (!_suspectFound && Game.LocalPlayer.Character.DistanceTo(_suspect) <= 10f)
                 {
                     Log.CallDebug(this, "Suspect found!");
-                    _suspectBlip = _suspect.AttachBlip();
-                    _suspectBlip.Color = Color.Red;
+                    _suspectBlip = CFunctions.CreateBlip(_suspect, false, Color.Yellow, Color.Yellow,.75f);
                     if (_suspectAreaBlip) _suspectAreaBlip.Delete();
                     _suspectFound = true;
                 }
@@ -191,10 +179,9 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                                     GameFiber.StartNew(delegate
                                     {
                                         GameFiber.Yield();
-                                        DialogueFunctions.IterateDialogue(this, _root, "~r~Suspect", "~y~You");
+                                        DialogueFunctions.IterateDialogue(this, _suspect ,_root, "~y~Suspect", "~b~You");
                                     });
                                 }
-                                
                             }
                             break;
                         }
@@ -235,7 +222,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         public override void End()
         {
-            DialogueFunctions.Clean();
+            DialogueFunctions.Finish();
             if (_suspect) _suspect.Dismiss();
             if (_suspectBlip) _suspectBlip.Delete();
             if (_suspectAreaBlip) _suspectAreaBlip.Delete();

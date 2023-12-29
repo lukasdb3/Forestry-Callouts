@@ -20,7 +20,7 @@ using Functions = LSPD_First_Response.Mod.API.Functions;
 
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
-    [CalloutInterface("Animal Attack2", CalloutProbability.Medium, "Domestic Animal Attack", "Code 3", "SASP")]
+    [CalloutInterface("[FC] AnimalAttack2", CalloutProbability.Medium, "Domestic Animal Attack", "Code 3", "SASP")]
     internal class AnimalAttack2 : Callout
     {
         #region Variables
@@ -41,7 +41,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         //callout variables
         private bool _onScene;
         private bool _animalDeadVicAlive;
-        private bool victimHasDied;
+        private bool _victimHasDied;
         #endregion
         
         
@@ -73,8 +73,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             Log.CallDebug(this, "Callout accepted");
             //Spawn victim
             CFunctions.SpawnHikerPed(out _victim, _victimSpawn, _victimHeading);
-            _victimBlip = _victim.AttachBlip();
-            _victimBlip.EnableRoute(Color.Yellow);
+            _victimBlip = CFunctions.CreateBlip(_victim, true, Color.Yellow, Color.Yellow, 1f);
             _victim.Health = 1000;
             //Spawn animal
             _animal = new Ped("a_c_mtlion", World.GetNextPositionOnStreet(_victimSpawn), _victimHeading + 180f);
@@ -102,13 +101,8 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 _animal.Tasks.FightAgainst(_victim);
                 
                 if (_victimBlip) _victimBlip.Delete();
-                _animalBlip = _animal.AttachBlip();
-                _animalBlip.Scale = .7f;
-                _animalBlip.Color = Color.Red;
-                _victimBlip = _victim.AttachBlip();
-                _victimBlip.Scale = .7f;
-                _victimBlip.Color = Color.Green;
-                _victimBlip.EnableRoute(Color.Yellow);
+                _animalBlip = CFunctions.CreateBlip(_animal, false, Color.Red, Color.Yellow, .75f);
+                _victimBlip = CFunctions.CreateBlip(_victim, true, Color.Orange, Color.Yellow, .75f);
                 _onScene = true;
             }
 
@@ -117,17 +111,17 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_victim.IsDead)
             {
                 _animal.Tasks.Wander();
-                victimHasDied = true;
+                _victimHasDied = true;
             }
 
-            if (_animal.IsDead && _victim.IsAlive && !_animalDeadVicAlive && !victimHasDied)
+            if (_animal.IsDead && _victim.IsAlive && !_animalDeadVicAlive && !_victimHasDied)
             {
                 _animalDeadVicAlive = true;
                 GameFiber.Wait(500);
                 _victim.Tasks.Clear();
                 _victim.Tasks.StandStill(-1).WaitForCompletion();
                 _victim.Heading = Game.LocalPlayer.Character.Heading + 180;
-                Game.DisplaySubtitle("~g~Victim:~w~ Oh my god you saved my life!");
+                Game.DisplaySubtitle("~g~Victim:~w~ Oh my god.. you saved my life!");
             }
             
 

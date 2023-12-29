@@ -126,8 +126,11 @@ namespace ForestryCallouts2.Backbone.Menu
                     LSPD_First_Response.Mod.API.Functions.StopCurrentCallout();
                     Log.Debug("INTERACTION MENU", "Ended current callout");
                 }
-                Game.DisplayNotification("~g~There Is No Callout Running");
-                Log.Debug("INTERACTION MENU", "There is no callout to end");
+                else
+                {
+                    Game.DisplayNotification("~g~There Is No Callout Running");
+                    Log.Debug("INTERACTION MENU", "There is no callout to end");   
+                }
             }
         }
 

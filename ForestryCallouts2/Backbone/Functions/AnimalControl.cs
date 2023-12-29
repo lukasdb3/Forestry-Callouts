@@ -113,8 +113,8 @@ namespace ForestryCallouts2.Backbone.Functions
                         if (_counter == 150) _acVehicle.Position = closeToFinalPos;   
                     }
                     
-                    //Cool blip stuff
-                    _acBlip.Scale = _acPed.IsOnFoot ? .70f : 1f;
+                    //if animal control ped on foot set to blip to .75f otherwise 1f
+                    _acBlip.Scale = _acPed.IsOnFoot ? .75f : 1f;
                 }
             });
             

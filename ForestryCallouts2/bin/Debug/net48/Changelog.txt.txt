@@ -25,5 +25,3 @@ v2.0.1.2
 - Fixed Issues With Dangerous Person
 - Fixed Issues With Intoxicated Hiker
 - Implemented New Dialogue System
-  # DAGDialogueSystem
-  # Major WIP but I hope to release fully one day

@@ -14,12 +14,15 @@
             Menu used for all dialogue options.
             </summary>
         </member>
-        <member name="M:DAGDialogueSystem.DialogueFunctions.IterateDialogue(LSPD_First_Response.Mod.Callouts.Callout,DAGDialogueSystem.DirectedAcyclicGraph.Node)">
+        <member name="M:DAGDialogueSystem.DialogueFunctions.IterateDialogue(LSPD_First_Response.Mod.Callouts.Callout,Rage.Ped,DAGDialogueSystem.DirectedAcyclicGraph.Node,System.String,System.String)">
             <summary>
             Iterates through dialogue starting with the root node.
             </summary>
-            <param name="calloutName"> used for logging purposes </param>
+            <param name="callout"> current callout </param>
+            <param name="converser"> the ped entity talking to the player</param>
             <param name="n"> root node </param>
+            <param name="npcPrefix"> npc prefix that comes before dialogue string, can change color, but it is reset back to white before dialogue string </param>
+            <param name="playerPrefix"> player prefix that comes before dialogue string, can change color, but it is reset back to white before dialogue string </param>
         </member>
         <member name="M:DAGDialogueSystem.DialogueFunctions.DisplayData(System.String)">
             <summary>
@@ -27,9 +30,39 @@
             </summary>
             <param name="s"> the node's data </param>
         </member>
-        <member name="M:DAGDialogueSystem.DialogueFunctions.Clean">
+        <member name="M:DAGDialogueSystem.DialogueFunctions.Finish">
             <summary>
-            Sets the global class variables back to default.
+            Cleans up and resets the menu.
+            </summary>
+        </member>
+        <member name="T:DAGDialogueSystem.Type">
+            <summary>
+            Type of nodes, Dialogue, Prompt, Option, and Action.
+            </summary>
+        </member>
+        <member name="F:DAGDialogueSystem.Type.NpcDialogue">
+            <summary>
+            node dialogue line said by npc
+            </summary>
+        </member>
+        <member name="F:DAGDialogueSystem.Type.PlayerDialogue">
+            
+             node dialogue line said by player
+            
+        </member>
+        <member name="F:DAGDialogueSystem.Type.Prompt">
+            <summary>
+            node to initialize menu
+            </summary>
+        </member>
+        <member name="F:DAGDialogueSystem.Type.Option">
+            <summary>
+            node to add dialogue line to prompt node
+            </summary>
+        </member>
+        <member name="F:DAGDialogueSystem.Type.Action">
+            <summary>
+            node that runs an action
             </summary>
         </member>
         <member name="T:DAGDialogueSystem.DirectedAcyclicGraph">
@@ -42,19 +75,32 @@
             The node class for the Directed Acyclic Graph.
             </summary>
         </member>
-        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.#ctor(DAGDialogueSystem.NodeTypes.Type,System.String)">
+        <member name="F:DAGDialogueSystem.DirectedAcyclicGraph.Node.Action">
+            <summary>
+            The method to be ran when in a action node
+            </summary>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.#ctor(DAGDialogueSystem.Type,System.String)">
             <summary>
             Makes a new node in memory
             </summary>
             <param name="type"> the type of node, NodeTypes.Type </param>
             <param name="data"> dialogue string </param>
         </member>
-        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.#ctor(DAGDialogueSystem.NodeTypes.Type,System.Action)">
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.#ctor(DAGDialogueSystem.Type,System.Action)">
             <summary>
             Makes a new action node
             </summary>
             <param name="type"> the type of node, NodeTypes.Type </param>
-            <param name="action"> method name wanting to run if this node is chosen randomly or directly chosen if its the only edge.</param>
+            <param name="action"> method name wanting to run if this node is chosen randomly or directly chosen if its the only edge </param>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.#ctor(DAGDialogueSystem.Type,System.Action,System.String)">
+            <summary>
+            Makes a new action node with dialogue
+            </summary>
+            <param name="type"> he type of node, NodeTypes.Type </param>
+            <param name="action"> method name wanting to run if this node is chosen randomly or directly chosen if its the only edge </param>
+            <param name="data"> dialogue line </param>
         </member>
         <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.GetNType">
             <summary>
@@ -80,7 +126,7 @@
             </summary>
             <returns> Receiver of chosen edge </returns>
         </member>
-        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.AddNode(DAGDialogueSystem.NodeTypes.Type,System.String)">
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.AddNode(DAGDialogueSystem.Type,System.String)">
             <summary>
             Adds edge between this node and a new node with the type and data params.
             If multiple AddNodes take place on the same node. The top (most left) node will be
@@ -90,12 +136,26 @@
             <param name="data">dialogue line in string format</param>
             <returns> Node </returns>
         </member>
-        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.AddNode(System.Action)">
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.AddActionNode(System.Action)">
             <summary>
-            Adds a edge between this node and a new action node.
+            Adds a edge between this node and a new action node with no dialogue.
             </summary>
             <param name="method"> the method that needs to be ran</param>
             <returns></returns>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.AddActionNodeWithDialogue(System.Action,System.String)">
+            <summary>
+            Adds a edge between this node and a new action node with dialogue.
+            </summary>
+            <param name="method"> the method that needs to be ran </param>
+            <param name="data"> dialogue line in string format </param>
+            <returns></returns>
+        </member>
+        <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.LinkNodesAsParents(System.Collections.Generic.IEnumerable{DAGDialogueSystem.DirectedAcyclicGraph.Node})">
+            <summary>
+            Links n amount of nodes as parents (senders) of this node. 
+            </summary>
+            <param name="childNodes"> IEnumerable list of nodes </param>
         </member>
         <member name="M:DAGDialogueSystem.DirectedAcyclicGraph.Node.ConnectTo(DAGDialogueSystem.DirectedAcyclicGraph.Node)">
             <summary>
@@ -118,35 +178,21 @@
             The arrow in between nodes.
             </summary>
         </member>
-        <member name="T:DAGDialogueSystem.NodeTypes">
+        <member name="T:DAGDialogueSystem.Logger">
             <summary>
-            Class containing enum of node types.
+            Logs dialogue info to DAGDialogueSystemLOG
             </summary>
         </member>
-        <member name="T:DAGDialogueSystem.NodeTypes.Type">
+        <member name="M:DAGDialogueSystem.Logger.ResetLog">
             <summary>
-            Type of nodes, Dialogue, Prompt, Option, and Action.
+            Deletes the DAGDialogueSystemLOG, the next Logger.Log will create a new one.
             </summary>
         </member>
-        <member name="F:DAGDialogueSystem.NodeTypes.Type.Dialogue">
+        <member name="M:DAGDialogueSystem.Logger.Log(System.String)">
             <summary>
-            node dialogue line said by npc
+            Logs a message to DAGDialgoueSystemLOG file.
             </summary>
-        </member>
-        <member name="F:DAGDialogueSystem.NodeTypes.Type.Prompt">
-            <summary>
-            node to initialize menu
-            </summary>
-        </member>
-        <member name="F:DAGDialogueSystem.NodeTypes.Type.Option">
-            <summary>
-            node to add dialogue line to prompt node
-            </summary>
-        </member>
-        <member name="F:DAGDialogueSystem.NodeTypes.Type.Action">
-            <summary>
-            node that runs an action
-            </summary>
+            <param name="message"> the message</param>
         </member>
     </members>
 </doc>

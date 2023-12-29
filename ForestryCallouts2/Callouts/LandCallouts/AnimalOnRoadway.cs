@@ -18,7 +18,7 @@ using Functions = LSPD_First_Response.Mod.API.Functions;
 
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
-    [CalloutInterface("Animal On Roadway", CalloutProbability.Medium, "Dead Animal", "Code 2", "SASP")]
+    [CalloutInterface("[FC] AnimalOnRoadway", CalloutProbability.Medium, "Dead Animal", "Code 2", "SASP")]
 
     internal class AnimalOnRoadway : Callout
     {
@@ -70,10 +70,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             Log.CallDebug(this, "Callout accepted");
             //Spawn victim
             CFunctions.SpawnAnimal(out _animal, _animalSpawn, _animalHeading);
-            _animalBlip = _animal.AttachBlip();
-            _animalBlip.Color = Color.ForestGreen;
-            _animalBlip.Scale = .7f;
-            _animalBlip.EnableRoute(Color.Yellow);
+            _animalBlip = CFunctions.CreateBlip(_animal, true, Color.Yellow, Color.Yellow, 1f);
             return base.OnCalloutAccepted();
         }
 
@@ -85,6 +82,8 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 {
                     _onScene = true;
                     _animal.Tasks.Wander();
+                    _animalBlip.Scale = .75f;
+                    _animalBlip.Color = Color.Purple;
                     _animalBlip.IsRouteEnabled = false;
                 }
 

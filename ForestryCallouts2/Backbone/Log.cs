@@ -25,6 +25,17 @@ namespace ForestryCallouts2.Backbone
         {
             Game.LogTrivial("-!!- ForestryCallouts - [DEBUG - "+ clas.ToUpper() + "] >> " + m +"");
         }
-        
+
+        internal static void Error(string clas, string e, string m)
+        {
+            Game.LogTrivial("--- ! FORESTRY CALLOUTS WARNING ! ---");
+            Game.LogTrivial("ERROR: "+e);
+            Game.LogTrivial("-- ERROR INFO --");
+            Game.LogTrivial("Error From: "+clas.ToUpper());
+            Game.LogTrivial(m);
+            Game.LogTrivial("Please send your log to Unofficial LSPDFR Discord Support Server (ULSS)");
+            Game.LogTrivial("https://discord.gg/ULSS");
+            Game.LogTrivial("--- ! FORESTRY CALLOUTS WARNING ! ---");
+        }
     }
 }

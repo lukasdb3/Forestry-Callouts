@@ -18,19 +18,19 @@ namespace ForestryCallouts2.Backbone
         {
             var curVersion = IniSettings.CurV;
 
-            var latestVersionUri =
-                new Uri(
-                    "https://www.lcpdfr.com/applications/downloadsng/interface/api.php?do=checkForUpdates&fileId=34663&textOnly=1");
-            var webClient = new WebClient();
-
             try
             {
+                var latestVersionUri =
+                    new Uri(
+                        "https://www.lcpdfr.com/applications/downloadsng/interface/api.php?do=checkForUpdates&fileId=34663&textOnly=1");
+                var webClient = new WebClient();
+                
                 ReceivedData = webClient
                     .DownloadString(
                         "https://www.lcpdfr.com/applications/downloadsng/interface/api.php?do=checkForUpdates&fileId=34663&textOnly=1")
                     .Trim();
             }
-            catch (WebException)
+            catch (Exception e)
             {
                 Game.DisplayNotification("commonmenu", "mp_alerttriangle", "~g~FORESTRY CALLOUTS WARNING",
                     "~g~FAILED UPDATE CHECK", 

@@ -19,7 +19,7 @@ using Functions = LSPD_First_Response.Mod.API.Functions;
 #endregion
 
 namespace ForestryCallouts2.Callouts.LandCallouts;
-[CalloutInterface("Dead Body", CalloutProbability.Medium, "Deceased Person Found", "Code 3", "SASP")]
+[CalloutInterface("[FC] DeadBody", CalloutProbability.Medium, "Deceased Person Found", "Code 3", "SASP")]
 
 internal class DeadBody : Callout
 {

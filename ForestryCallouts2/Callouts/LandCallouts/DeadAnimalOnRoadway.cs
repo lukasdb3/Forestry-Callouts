@@ -18,7 +18,7 @@ using Functions = LSPD_First_Response.Mod.API.Functions;
 
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
-    [CalloutInterface("Dead Animal On Roadway", CalloutProbability.Medium, "Dead Animal", "Code 2", "SASP")]
+    [CalloutInterface("[FC] DeadAnimalOnRoadway", CalloutProbability.Medium, "Dead Animal", "Code 2", "SASP")]
 
     internal class DeadAnimalOnRoadway : Callout
     {

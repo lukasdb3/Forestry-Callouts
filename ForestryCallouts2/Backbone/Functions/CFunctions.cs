@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 //Rage
@@ -21,6 +22,15 @@ namespace ForestryCallouts2.Backbone.Functions
     {
         
         // Main
+
+        internal static Blip CreateBlip(Ped ped, bool enableRoute ,Color color, Color routeColor, float scale)
+        {
+            Blip blip = ped.AttachBlip();
+            if (enableRoute) blip.EnableRoute(routeColor);
+            blip.Color = color;
+            blip.Scale = scale;
+            return blip;
+        }
         internal static void SetDrunk(Ped Bad, bool isDrunk)
         {
             GameFiber.StartNew(delegate

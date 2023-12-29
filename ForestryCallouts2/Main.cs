@@ -59,15 +59,6 @@ namespace ForestryCallouts2
                 StopPedMenu.Initialize();
                 Game.Console.Print("Starting Main Loop..");
                 RunLoop();
-                if (PluginChecker.ForestryCallouts)
-                {
-                    Game.Console.Print();
-                    Game.Console.Print("===== WARNING =====");
-                    Game.Console.Print("The first version of ForestryCallouts was detected still in the plugins folder.");
-                    Game.Console.Print("Please remove ForestryCallouts and reload LSPDFR");
-                    Game.Console.Print("===== WARNING =====");
-                    Game.Console.Print();
-                }
                 Game.Console.Print("Loading needed chunks...");
                 if (!IniSettings.WaterCallouts) ChunkLoader.Land();
                 else ChunkLoader.Water();
@@ -115,7 +106,7 @@ namespace ForestryCallouts2
                     Pool.ProcessMenus();
                     if (CFunctions.IsKeyAndModifierDown(IniSettings.InteractionMenuKey, IniSettings.InteractionMenuKeyModifier) && !Binoculars.IsRendering)
                     {
-                        MainMenu.InteractionMenu.Visible = !MainMenu.InteractionMenu.Visible;
+                            MainMenu.InteractionMenu.Visible = !MainMenu.InteractionMenu.Visible;
                     }
 
                     //Binoculars Hotkey

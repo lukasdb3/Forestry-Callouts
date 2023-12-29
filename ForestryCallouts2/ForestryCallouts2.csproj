@@ -12,17 +12,17 @@
 
     <ItemGroup>
       <Reference Include="CalloutInterfaceAPI">
-        <HintPath>..\..\..\CodingCrap\Refrences\CalloutInterfaceAPI.dll</HintPath>
+        <HintPath>E:\Coding\Refrences\CalloutInterfaceAPI.dll</HintPath>
       </Reference>
       <Reference Include="DAGDialogueSystem">
         <HintPath>..\..\DAGDialogueSystem-API\DAGDialogueSystem\bin\Debug\DAGDialogueSystem.dll</HintPath>
       </Reference>
       <Reference Include="LSPD First Response">
-        <HintPath>..\..\..\CodingCrap\Refrences\LSPD First Response.dll</HintPath>
+        <HintPath>E:\Coding\Refrences\LSPD First Response.dll</HintPath>
       </Reference>
       <Reference Include="Microsoft.CSharp" />
       <Reference Include="RAGENativeUI">
-        <HintPath>..\..\..\CodingCrap\Refrences\RAGENativeUI.dll</HintPath>
+        <HintPath>E:\Coding\Refrences\RAGENativeUI.dll</HintPath>
       </Reference>
       <Reference Include="RagePluginHookLauncher">
         <HintPath>..\..\..\CodingCrap\Refrences\RAGEPluginHook.exe</HintPath>
@@ -31,14 +31,14 @@
         <HintPath>..\..\Dependencies\RAGEPluginHook.exe</HintPath>
       </Reference>
       <Reference Include="StopThePed">
-        <HintPath>..\..\..\CodingCrap\Refrences\StopThePed.dll</HintPath>
+        <HintPath>E:\Coding\Refrences\StopThePed.dll</HintPath>
       </Reference>
       <Reference Include="System.Windows" />
       <Reference Include="System.Windows.Forms">
         <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework64\v4.0.30319\System.Windows.Forms.dll</HintPath>
       </Reference>
       <Reference Include="UltimateBackup">
-        <HintPath>..\..\..\CodingCrap\Refrences\UltimateBackup.dll</HintPath>
+        <HintPath>E:\Coding\Refrences\UltimateBackup.dll</HintPath>
       </Reference>
     </ItemGroup>
 

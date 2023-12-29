@@ -20,7 +20,7 @@ using Functions = LSPD_First_Response.Mod.API.Functions;
 
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
-    [CalloutInterface("ATV Pursuit", CalloutProbability.Medium, "Pursuit", "Code 3", "SASP")]
+    [CalloutInterface("[FC] ATVPursuit", CalloutProbability.Medium, "Pursuit", "Code 3", "SASP")]
      
     internal class AtvPursuit : Callout
     {
