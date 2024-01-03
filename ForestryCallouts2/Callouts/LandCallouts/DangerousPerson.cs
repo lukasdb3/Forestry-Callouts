@@ -94,7 +94,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_scenario == 3) CFunctions.ShotgunWeaponChooser(_suspect, -1, true);
             if (_scenario == 4) CFunctions.MeleeWeaponChooser(_suspect, -1, true);
             //Sets a blip on the suspects head and enables route
-            _suspectBlip = CFunctions.CreateBlip(suspect, true, Color.Yellow, Color.Yellow, 1f);
+            _suspectBlip = CFunctions.CreateBlip(_suspect, true, Color.Yellow, Color.Yellow, 1f);
             return base.OnCalloutAccepted();
         }
 
@@ -135,7 +135,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                         Log.CallDebug(this, "Blipped suspect because player took to long to find them.");
                         _pauseTimer = true;
                         if (_suspectAreaBlip) _suspectAreaBlip.Delete();
-                        _suspectBlip = CFunctions.CreateBlip(suspect, true, Color.Red, Color.Yellow, .75f);
+                        _suspectBlip = CFunctions.CreateBlip(_suspect, true, Color.Red, Color.Yellow, .75f);
                         _maxNotfiSent = true;
                     }
                 }
@@ -144,7 +144,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 if (!_suspectFound && Game.LocalPlayer.Character.DistanceTo(_suspect) <= 20f)
                 {
                     Log.CallDebug(this, "Suspect found!");
-                    _suspectBlip = CFunctions.CreateBlip(suspect, false, Color.Red, Color.Yellow, .75f);
+                    _suspectBlip = CFunctions.CreateBlip(_suspect, false, Color.Red, Color.Yellow, .75f);
                     if (_suspectAreaBlip) _suspectAreaBlip.Delete();
                     _suspectFound = true;
                 }

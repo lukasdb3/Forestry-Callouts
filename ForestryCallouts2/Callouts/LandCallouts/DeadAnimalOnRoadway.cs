@@ -65,7 +65,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             Log.CallDebug(this, "Callout accepted");
             //Spawn victim
             CFunctions.SpawnAnimal(out _animal, _animalSpawn, _animalHeading);
-            _animalBlip = CFunctions.CreateBlip(_animal, true, Color.Purple, Color.Yellow, .75f);
+            _animalBlip = CFunctions.CreateBlip(_animal, true, Color.Yellow, Color.Yellow, 1);
             _animal.Health = 10;
             return base.OnCalloutAccepted();
         }
@@ -78,6 +78,8 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                 {
                     _onScene = true;
                     _animalBlip.IsRouteEnabled = false;
+                    _animalBlip.Color = Color.Purple;
+                    _animalBlip.Scale = 0.75f;
                     Game.DisplayHelp("~g~Call ~y~Animal Control ~g~ to take care of the Animal.");
                 }
             }

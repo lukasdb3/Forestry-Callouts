@@ -73,7 +73,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             CFunctions.SpawnAtv(out _susVehicle, vehicleSpawn, _suspectHeading);
             //Warp suspect into vehicle and set a blip
             _suspect.WarpIntoVehicle(_susVehicle, -1);
-            _suspectBlip = CFunctions.CreateBlip(suspect, true, Color.Yellow, Color.Yellow, 1f);
+            _suspectBlip = CFunctions.CreateBlip(_suspect, true, Color.Yellow, Color.Yellow, 1f);
             if (IniSettings.AICops)
             {
                 _cop = new Ped("s_f_y_ranger_01", World.GetNextPositionOnStreet(_suspectSpawn.Around(15f, 20f)), 0f);
