@@ -29,7 +29,7 @@ namespace ForestryCallouts2.Backbone
                 var assemName = assem.GetName().Name;
                 Game.Console.Print("Checking assembly: "+assemName);
                 // check if current assembly is plugins we don't want to check, if they are break iteration
-                if (assemName is "CalloutInterface" or "ForestryCallouts2") continue;
+                if (assemName is "CalloutInterface" or "ForestryCallouts2" or "GrammarPolice") continue;
                 // get callouts in assembly
                 var assemCallouts = (from callout in assem.GetTypes() where callout.IsClass && callout.BaseType == typeof(Callout) select callout).ToList();
                 Game.Console.Print("Callout count from ("+assemName+"): "+assemCallouts.Count);
@@ -47,9 +47,14 @@ namespace ForestryCallouts2.Backbone
                     var calloutAttribute = (CalloutInfoAttribute) (from a in calloutAttributes select a).FirstOrDefault();
                     
                     if (calloutAttribute == null || assemName == "ForestryCallouts2") continue;
+
+                    var calloutName = calloutAttribute.Name;
+                    if (assemName == "SuperCallouts")
+                        calloutName = calloutAttribute.Name.Replace("[SC] ", String.Empty);
+                    Game.Console.Print(calloutName);
                     
-                    // checks if callout is enabled in the designated ini file if it is add it to startable callouts
-                    if (CalloutEnabled(assemName, calloutAttribute.Name))
+                    // checks if callout is enabled in the designated ini file if it is add it to callouts that can be started
+                    if (CalloutEnabled(assemName, calloutName))
                     {
                         RandomCalloutCache.Add(calloutAttribute.Name);
                         _callCount++;

@@ -1,11 +1,8 @@
 Install Instructions
 - If appliciable, remove "ForestryCallouts.dll" and "ForestryCallouts.ini" from your GTA5\Plugins\LSPDFR folder.
+- Drag and Drop "CalloutInterfaceAPI", "DAGDialogueSystem.dll" and "RageNativeUI" into your main grand theft auto v directory.
 - Drag and Drop "ForestryCallouts2.dll", "ForestryCallouts2.ini", and "ForestryCallouts2" folder to your GTA5\Plugins\LSPDFR. You may then from there configure 
 settings in the INI file if you wish to do so.
-
-Additional Instructions
-
-- Drag and Drop "CalloutInterfaceAPI" into your main grand theft auto v directory.
 
 Editing Callsign
 

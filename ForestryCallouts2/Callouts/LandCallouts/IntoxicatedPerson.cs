@@ -25,10 +25,8 @@ using static DAGDialogueSystem.Type;
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
     [CalloutInterface("[FC] IntoxicatedPerson", CalloutProbability.Medium, "Disturbance", "Code 2", "SASP")]
-
     public class IntoxicatedPerson : Callout
     {
-        
         #region Variables
         internal readonly string CurCall = "IntoxicatedPerson";
 
@@ -63,6 +61,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private bool _pursuitStarted;
         
         //dialogue
+        private bool _buildingDialogue;
         private bool _askedPedToTalk;
         private Node _root;
         #endregion
@@ -233,6 +232,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         private void BuildDialogue()
         {
+            _buildingDialogue = true;
             Log.CallDebug(this, "Callout Dialogue Building..");
 
             // Make root node
@@ -246,7 +246,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             var _3 = _2.AddNode(Option, "We have gotten reports of an intoxicated hiker.");
             var _4 = _2.AddNode(Option, "What are you doing out here?");
             var _5 = _2.AddNode(Option, "How much have you had to drink?");
-            var _6 = _2.AddNode(Option, "You match the description of a intoxicated person!");
+            var _6 = _2.AddNode(Option, "You match the description of a intoxicated person.");
             var _7 = _2.AddNode(Option, "You smell like alcohol!");
 
                 // Player chooses "We have gotten reports of an intoxicated hiker." in Prompt Node (_2)
@@ -286,7 +286,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                             // Prompt Node for Node (_30)
                             var _36 = _30.AddNode(Prompt, "[This is a Prompt Node]");
                             var _37 = _36.AddNode(Option, "If you resist we will have to go to the station and do blood work.");
-                            var _38 = _36.AddNode(Option, "Well to bad, I believe you are intoxicated. Therefore you are under arrest.");
+                            var _38 = _36.AddNode(Option, "Well to bad, I believe you are intoxicated. You are under arrest.");
                             var _39 = _36.AddNode(Option, "Okay then, can I have you complete a field test?");
 
                                 // Player chooses "If you resist we will have to go to the station and do blood work." in Prompt Node (_36)
@@ -301,7 +301,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                                         // Player chooses "No, you cant." in Prompt Node (_43)
                                         var _46 = _44.AddNode(NpcDialogue, "Fine! Just arrest me!");
                                         var _47 = _44.AddNode(NpcDialogue, "If you arrest me I will sue you!");
-                                        var _48 = _38.AddActionNodeWithDialogue(StartPursuit, "TRY AND CATCH ME!");
+                                        var _48 = _44.AddActionNodeWithDialogue(StartPursuit, "FUCK YOU!");
                                 
                                 // Player chooses "Well to bad, I believe you are intoxicated. Therefore you are under arrest." in Prompt Node (_36)
                                 var _49 = _38.AddNode(NpcDialogue, "No please don't arrest me, you can do a breathalyzer test.");
@@ -322,28 +322,29 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                             //Prompt Node for Node (_57)
                             var _59 = _57.AddNode(Prompt, "[This is a Prompt Node]");
                             var _60 = _59.AddNode(Option, "Im going to have to take you into the station.");
-                            var _60 = _59.AddNode(Option, "Im going to have to arrest you for public intoxication.");
+                            var _61 = _59.AddNode(Option, "Im going to have to arrest you for public intoxication.");
 
                                 //Player chooses "Im going to have to take you into the station." in Prompt Node (_59)
-                                var _61 = _60.AddNode(NpcDialogue, "Fine.");
-                                var _62 = _60.AddActionNodeWithDialogue(StartPursuit, "YEAH RIGHT!");
+                                var _62 = _60.AddNode(NpcDialogue, "Fine.");
+                                var _63 = _60.AddActionNodeWithDialogue(StartPursuit, "YEAH RIGHT!");
 
                                 //Player chooses "Im going to have to arrest you for public intoxication." in Prompt Node (_59)
-                                var _63 = _60.AddNode(NpcDialogue, "Cops are such assholes!");
-                                var _64 = _60.AddActionNodeWithDialogue(StartPursuit, "No way asshole!");
+                                var _64 = _61.AddNode(NpcDialogue, "Cops are such assholes!");
+                                var _65 = _61.AddActionNodeWithDialogue(StartPursuit, "No way asshole!");
 
                         // Player chooses "Be honest with me!" in Prompt Node (_24)
-                        var _65 = _27.AddNode(NpcDialogue, "I am being honest I am not drunk!");
-                        var _66 = _27.AddNode(NpcDialogue, "Your a shitty cop!");
-                        var _67 = _27.AddNode(NpcDialogue, "OKAY! I had only a few drinks..");
+                        var _66 = _27.AddNode(NpcDialogue, "I am being honest I am not drunk!");
+                        var _67 = _27.AddNode(NpcDialogue, "Your a shitty cop!");
+                        var _68 = _27.AddNode(NpcDialogue, "OKAY! I had only a few drinks..");
 
                         // Player chooses "Im going to have to arrest you for public intoxication." in Prompt Node (_24)
-                        var _68 = _28.AddNode(NpcDialogue, "Fine! Free food and shelter is fine with me!");
-                        var _69 = _28.AddActionNodeWithDialogue(StartPursuit, "TRY AND CATCH ME PIG!");
+                        var _69 = _28.AddNode(NpcDialogue, "Fine! Free food and shelter is fine with me!");
+                        var _70 = _28.AddActionNodeWithDialogue(StartPursuit, "TRY AND CATCH ME PIG!");
                         Log.CallDebug(this, "Callout Dialogue Building Finished!");
+                        _buildingDialogue = false;
         }
-        
-        public static void StartPursuit()
+
+        private void StartPursuit()
         {
             Log.Debug("IntoxicatedPerson", "Pursuit Starting");
             _suspect.Tasks.Wander();

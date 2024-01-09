@@ -46,7 +46,6 @@ namespace ForestryCallouts2.Backbone.Menu
         internal static UIMenuListItem AtvPursuit;
         internal static UIMenuListItem DangerousPerson;
         internal static UIMenuListItem DeadAnimalOnRoadway;
-        internal static UIMenuListItem DeadBody;
         internal static UIMenuListItem AnimalOnRoadway;
         internal static UIMenuListItem DirtBikePursuit;
         internal static UIMenuListItem HighSpeedPursuit;
@@ -97,7 +96,6 @@ namespace ForestryCallouts2.Backbone.Menu
             AtvPursuit = new UIMenuListItem("AtvPursuit", "", IniSettings.AtvPursuit.ToString().ToLower(), (IniSettings.AtvPursuit) ? "false" : "true");
             DangerousPerson = new UIMenuListItem("DangerousPerson", "", IniSettings.DangerousPerson.ToString().ToLower(), (IniSettings.DangerousPerson) ? "false" : "true");
             DeadAnimalOnRoadway = new UIMenuListItem("DeadAnimalRoadway", "", IniSettings.DeadAnimalOnRoadway.ToString().ToLower(), (IniSettings.DeadAnimalOnRoadway) ? "false" : "true");
-            DeadBody = new UIMenuListItem("DeadBody", "", "", IniSettings.DeadBody.ToString().ToLower(),(IniSettings.DeadBody) ? "false" : "true");
             AnimalOnRoadway = new UIMenuListItem("AnimalOnRoadway", "", IniSettings.AnimalOnRoadway.ToString().ToLower(), (IniSettings.AnimalOnRoadway) ? "false" : "true");
             DirtBikePursuit = new UIMenuListItem("DirtBikePursuit", "",IniSettings.DirtBikePursuit.ToString().ToLower(), (IniSettings.DirtBikePursuit) ? "false" : "true");
             HighSpeedPursuit = new UIMenuListItem("HighSpeedPursuit", "", IniSettings.HighSpeedPursuit.ToString().ToLower(), (IniSettings.HighSpeedPursuit) ? "false" : "true");
@@ -106,7 +104,7 @@ namespace ForestryCallouts2.Backbone.Menu
             RegularPursuit = new UIMenuListItem("Pursuit", "",IniSettings.RegularPursuit.ToString().ToLower(), (IniSettings.RegularPursuit) ? "false" : "true");
             //Buttons for saving and reloading Ini
             _saveSettings = new UIMenuItem("~g~Save Settings", "~r~Required To Do If Settings Were Just Changed");
-            _settingsMenu.AddItems(EndNotfiMessages ,SearchAreaBlipsMax, EnableDistanceChecker ,MaxDistance, MinCalloutDistance, AICops, EnableBinoculars, BinocularsSense, BinocularsImage, AnimalAttack, AtvPursuit, DangerousPerson, DeadAnimalOnRoadway, DeadBody,
+            _settingsMenu.AddItems(EndNotfiMessages ,SearchAreaBlipsMax, EnableDistanceChecker ,MaxDistance, MinCalloutDistance, AICops, EnableBinoculars, BinocularsSense, BinocularsImage, AnimalAttack, AtvPursuit, DangerousPerson, DeadAnimalOnRoadway,
                 AnimalOnRoadway, DirtBikePursuit, HighSpeedPursuit, IntoxicatedPerson, LoggerTruckPursuit, RegularPursuit, _saveSettings);
             InteractionMenu.BindMenuToItem(_settingsMenu, _settings);
             _settingsMenu.RefreshIndex();
