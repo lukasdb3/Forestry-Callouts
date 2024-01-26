@@ -25,10 +25,12 @@ using static DAGDialogueSystem.Type;
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
     [CalloutInterface("[FC] IntoxicatedPerson", CalloutProbability.Medium, "Disturbance", "Code 2", "SASP")]
-    public class IntoxicatedPerson : Callout
+    public class IntoxicatedPerson : FcCallout
     {
         #region Variables
-        internal readonly string CurCall = "IntoxicatedPerson";
+        internal override string CurrentCall { get; set; } = "IntoxicatedPerson";
+        internal override string CurrentCallFriendlyName { get; set; } = "Intoxicated Person";
+        protected override Vector3 Spawnpoint { get; set; }
 
         private bool _onScene;
         private Random _rand = new();
@@ -67,30 +69,17 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         #endregion
         public override bool OnBeforeCalloutDisplayed()
         {
-            //Code to get the spawnpoints for the call
-            ChunkChooser.Main(in CurCall);
-            _suspectSpawn = ChunkChooser.FinalSpawnpoint;
             _suspectHeading = ChunkChooser.FinalHeading;
             
             //Normal callout details
-            ShowCalloutAreaBlipBeforeAccepting(_suspectSpawn, 30f);
             CalloutMessage = ("~g~Intoxicated Person");
-            CalloutPosition = _suspectSpawn; 
-            AddMinimumDistanceCheck(IniSettings.MinCalloutDistance, CalloutPosition);
             CalloutAdvisory = ("~b~Dispatch:~w~ Intoxicated Person reported, Respond Code 2");
             LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_02 CRIME_DISTURBING_THE_PEACE_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_02_02", _suspectSpawn);
             return base.OnBeforeCalloutDisplayed();
         }
         
-        public override void OnCalloutNotAccepted()
-        {
-            Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
-            base.OnCalloutNotAccepted();
-        }
-
         public override bool OnCalloutAccepted()
         {
-            Log.CallDebug(this, "Callout accepted");
             // spawn the suspect
             CFunctions.SpawnHikerPed(out _suspect, _suspectSpawn, _rand.Next(1, 361));
             CFunctions.SetDrunk(_suspect, true);
@@ -197,19 +186,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     }
                 }
             }
-
-
-            // end callout
-            if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
-            {
-                Log.CallDebug(this, "Callout was force ended by player");
-                End();
-            }
-            if (Game.LocalPlayer.Character.IsDead)
-            {
-                Log.CallDebug(this, "Player died callout ending");
-                End();
-            }
             base.Process();
         }
 
@@ -220,13 +196,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_suspectBlip) _suspectBlip.Delete();
             if (_suspectAreaBlip) _suspectAreaBlip.Delete();
             if (_scenario == 4) if (_pursuitStarted) if (Functions.IsPursuitStillRunning(_pursuit)) Functions.ForceEndPursuit(_pursuit);
-            if (!ChunkChooser.StoppingCurrentCall)
-            {
-                Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _suspectSpawn);
-                if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Intoxicated Person Code 4", "");
-                CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Intoxicated Person code 4");
-            }
-            Log.CallDebug(this, "Callout ended");
             base.End();
         }
 

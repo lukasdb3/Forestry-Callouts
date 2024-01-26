@@ -20,14 +20,15 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 {
     [CalloutInterface("[FC] AnimalOnRoadway", CalloutProbability.Medium, "Dead Animal", "Code 2", "SASP")]
 
-    internal class AnimalOnRoadway : Callout
+    internal class AnimalOnRoadway : FcCallout
     {
         #region Variables
-        
-        internal readonly string CurCall = "AnimalOnRoadway";
+
+        internal override string CurrentCall { get; set; } = "AnimalOnRoadway";
+        internal override string CurrentCallFriendlyName { get; set; } = "Animal On Roadway";
+        protected override Vector3 Spawnpoint { get; set; }
         
         //animal
-        private Vector3 _animalSpawn;
         private float _animalHeading;
         private Vector3 _safeOffroadPos;
         private Ped _animal;
@@ -39,37 +40,23 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private bool _playerIsToFar;
         private bool _animalAtSafePos;
         #endregion
-        
-        
+
         public override bool OnBeforeCalloutDisplayed()
         {
             //Gets spawnpoints from closest chunk
-            ChunkChooser.Main(in CurCall);
-            _animalSpawn = ChunkChooser.FinalSpawnpoint;
             _animalHeading = ChunkChooser.FinalHeading;
             _safeOffroadPos = ChunkChooser.SafeOffroadPos;
             
             //Normal callout details
-            ShowCalloutAreaBlipBeforeAccepting(_animalSpawn, 30f);
             CalloutMessage = ("~g~Animal On Roadway");
-            CalloutPosition = _animalSpawn; 
-            AddMinimumDistanceCheck(IniSettings.MinCalloutDistance, CalloutPosition);
             CalloutAdvisory = ("~b~Dispatch:~w~ A animal has been reported on a main roadway.");
-            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_02_01", _animalSpawn);
+            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_02_01", Spawnpoint);
             return base.OnBeforeCalloutDisplayed();
         }
-        
-        public override void OnCalloutNotAccepted()
-        {
-            Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
-            base.OnCalloutNotAccepted();
-        }
-
         public override bool OnCalloutAccepted()
         {
-            Log.CallDebug(this, "Callout accepted");
             //Spawn victim
-            CFunctions.SpawnAnimal(out _animal, _animalSpawn, _animalHeading);
+            CFunctions.SpawnAnimal(out _animal, Spawnpoint, _animalHeading);
             _animalBlip = CFunctions.CreateBlip(_animal, true, Color.Yellow, Color.Yellow, 1f);
             return base.OnCalloutAccepted();
         }
@@ -116,17 +103,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     End();
                 }
             }
-            
-            if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
-            {
-                Log.CallDebug(this, "Callout was force ended by player");
-                End();
-            }
-            if (Game.LocalPlayer.Character.IsDead)
-            {
-                Log.CallDebug(this, "Player died callout ending");
-                End();
-            }
             base.Process();
         }
 
@@ -134,13 +110,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         {
             if (_animal) _animal.Dismiss();
             if (_animalBlip) _animalBlip.Delete();
-            if (!ChunkChooser.StoppingCurrentCall)
-            {
-                Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _animalSpawn);
-                if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Animal On Roadway Code 4", "");
-                CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Animal On Roadway code 4");
-            }
-            Log.CallDebug(this, "Callout ended");
             base.End();
         }
     }

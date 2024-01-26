@@ -1,6 +1,6 @@
 Install Instructions
 - If appliciable, remove "ForestryCallouts.dll" and "ForestryCallouts.ini" from your GTA5\Plugins\LSPDFR folder.
-- Drag and Drop "CalloutInterfaceAPI", "DAGDialogueSystem.dll" and "RageNativeUI" into your main grand theft auto v directory.
+- Drag and Drop "CalloutInterfaceAPI", "DAGDialogueSystem.dll" and "RageNativeUI.dll" into your main grand theft auto v directory.
 - Drag and Drop "ForestryCallouts2.dll", "ForestryCallouts2.ini", and "ForestryCallouts2" folder to your GTA5\Plugins\LSPDFR. You may then from there configure 
 settings in the INI file if you wish to do so.
 
@@ -29,7 +29,7 @@ not it will result in a crash.
 - Water Callouts are in Forestry Callouts 2 but purposely disabled. You may see water related callouts in Callout Interface Menu like 
 "BoatPursuit". They won't start. I plan on adding them in the future.
 
-- Forestry Callouts 2.0 has less callouts as of now then Forestry Callouts 1.6 both are availble for now untill I have
+- Forestry Callouts 2.0 has less callouts as of now then Forestry Callouts 1.2.6 both are availble for now untill I have
 fully recoded Forestry Callouts.
 
 Requirements:

@@ -21,15 +21,16 @@ using Functions = LSPD_First_Response.Mod.API.Functions;
 namespace ForestryCallouts2.Callouts.LandCallouts
 {
     [CalloutInterface("[FC] AnimalAttack", CalloutProbability.Medium, "Domestic Animal Attack", "Code 3", "SASP")]
-    internal class AnimalAttack : Callout
+    internal class AnimalAttack : FcCallout
     {
         #region Variables
-        
-        internal readonly string CurCall = "AnimalAttack";
+
+        internal override string CurrentCall { get; set; } = "AnimalAttack";
+        internal override string CurrentCallFriendlyName { get; set; } = "Animal Attack";
+        protected override Vector3 Spawnpoint { get; set; }
         
         //victim variables
         private Ped _victim;
-        private Vector3 _victimSpawn;
         private Blip _victimBlip;
         
         //animal variables
@@ -54,39 +55,23 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private bool _onScene;
         private bool _hateSet;
         #endregion
-        
-        
+
         public override bool OnBeforeCalloutDisplayed()
         {
-            //Gets spawnpoints from closest chunk
-            ChunkChooser.Main(in CurCall);
-            _victimSpawn = ChunkChooser.FinalSpawnpoint;
-
-            //Normal callout details
-            ShowCalloutAreaBlipBeforeAccepting(_victimSpawn, 30f);
             CalloutMessage = ("~g~Animal Attack");
-            CalloutPosition = _victimSpawn; 
-            AddMinimumDistanceCheck(IniSettings.MinCalloutDistance, CalloutPosition);
             CalloutAdvisory = ("~b~Dispatch:~w~ Animal attacking person reported. Respond code 3");
-            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", _victimSpawn);
+            Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", Spawnpoint);
             return base.OnBeforeCalloutDisplayed();
-        }
-        
-        public override void OnCalloutNotAccepted()
-        {
-           Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
-           base.OnCalloutNotAccepted();
         }
 
         public override bool OnCalloutAccepted()
         {
-            Log.CallDebug(this, "Callout accepted");
             //Spawn victim
-            CFunctions.SpawnHikerPed(out _victim, _victimSpawn, _rand.Next(1, 361));
+            CFunctions.SpawnHikerPed(out _victim, Spawnpoint, _rand.Next(1, 361));
             _victimBlip = CFunctions.CreateBlip(_victim, true, Color.Yellow, Color.Yellow, 1f);
             _victim.Health = 10;
             //Spawn animal
-            _animal = new Ped("a_c_mtlion", World.GetNextPositionOnStreet(_victimSpawn.Around(40f, 60f)), _rand.Next(1, 361));
+            _animal = new Ped("a_c_mtlion", World.GetNextPositionOnStreet(Spawnpoint.Around(40f, 60f)), _rand.Next(1, 361));
             _animal.IsPersistent = true;
             _animal.BlockPermanentEvents = true;
             _animal.Tasks.Wander();
@@ -215,18 +200,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     if (_areaBlip) _areaBlip.Delete();
                 }
             }
-            
-
-            if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
-            {
-                Log.CallDebug(this, "Callout was force ended by player");
-                End();
-            }
-            if (Game.LocalPlayer.Character.IsDead)
-            {
-                Log.CallDebug(this, "Player died callout ending");
-                End();
-            }
             base.Process();
         }
 
@@ -237,13 +210,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_animal) _animal.Dismiss();
             if (_animalBlip) _animal.Delete();
             if (_areaBlip) _areaBlip.Delete();
-            if (!ChunkChooser.StoppingCurrentCall)
-            {
-                Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _victimSpawn);
-                if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Animal Attack Code 4", "");
-                CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Animal Attack code 4");
-            }
-            Log.CallDebug(this, "Callout ended");
             base.End();
         }
     }

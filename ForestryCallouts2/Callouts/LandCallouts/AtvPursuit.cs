@@ -22,16 +22,17 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 {
     [CalloutInterface("[FC] ATVPursuit", CalloutProbability.Medium, "Pursuit", "Code 3", "SASP")]
      
-    internal class AtvPursuit : Callout
+    internal class AtvPursuit : FcCallout
     {
         #region Variables
 
-        internal readonly string CurCall = "AtvPursuit";
+        internal override string CurrentCall { get; set; } = "AtvPursuit";
+        internal override string CurrentCallFriendlyName { get; set; } = "ATV Pursuit";
+        protected override Vector3 Spawnpoint { get; set; }
         
         //suspect variables
         private Ped _suspect;
         private Blip _suspectBlip;
-        private Vector3 _suspectSpawn;
         private float _suspectHeading;
         private Vehicle _susVehicle;
         //cop
@@ -41,43 +42,32 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private LHandle _pursuit;
         private bool _pursuitStarted;
         #endregion
-        
-         public override bool OnBeforeCalloutDisplayed()
+
+        public override bool OnBeforeCalloutDisplayed()
         {
             //Gets spawnpoints from closest chunk
-            ChunkChooser.Main(in CurCall);
-            _suspectSpawn = ChunkChooser.FinalSpawnpoint;
             _suspectHeading = ChunkChooser.FinalHeading;
 
             //Normal callout details
-            ShowCalloutAreaBlipBeforeAccepting(_suspectSpawn, 30f);
             CalloutMessage = ("~g~ATV Pursuit");
-            CalloutPosition = _suspectSpawn; 
-            AddMinimumDistanceCheck(IniSettings.MinCalloutDistance, CalloutPosition);
             CalloutAdvisory = ("~b~Dispatch:~w~ We need backup for a ATV pursuit in progress. Respond code 3.");
-            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_02 CRIME_SUSPECT_ON_THE_RUN_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", _suspectSpawn);
+            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_02 CRIME_SUSPECT_ON_THE_RUN_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", Spawnpoint);
             return base.OnBeforeCalloutDisplayed();
         }
-
-        public override void OnCalloutNotAccepted()
-        {
-            Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
-            base.OnCalloutNotAccepted();
-        }
+        
         public override bool OnCalloutAccepted()
         {
-            Log.CallDebug(this, "Callout accepted");
             //Spawn Suspect and car
-            CFunctions.SpawnCountryPed(out _suspect, _suspectSpawn, _suspectHeading);
-            Vector3 vehicleSpawn = World.GetNextPositionOnStreet(_suspectSpawn);
+            CFunctions.SpawnCountryPed(out _suspect, Spawnpoint, _suspectHeading);
+            Vector3 vehicleSpawn = World.GetNextPositionOnStreet(Spawnpoint);
             CFunctions.SpawnAtv(out _susVehicle, vehicleSpawn, _suspectHeading);
             //Warp suspect into vehicle and set a blip
             _suspect.WarpIntoVehicle(_susVehicle, -1);
             _suspectBlip = CFunctions.CreateBlip(_suspect, true, Color.Yellow, Color.Yellow, 1f);
             if (IniSettings.AICops)
             {
-                _cop = new Ped("s_f_y_ranger_01", World.GetNextPositionOnStreet(_suspectSpawn.Around(15f, 20f)), 0f);
-                CFunctions.SpawnRangerBackup(out _copCar, World.GetNextPositionOnStreet(_suspectSpawn.Around(10f, 15f)), _susVehicle.Heading);
+                _cop = new Ped("s_f_y_ranger_01", World.GetNextPositionOnStreet(Spawnpoint.Around(15f, 20f)), 0f);
+                CFunctions.SpawnRangerBackup(out _copCar, World.GetNextPositionOnStreet(Spawnpoint.Around(10f, 15f)), _susVehicle.Heading);
                 _cop.WarpIntoVehicle(_copCar, -1);
                 _cop.Tasks.CruiseWithVehicle(-1);
             }
@@ -86,7 +76,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         public override void Process()
         {
-            //Prevent crashes by not running anything in Process other than end methods
             if (!_pursuitStarted)
             {
                 //When player gets close disable route and start the pursuit
@@ -102,18 +91,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                     _pursuitStarted = true;
                 }
             }
-            
-            //End Callout
-            if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
-            {
-                Log.CallDebug(this, "Callout was force ended by player");
-                End();
-            }
-            if (Game.LocalPlayer.Character.IsDead)
-            {
-                Log.CallDebug(this, "Player died callout ending");
-                End();
-            }
+            base.Process();
         }
 
         public override void End()
@@ -124,13 +102,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_pursuitStarted) if (Functions.IsPursuitStillRunning(_pursuit)) Functions.ForceEndPursuit(_pursuit);
             if (_cop) _cop.Dismiss();
             if (_copCar) _copCar.Dismiss();
-            if (!ChunkChooser.StoppingCurrentCall)
-            {
-                Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _suspectSpawn);
-                if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~ATV Pursuit Code 4", "");
-                CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting ATV Pursuit code 4");
-            }
-            Log.CallDebug(this, "Callout ended");
             base.End();
         }
     }

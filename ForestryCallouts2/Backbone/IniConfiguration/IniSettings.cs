@@ -19,6 +19,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
         private static bool _iniError;
         internal static string CurV;
         
+        internal static string Language;
         internal static string Callsign;
         internal static bool EndNotfiMessages;
         internal static bool WaterCallouts;
@@ -108,6 +109,7 @@ namespace ForestryCallouts2.Backbone.IniConfiguration
             CurV = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             
             //Main
+            Language = Ini.ReadString("Main", "Language", "en-us");
             Callsign = Ini.ReadString("Main", "Callsign", "1-LINCOLN-18");
             EndNotfiMessages = Ini.ReadBoolean("Main", "CalloutEndMessages", true);
             WaterCallouts = Ini.ReadBoolean("Main", "WaterCallouts", false);

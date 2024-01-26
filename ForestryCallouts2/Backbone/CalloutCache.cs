@@ -30,8 +30,10 @@ namespace ForestryCallouts2.Backbone
                 Game.Console.Print("Checking assembly: "+assemName);
                 // check if current assembly is plugins we don't want to check, if they are break iteration
                 if (assemName is "CalloutInterface" or "ForestryCallouts2" or "GrammarPolice") continue;
-                // get callouts in assembly
-                var assemCallouts = (from callout in assem.GetTypes() where callout.IsClass && callout.BaseType == typeof(Callout) select callout).ToList();
+                // get callouts in assembly and sub classes of callout
+                var baseType = typeof(Callout);
+                var assemCallouts = (from callout in assem.GetTypes() where callout.IsClass && baseType.IsAssignableFrom(callout)
+                    select callout).ToList();
                 Game.Console.Print("Callout count from ("+assemName+"): "+assemCallouts.Count);
                 // if assemCallouts les than 1 break iteration
                 if (assemCallouts.Count < 1) continue;
@@ -46,11 +48,15 @@ namespace ForestryCallouts2.Backbone
                     if (!calloutAttributes.Any()) continue;
                     var calloutAttribute = (CalloutInfoAttribute) (from a in calloutAttributes select a).FirstOrDefault();
                     
-                    if (calloutAttribute == null || assemName == "ForestryCallouts2") continue;
+                    if (calloutAttribute == null) continue;
 
                     var calloutName = calloutAttribute.Name;
+                    
+                    // special cases
+                    // SuperCallouts has [SC] in every callout name. this removes that.
                     if (assemName == "SuperCallouts")
-                        calloutName = calloutAttribute.Name.Replace("[SC] ", String.Empty);
+                        calloutName = calloutAttribute.Name.Replace("[SC] ", string.Empty);
+                    
                     Game.Console.Print(calloutName);
                     
                     // checks if callout is enabled in the designated ini file if it is add it to callouts that can be started
@@ -123,8 +129,15 @@ namespace ForestryCallouts2.Backbone
             // check each section for existence and then read the boolean value for the callout
             foreach (var section in sections)
             {
-                if (!iniFile.DoesSectionExist(section)) continue;
-                if (calloutEdits.Any(c => iniFile.ReadBoolean(section, c))) return true;
+                try
+                {
+                    if (!iniFile.DoesSectionExist(section)) continue;
+                    if (calloutEdits.Any(c => iniFile.ReadBoolean(section, c))) return true;
+                }
+                catch (Exception e)
+                {
+                    Game.Console.Print("Error processing ("+callout+") callout! (don't worry about this)");
+                }
             }
             return false;
         }
@@ -137,15 +150,14 @@ namespace ForestryCallouts2.Backbone
         private static List<string> GetSimilarStrings(string s)
         {
             var list = new List<string>();
+            // adds the regular callout name
             list.Add(s);
+            // add the callout name without numbers
             if (s.Any(char.IsDigit)) list.Add(s.RemoveIntegers());
+            // removes and if and is in there.
             if (s.Contains("And")) list.Add(s.Replace("And", string.Empty));
-            if (!s.Contains(" ")) return list;
-            
+            // removes whitespace
             list.Add(s.Replace(" ", string.Empty));
-            var spiltS = s.Split(' ');
-            list.Add(spiltS[0]);
-            list.Add(spiltS[1]);
             return list;
         }
     }
