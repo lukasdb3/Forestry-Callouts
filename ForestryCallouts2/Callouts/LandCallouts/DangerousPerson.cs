@@ -23,15 +23,16 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 {
     [CalloutInterface("[FC] DangerousPerson", CalloutProbability.Low, "Dangerous Individual", "Code 3", "SASP")]
     
-    internal class DangerousPerson : Callout
+    internal class DangerousPerson : FcCallout
     {
         #region Variables
-        
-        internal readonly string CurCall = "DangerousPerson";
+
+        internal override string CurrentCall { get; set; } = "DangerousPerson";
+        internal override string CurrentCallFriendlyName { get; set; } = "Dangerous Person";
+        protected override Vector3 Spawnpoint { get; set; }
         
         //victim variables
         private Ped _suspect;
-        private Vector3 _suspectSpawn;
         private Blip _suspectBlip;
 
         //timer variables
@@ -54,40 +55,25 @@ namespace ForestryCallouts2.Callouts.LandCallouts
         private bool _pursuitStarted;
         private bool _scenarioShootingStarted;
         #endregion
-        
-        
+
         public override bool OnBeforeCalloutDisplayed()
         {
-            //Gets spawnpoints from closest chunk
-            ChunkChooser.Main(in CurCall);
-            _suspectSpawn = ChunkChooser.FinalSpawnpoint;
-
             //Normal callout details
-            ShowCalloutAreaBlipBeforeAccepting(_suspectSpawn, 30f);
             CalloutMessage = ("~g~Dangerous Person");
-            CalloutPosition = _suspectSpawn; 
-            AddMinimumDistanceCheck(IniSettings.MinCalloutDistance, CalloutPosition);
             _scenario = _rand.Next(1, 5);
             if (_scenario == 1) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous person reported with a automatic rifle. Respond code 3");
             if (_scenario == 2) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous person reported with a pistol. Respond code 3");
             if (_scenario == 3) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous person reported with a shotgun. Respond code 3");
             if (_scenario == 4) CalloutAdvisory = ("~b~Dispatch:~w~ Dangerous person reported with a melee weapon. Respond code 3");
-            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", _suspectSpawn);
+            LSPD_First_Response.Mod.API.Functions.PlayScannerAudioUsingPosition("CITIZENS_REPORT_01 ASSISTANCE_REQUIRED_01 IN_OR_ON_POSITION UNITS_RESPOND_CODE_03_01", Spawnpoint);
             return base.OnBeforeCalloutDisplayed();
-        }
-
-        public override void OnCalloutNotAccepted()
-        {
-            Functions.PlayScannerAudio("OTHER_UNITS_TAKING_CALL");
-            base.OnCalloutNotAccepted();
         }
 
         public override bool OnCalloutAccepted()
         {
-            Log.CallDebug(this, "Callout accepted");
             Log.CallDebug(this, "Scenario: " + _scenario);
             //Spawn the suspect
-            CFunctions.SpawnCountryPed(out _suspect, _suspectSpawn, _rand.Next(1, 361));
+            CFunctions.SpawnCountryPed(out _suspect, Spawnpoint, _rand.Next(1, 361));
             //Give gun
             if (_scenario == 1) CFunctions.RifleWeaponChooser(_suspect, -1, true);
             if (_scenario == 2) CFunctions.PistolWeaponChooser(_suspect, -1, true);
@@ -100,7 +86,7 @@ namespace ForestryCallouts2.Callouts.LandCallouts
 
         public override void Process()
         {
-             //If the player is 200 or closer delete route and blip
+                //If the player is 200 or closer delete route and blip
                 if (Game.LocalPlayer.Character.DistanceTo(_suspect) <= 200f && !_onScene)
                 {
                     _suspect.Tasks.Wander();
@@ -175,17 +161,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
                         _scenarioShootingStarted = true;
                     }
                 }
-
-                if (CFunctions.IsKeyAndModifierDown(IniSettings.EndCalloutKey, IniSettings.EndCalloutKeyModifier))
-                {
-                    Log.CallDebug(this, "Callout was force ended by player");
-                    End();
-                }
-                if (Game.LocalPlayer.Character.IsDead)
-                {
-                    Log.CallDebug(this, "Player died callout ending");
-                    End();
-                }
                 base.Process();
         }
 
@@ -195,13 +170,6 @@ namespace ForestryCallouts2.Callouts.LandCallouts
             if (_suspectBlip) _suspectBlip.Delete();
             if (_suspectAreaBlip) _suspectAreaBlip.Delete();
             if (_scenario2 == 1) if (Functions.IsPursuitStillRunning(_pursuit)) Functions.ForceEndPursuit(_pursuit);
-            if (!ChunkChooser.StoppingCurrentCall)
-            {
-                Functions.PlayScannerAudioUsingPosition("OFFICERS_REPORT_03 GP_CODE4_01", _suspectSpawn);
-                if (IniSettings.EndNotfiMessages) Game.DisplayNotification("3dtextures", "mpgroundlogo_cops", "Status", "~g~Dangerous Person Code 4", "");
-                CalloutInterfaceAPI.Functions.SendMessage(this, "Unit "+IniSettings.Callsign+" reporting Dangerous Person code 4");
-            }
-            Log.CallDebug(this, "Callout ended");
             base.End();
         }
     }

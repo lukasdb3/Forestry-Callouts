@@ -77,8 +77,8 @@ namespace ForestryCallouts2.Backbone.Functions
                     
                         if (CFunctions.IsKeyAndModifierDown(IniSettings.BinocularsKey, IniSettings.BinocularsKeyModifier))
                         {
-                            _binoCamera.Delete();
-                            _binoculars.Delete();
+                            if (_binoCamera.Exists()) _binoCamera.Delete();
+                            if (_binoculars.Exists()) _binoculars.Delete();
                             Game.RawFrameRender -= RawFrameRender;
                             Game.LocalPlayer.Character.Tasks.Clear();
                             NativeFunction.Natives.ENABLE_CONTROL_ACTION(0, 14, true);

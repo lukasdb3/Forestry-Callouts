@@ -1,6 +1,9 @@
 ﻿#region Refrences
 //Rage
 using System;
+using System.Globalization;
+using System.Resources;
+using System.Threading;
 using System.Windows.Forms;
 using Rage;
 //Lspdfr
@@ -50,6 +53,13 @@ namespace ForestryCallouts2
                 Game.Console.Print("=============== FORESTRY CALLOUTS ===============");
                 Game.Console.Print("Loading settings..");
                 IniSettings.LoadSettings();
+                Game.Console.Print("Getting language..");
+                CallsignAudioString = IniSettings.Callsign.TranslateCallsignToAudio();
+                Game.Console.Print("Running dependency checks..");
+                DependencyChecks.CheckDependencies();
+                if (DependencyChecks.Abort) return;
+                Game.Console.Print("Loading settings..");
+                IniSettings.LoadSettings();
                 CallsignAudioString = IniSettings.Callsign.TranslateCallsignToAudio();
                 Game.Console.Print("Checking Forestry Callouts version..");
                 Game.Console.Print("Forestry Callouts update available: "+VersionChecker.IsUpdateAvailable()+"");
@@ -57,7 +67,7 @@ namespace ForestryCallouts2
                 Game.Console.Print("Initializing menus..");
                 MainMenu.Initialize();
                 StopPedMenu.Initialize();
-                Game.Console.Print("Starting Main Loop..");
+                Game.Console.Print("Starting main loop..");
                 RunLoop();
                 Game.Console.Print("Loading needed chunks...");
                 if (!IniSettings.WaterCallouts) ChunkLoader.Land();

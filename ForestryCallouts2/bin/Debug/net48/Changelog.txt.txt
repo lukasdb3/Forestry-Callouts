@@ -25,3 +25,15 @@ v2.0.1.2
 - Fixed Issues With Dangerous Person
 - Fixed Issues With Intoxicated Hiker
 - Implemented New Dialogue System
+
+v2.0.1.3
+- Added dependency checker
+- Fixed a callout cacher conflict with JMCalloutRemastered
+
+v2.0.1.4
+- Added ForestryCallouts folder to download as I forgot it thanks @Michael21107 for reporting
+- Fixed ReadMe error, again thanks @Michael21107 for reporting
+
+v2.0.1.5
+- Cleaned up code in all callouts.
+- Fixed assembly showing 2.1.0.3 last release (2.1.0.4) stupid mistake.

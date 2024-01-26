@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <AssemblyVersion>2.0.1.2</AssemblyVersion>
-        <FileVersion>2.0.1.2</FileVersion>
+        <AssemblyVersion>2.0.6.0</AssemblyVersion>
+        <FileVersion>2.0.6.0</FileVersion>
         <Title>ForestryCallouts2</Title>
         <Authors>lukasdb3</Authors>
         <Description>Callout plugin for LSPDFR</Description>
@@ -15,7 +15,7 @@
         <HintPath>E:\Coding\Refrences\CalloutInterfaceAPI.dll</HintPath>
       </Reference>
       <Reference Include="DAGDialogueSystem">
-        <HintPath>..\..\DAGDialogueSystem-API\DAGDialogueSystem\bin\Debug\DAGDialogueSystem.dll</HintPath>
+        <HintPath>bin\Debug\net48\DAGDialogueSystem.dll</HintPath>
       </Reference>
       <Reference Include="LSPD First Response">
         <HintPath>E:\Coding\Refrences\LSPD First Response.dll</HintPath>
@@ -45,6 +45,4 @@
     <ItemGroup>
       <PackageReference Include="RagePluginHook" Version="1.98.0" />
     </ItemGroup>
-
-
 </Project>
