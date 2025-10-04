@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Callout plugin for LSPDFR")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("2.0.6.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f7be8078fca7c4722db689bd3c7575b2eb550ced")]
 [assembly: System.Reflection.AssemblyProductAttribute("ForestryCallouts2")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ForestryCallouts2")]
 [assembly: System.Reflection.AssemblyVersionAttribute("2.0.6.0")]

@@ -16,10 +16,10 @@ using ForestryCallouts2.Backbone.IniConfiguration;
 using ForestryCallouts2.Backbone.SpawnSystem;
 //CalloutInterface
 using CalloutInterfaceAPI;
-//DAGDialogueSystem
-using static DAGDialogueSystem.DirectedAcyclicGraph;
-using DAGDialogueSystem;
-using static DAGDialogueSystem.Type;
+//CalloutDialogueAPI
+using static CalloutDialogueAPI.DirectedAcyclicGraph;
+using CalloutDialogueAPI;
+using static CalloutDialogueAPI.Type;
 #endregion
 
 namespace ForestryCallouts2.Callouts.LandCallouts

@@ -450,19 +450,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\admin\\.nuget\\packages\\": {}
+    "C:\\Users\\lukas\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\admin\\Documents\\GitHub\\Forestry-Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj",
+      "projectUniqueName": "C:\\Users\\lukas\\RiderProjects\\Forestry-Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj",
       "projectName": "ForestryCallouts2",
-      "projectPath": "C:\\Users\\admin\\Documents\\GitHub\\Forestry-Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\admin\\Documents\\GitHub\\Forestry-Callouts\\ForestryCallouts2\\obj\\",
+      "projectPath": "C:\\Users\\lukas\\RiderProjects\\Forestry-Callouts\\ForestryCallouts2\\ForestryCallouts2.csproj",
+      "packagesPath": "C:\\Users\\lukas\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\lukas\\RiderProjects\\Forestry-Callouts\\ForestryCallouts2\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\lukas\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net48"
@@ -480,7 +480,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net48": {
@@ -497,7 +503,7 @@
             "version": "[1.98.0, )"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.305\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305\\RuntimeIdentifierGraph.json"
       }
     }
   }
